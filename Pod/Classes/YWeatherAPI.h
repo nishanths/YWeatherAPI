@@ -29,6 +29,9 @@
 #import <Foundation/Foundation.h>
 @class CLLocation;
 
+
+#pragma mark - STRING CONSTANTS and ENUMS
+
 /* Enums for units */
 typedef enum {
     MI, KM
@@ -130,7 +133,11 @@ NSString* const kYWAWindDirectionNorthNorthWest;
 @property (nonatomic, assign) YWADistanceUnit defaultDistanceUnit; // Defaults to MI
 @property (nonatomic, assign) YWATemperatureUnit defaultTemperatureUnit; // Defaults to F
 
-#pragma mark - SHARED SINGLETON
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// @name Getting the shared singleton instance
+////////////////////////////////////////////////////////////////////////////////
 
 /**
  *  Returns the singleton shared manager object
@@ -139,55 +146,11 @@ NSString* const kYWAWindDirectionNorthNorthWest;
  */
 + (instancetype)sharedManager;
 
-#pragma mark - HELPERS
 
-/**
- *  Returns a natural-language location string by reverse geocoding a coordinate
- *
- *  @param coordinate CLLocation object with valid latitude and longitude
- *  @param success    Callback block that receives the location on successful reverse geocoding
- *  @param failure    Callback block that receives nil and an NSError object on failure
- */
-- (void) locationStringForCoordinate:(CLLocation*)coordinate
-                             success:(void (^)(NSString* locationString))success
-                             failure:(void (^)(id response, NSError* error))failure;
 
-/**
- *  Returns the Yahoo WOEID for a natural-language location using Yahoo's GEO lookup
- *
- *  @param location Natural-language string representing a geographical location
- *  @param success  Callback block that receives the WOEID on a successful lookup
- *  @param failure  Callback block that receives the bad response and an NSError object on failure
- */
-- (void) woeidForLocation:(NSString*)location
-                  success:(void (^)(NSString* woeid))success
-                  failure:(void (^)(id response, NSError *error))failure;
-
-#pragma mark - CACHE
-
-/**
- *  Flushes the cache, removing all cached results
- *
- *  @see -removeCachedResultsForWOEID:
- */
-- (void) clearCache;
-
-/**
- *  Removes cached results for a WOEID
- *
- *  @param woeid A WOEID
- *  @see -clearCache
- */
-- (void) removeCachedResultsForWOEID:(NSString*) woeid;
-
-/**
- *  Removes cached results for a location
- *
- *  @param location Natural-language string representing a geographical location
- *  @warning Not as accurate as removing by WOEID – if WOEID is not known, consider clearing the entire cache
- *  @see -clearCache
- */
-- (void) removeCachedResultsForLocation: (NSString*) location;
+////////////////////////////////////////////////////////////////////////////////
+/// @name Getting forecast information
+////////////////////////////////////////////////////////////////////////////////
 
 #pragma mark - TODAY'S FORECAST by COORDINATE, LOCATION, WOEID
 
@@ -263,6 +226,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                         success:(void (^)(NSDictionary* result))success
                         failure:(void (^)(id response, NSError* error))failure;
 
+
 #pragma mark - FIVE DAY FORECAST by COORDINATE, LOCATION, WOEID
 
 /**
@@ -335,6 +299,12 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                  temperatureUnit:(YWATemperatureUnit)temperatureUnit
                          success:(void (^)(NSDictionary* result))success
                          failure:(void (^)(id response, NSError* error))failure;
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// @name Getting current weather conditions
+////////////////////////////////////////////////////////////////////////////////
 
 #pragma mark - TEMPERATURE by COORDINATE, LOCATION, WOEID
 
@@ -482,6 +452,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                           success:(void (^)(NSDictionary* result))success
                           failure:(void (^)(id response, NSError* error))failure;
 
+
 #pragma mark - PRESSURE TREND by COORDINATE, LOCATION, WOEID
 
 /**
@@ -516,6 +487,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
 - (void) pressureTrendForWOEID:(NSString*)woeid
                        success:(void (^)(NSDictionary* result))success
                        failure:(void (^)(id response, NSError* error))failure;
+
 
 #pragma mark - VISIBILITY by COORDINATE, LOCATION, WOEID (optional: YWADistanceUnit)
 
@@ -701,6 +673,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                   success:(void (^)(NSDictionary* result))success
                   failure:(void (^)(id response, NSError* error))failure;
 
+
 #pragma mark - SUNRISE by COORDINATE, LOCATION, WOEID
 
 /**
@@ -736,6 +709,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                  success:(void (^)(NSDictionary* result))success
                  failure:(void (^)(id response, NSError* error))failure;
 
+
 #pragma mark - SUNSET by COORDINATE, LOCATION, WOEID
 
 /**
@@ -769,6 +743,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
 - (void) sunsetForWOEID:(NSString*) woeid
                 success:(void (^)(NSDictionary* result))success
                 failure:(void (^)(id response, NSError* error))failure;
+
 
 #pragma mark - WIND CHILL by COORDINATE, LOCATION, WOEID (optional: YWATemperatureUnit)
 
@@ -844,6 +819,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
            temperatureUnit:(YWATemperatureUnit)temperatureUnit
                    success:(void (^)(NSDictionary* result))success
                    failure:(void (^)(id response, NSError* error))failure;
+
 
 #pragma mark - WIND DIRECTION by COORDINATE, LOCATION, WOEID
 
@@ -954,5 +930,133 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                  speedUnit:(YWASpeedUnit)speedUnit
                    success:(void (^)(NSDictionary* result))success
                    failure:(void (^)(id response, NSError *error))failure;
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// @name Working with the cache
+////////////////////////////////////////////////////////////////////////////////
+
+#pragma mark - CACHE
+
+/**
+ *  Flushes the cache, removing all cached results
+ *
+ *  @see -removeCachedResultsForWOEID:
+ */
+- (void) clearCache;
+
+/**
+ *  Removes cached results for a WOEID
+ *
+ *  @param woeid A WOEID
+ *  @see -clearCache
+ */
+- (void) removeCachedResultsForWOEID:(NSString*) woeid;
+
+/**
+ *  Removes cached results for a location
+ *
+ *  @param location Natural-language string representing a geographical location
+ *  @warning Not as accurate as removing by WOEID – if WOEID is not known, consider clearing the entire cache
+ *  @see -clearCache
+ */
+- (void) removeCachedResultsForLocation: (NSString*) location;
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// @name Converting geographical location formats
+////////////////////////////////////////////////////////////////////////////////
+
+#pragma mark - HELPERS
+
+/**
+ *  Returns a natural-language location string by reverse geocoding a coordinate
+ *
+ *  @param coordinate CLLocation object with valid latitude and longitude
+ *  @param success    Callback block that receives the location on successful reverse geocoding
+ *  @param failure    Callback block that receives nil and an NSError object on failure
+ */
+- (void) locationStringForCoordinate:(CLLocation*)coordinate
+                             success:(void (^)(NSString* locationString))success
+                             failure:(void (^)(id response, NSError* error))failure;
+
+/**
+ *  Returns the Yahoo WOEID for a natural-language location using Yahoo's GEO lookup
+ *
+ *  @param location Natural-language string representing a geographical location
+ *  @param success  Callback block that receives the WOEID on a successful lookup
+ *  @param failure  Callback block that receives the bad response and an NSError object on failure
+ */
+- (void) woeidForLocation:(NSString*)location
+                  success:(void (^)(NSString* woeid))success
+                  failure:(void (^)(id response, NSError *error))failure;
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+/// @name Converting units returned
+////////////////////////////////////////////////////////////////////////////////
+
+#pragma mark - CONVERSIONS
+
+/**
+ *  Converts speed units from MPH to KMPH or vice versa.
+ *  For your convenience, consider setting the default speed unit or using a method that has a speed unit parameter
+ *
+ *  @param toUnit   The speed unit to convert to
+ *  @param fromUnit The speed unit to convert from
+ *  @param speed    The value to convert
+ *
+ *  @return Converted speed value in the unit to convert to
+ */
+- (double) speedIn:(YWASpeedUnit)toUnit
+              from:(YWASpeedUnit)fromUnit
+             value:(double)speed;
+
+/**
+ *  Converts speed units from F to C or vice versa.
+ *  For your convenience, consider setting the default speed unit or using a method that has a speed unit parameter
+ *
+ *  @param toUnit      The temperature unit to convert to
+ *  @param fromUnit    The temperature unit to convert from
+ *  @param temperature The value to convert
+ *
+ *  @return Converted temperature value in the unit to convert to
+ */
+- (double) temperatureIn:(YWATemperatureUnit)toUnit
+                    from:(YWATemperatureUnit)fromUnit
+                   value:(double)temperature;
+
+/**
+ *  Converts speed units from IN to MN or vice versa.
+ *  For your convenience, consider setting the default speed unit or using a method that has a speed unit parameter
+ *
+ *  @param toUnit      The pressure unit to convert to
+ *  @param fromUnit    The pressure unit to convert from
+ *  @param temperature The value to convert
+ *
+ *  @return Converted pressure value in the unit to convert to
+ */
+- (double) pressureIn:(YWAPressureUnit)toUnit
+                 from:(YWAPressureUnit)fromUnit
+                value:(double)pressure;
+
+/**
+ *  Converts speed units from MI to KM or vice versa.
+ *  For your convenience, consider setting the default speed unit or using a method that has a speed unit parameter
+ *
+ *  @param toUnit      The distance unit to convert to
+ *  @param fromUnit    The distance unit to convert from
+ *  @param temperature The value to convert
+ *
+ *  @return Converted distance value in the unit to convert to
+ */
+- (double) distanceIn:(YWADistanceUnit)toUnit
+                 from:(YWADistanceUnit)fromUnit
+                value:(double)distance;
+
+
 
 @end

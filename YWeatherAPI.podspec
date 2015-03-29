@@ -1,9 +1,9 @@
 Pod::Spec.new do |s|
   s.name             = "YWeatherAPI"
   s.version          = "0.1.0"
-  s.summary          = "Powerful Yahoo Weather wrapper for iOS and Mac"
+  s.summary          = "Powerful Yahoo Weather API wrapper for iOS and Mac"
   s.description      = <<-DESC
-                       Powerful Yahoo Weather wrapper for iOS and Mac with support for
+                       Powerful Yahoo Weather API wrapper for iOS and Mac with support for
 
                        * Caching results with customizable expiry times
                        * Requesting forecasts by natural-language location strings, `CLLocation` coordinates, and Yahoo WOEIDs.

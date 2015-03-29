@@ -153,9 +153,11 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 @end
 
+
 #pragma mark - IMPLEMENTATION
 
 @implementation YWeatherAPI
+
 
 #pragma mark - INIT and SHARED SINGLETON
 
@@ -195,501 +197,6 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
     return self;
 }
 
-#pragma mark - HELPERS
-
-/**
- *  Returns a natural-language location string by reverse geocoding a coordinate
- *
- *  @param coordinate CLLocation object with valid latitude and longitude
- *  @param success    Callback block that receives the location on successful reverse geocoding
- *  @param failure    Callback block that receives nil and an NSError object on failure
- */
-- (void) locationStringForCoordinate:(CLLocation*)coordinate
-                             success:(void (^)(NSString* locationString))success
-                             failure:(void (^)(id response, NSError* error))failure
-{
-    CLGeocoder* geocoder = [[CLGeocoder alloc] init];
-    [geocoder reverseGeocodeLocation:coordinate
-                   completionHandler:^(NSArray *placemarks, NSError *error)
-     {
-         if (error) {
-             failure(nil, error);
-             return;
-         }
-         
-         CLPlacemark *placemark = [placemarks objectAtIndex:0];
-         NSString* locationString = [[[NSArray arrayWithObjects:
-                                       placemark.subLocality ? placemark.subLocality : @"",
-                                       placemark.subAdministrativeArea ? placemark.subAdministrativeArea : @"",
-                                       placemark.administrativeArea ? placemark.administrativeArea : @"",
-                                       placemark.country ? placemark.country : @"",
-                                       nil] componentsJoinedByString:@" "] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-         
-         if ([locationString length] == 0) {
-             failure(nil, error);
-             return;
-         }
-         
-         success(locationString);
-     }];
-}
-
-- (NSString*) makePathForWOEID:(NSString*)woeid
-                      yqlQuery:(NSString*)yqlQuery
-{
-    return [[NSArray arrayWithObjects: @"yql?q=", yqlQuery, @" where woeid = ", woeid, @"&format=json", nil] componentsJoinedByString:@""];
-}
-
-/**
- *  Returns the Yahoo WOEID for a natural-language location using Yahoo's GEO lookup
- *
- *  @param location Natural-language string representing a geographical location
- *  @param success  Callback block that receives the WOEID on a successful lookup
- *  @param failure  Callback block that receives the bad response and an NSError object on failure
- */
-- (void) woeidForLocation:(NSString*)location
-                  success:(void (^)(NSString* woeid))success
-                  failure:(void (^)(id response, NSError *error))failure
-{
-    NSString* path = [[NSArray arrayWithObjects: @"yql?q=", @"select woeid from geo.places(1) where text", nil] componentsJoinedByString:@""];
-    NSMutableString* encodedPath = [[path stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] mutableCopy];
-    [encodedPath appendString:@"%3D'"];
-    NSString* path2 = [[NSArray arrayWithObjects: location, @"'&format=json", nil] componentsJoinedByString:@""];
-    [encodedPath appendString:[path2 stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    
-    [[YWeatherAPIHTTPClient sharedClient] GET:encodedPath
-                                   parameters:nil
-                                      success:^(NSURLSessionDataTask *task, id result)
-     {
-         // Geo check for null
-         if ([[result objectForKey:@"query"] objectForKey:@"results"] == [NSNull null]) {
-             failure((NSHTTPURLResponse*) task.response, [NSError errorWithDomain:kYWAErrorDomain code:kYWAEmptyResponse userInfo:nil]);
-         } else {
-             success([[[[result objectForKey:@"query"] objectForKey:@"results"] objectForKey:@"place"] objectForKey:@"woeid"]);
-         }
-     }
-                                      failure:^(NSURLSessionDataTask *task, NSError *error)
-     {
-         failure((NSHTTPURLResponse*) task.response, error);
-     }];
-}
-
-- (NSDictionary*) locationInfoFromResult:(id)result
-{
-    NSMutableDictionary* location = [[result objectForKey:@"location"] mutableCopy];
-    [location setObject:[[result objectForKey:@"item"] objectForKey:@"lat"] forKey:kYWALatitude];
-    [location setObject:[[result objectForKey:@"item"] objectForKey:@"long"] forKey:kYWALongtitude];
-    return [NSDictionary dictionaryWithDictionary:location];
-}
-
-- (NSString*) timeZoneFromYWTimeString:(NSString*)timeString
-{
-    NSError* regexError = nil;
-    NSString* timeZone;
-    
-    NSRegularExpression* regex = [[NSRegularExpression alloc] initWithPattern:@"\\s(\\w+)$"
-                                                                      options:NSRegularExpressionCaseInsensitive
-                                                                        error:&regexError];
-    NSArray* tokens = [regex matchesInString:timeString options:0 range:NSMakeRange(0, [timeString length])];
-    
-    for (NSTextCheckingResult* match in tokens) {
-        timeZone = [timeString substringWithRange:[match rangeAtIndex:1]];
-    }
-    
-    return [timeZone uppercaseString];
-}
-
-- (NSDictionary*) packagedYWForecastDayInfoFor:(NSDictionary*)forecastDayInfo
-                               temperatureUnit:(YWATemperatureUnit)temperatureUnit
-{
-    // Temperature
-    NSString* highTemperatureInF = [forecastDayInfo objectForKey:@"high"];
-    NSString* lowTemperatureInF = [forecastDayInfo objectForKey:@"low"];
-    NSString* highTemperatureInC = [NSString stringWithFormat:@"%f", [self temperatureIn:C from:F value:[highTemperatureInF doubleValue]]];
-    NSString* lowTemperatureInC = [NSString stringWithFormat:@"%f", [self temperatureIn:C from:F value:[highTemperatureInF doubleValue]]];
-    NSString *indexHighTemperature, *indexLowTemperature;
-    
-    if (temperatureUnit == F) {
-        indexHighTemperature = highTemperatureInF;
-        indexLowTemperature = lowTemperatureInF;
-    } else {
-        indexHighTemperature = highTemperatureInC;
-        indexLowTemperature = lowTemperatureInC;
-    }
-    
-    // Date
-    NSDateComponents* dateComps = [self dateComponentsForShortDate:[forecastDayInfo objectForKey:@"date"]];
-    
-    // Short text
-    NSString* shortDescription = [forecastDayInfo objectForKey:@"text"];
-    
-    // Pack into dictionary
-    NSDictionary* d = [NSMutableDictionary dictionaryWithObjects:@[indexHighTemperature,
-                                                                   indexLowTemperature,
-                                                                   dateComps,
-                                                                   shortDescription]
-                                                         forKeys:@[kYWAHighTemperatureForDay,
-                                                                   kYWALowTemperatureForDay,
-                                                                   kYWADate,
-                                                                   kYWAShortDescription]];
-    return d;
-}
-
-#pragma mark - CACHE
-
-- (void) cacheResult:(id)result
-               WOEID:(NSString*)woeid
-{
-    dispatch_async(async_queue, ^{
-        NSMutableDictionary* cache = [[userDefaults dictionaryForKey:kYWACacheKey] mutableCopy];
-        if (!cache) { cache = [[NSMutableDictionary alloc] initWithCapacity:1]; }
-        NSDate* expiry = [[NSDate date] dateByAddingTimeInterval:_cacheExpiryInMinutes * 60];
-        
-        NSDictionary* newItem = [NSDictionary dictionaryWithObjects:@[expiry, result] forKeys:@[kYWACacheExpiryKey, kYWACacheResultKey]];
-        
-        id archivedNewItem = newItem ? [NSKeyedArchiver archivedDataWithRootObject:newItem] : nil;
-        [cache setObject:archivedNewItem forKey:woeid];
-        [userDefaults setObject:cache forKey:kYWACacheKey];
-        [userDefaults synchronize];
-    });
-    
-}
-
-/**
- *  Flushes the cache, removing all cached results
- *
- *  @see -removeCachedResultsForWOEID:
- */
-- (void) clearCache
-{
-    [userDefaults removeObjectForKey:kYWACacheKey];
-    [userDefaults synchronize];
-}
-
-- (BOOL) expired:(NSDate*) expiryDate
-{
-    return [[NSDate date] compare:expiryDate] == NSOrderedDescending;
-}
-
-/**
- *  Removes cached results for a WOEID
- *
- *  @param woeid A WOEID
- *  @see -clearCache
- */
-- (void) removeCachedResultsForWOEID:(NSString*) woeid
-{
-    NSMutableDictionary* cache = [[userDefaults dictionaryForKey:kYWACacheKey] mutableCopy];
-    if (cache) {
-        [cache removeObjectForKey:woeid];
-        [userDefaults setObject:cache forKey:kYWACacheKey];
-        [userDefaults synchronize];
-    }
-}
-
-/**
- *  Removes cached results for a location
- *
- *  @param location Natural-language string representing a geographical location
- *  @warning Not as accurate as removing by WOEID – if WOEID is not known, consider clearing the entire cache
- *  @see -clearCache
- */
-- (void) removeCachedResultsForLocation: (NSString*) location
-{
-    [self woeidForLocation:location success:^(NSString *woeid) {
-        [self removeCachedResultsForWOEID:woeid];
-    } failure:^(id response, NSError *error) {
-        NSLog(@"Cache removal did not succeed: %@", error);
-    }];
-}
-
-- (void) cachedResultForWOEID:(NSString*) woeid
-                      success:(void (^)(id result))success
-                      failure:(void (^)(NSError* error))failure
-{
-    if (_cacheEnabled) {
-        dispatch_async(async_queue, ^{
-            BOOL cacheCanBeUsed = NO;
-            
-            @try {
-                
-                NSDictionary* cache = [userDefaults dictionaryForKey:kYWACacheKey];
-                if (cache) {
-                    NSData* archivedItem = [cache objectForKey:woeid];
-                    if (archivedItem) {
-                        NSDictionary* item = archivedItem ? [NSKeyedUnarchiver unarchiveObjectWithData:archivedItem] : nil;
-                        if (item) {
-                            NSDate* expiryDate = [cache objectForKey:kYWACacheExpiryKey];
-                            if (![self expired:expiryDate]) {
-                                // cache item can be used
-                                cacheCanBeUsed = YES;
-                                id result = [item objectForKey: kYWACacheResultKey];
-                                dispatch_sync(dispatch_get_main_queue(), ^{
-                                    success(result);
-                                });
-                            }
-                        }
-                    }
-                }
-                if (!cacheCanBeUsed) {
-                    dispatch_sync(dispatch_get_main_queue(), ^{
-                        NSError* error = [NSError errorWithDomain:kYWAErrorDomain code:kYWACacheCannotBeUsed userInfo:nil];
-                        failure(error);
-                    });
-                }
-            }
-            
-            @catch(NSException* exception) {
-                dispatch_sync(dispatch_get_main_queue(), ^{
-                    NSError* error = [NSError errorWithDomain:kYWAErrorDomain code:kYWACacheCannotBeUsed userInfo:nil];
-                    failure(error);
-                });
-            }
-        });
-    }
-    
-    else { // Cache failed
-        NSError* error = [NSError errorWithDomain:kYWAErrorDomain code:kYWACacheNotEnabled userInfo:nil];
-        failure(error);
-    }
-}
-
-#pragma mark - CONVERSIONS
-
-/**
- *  Converts speed units from MPH to KMPH or vice versa.
- *  For your convenience, consider setting the default speed unit or using a method that has a speed unit parameter
- *
- *  @param toUnit   The speed unit to convert to
- *  @param fromUnit The speed unit to convert from
- *  @param speed    The value to convert
- *
- *  @return Converted speed value in the unit to convert to
- */
-- (double) speedIn:(YWASpeedUnit)toUnit
-              from:(YWASpeedUnit)fromUnit
-             value:(double)speed
-{
-    if (toUnit == fromUnit) {
-        return speed;
-    }
-    
-    double converted;
-    if (toUnit == KMPH && fromUnit == MPH) {
-        converted = 1.60934 * speed;
-    } else {
-        converted = 0.621371 * speed;
-    }
-    
-    return converted;
-}
-
-/**
- *  Converts speed units from F to C or vice versa.
- *  For your convenience, consider setting the default speed unit or using a method that has a speed unit parameter
- *
- *  @param toUnit      The temperature unit to convert to
- *  @param fromUnit    The temperature unit to convert from
- *  @param temperature The value to convert
- *
- *  @return Converted temperature value in the unit to convert to
- */
-- (double) temperatureIn:(YWATemperatureUnit)toUnit
-                    from:(YWATemperatureUnit)fromUnit
-                   value:(double)temperature
-{
-    if (toUnit == fromUnit) {
-        return temperature;
-    }
-    
-    double converted;
-    if (toUnit == C && fromUnit == F) {
-        converted = (temperature - 32) * 5/9;
-    } else {
-        converted = (temperature * 9/5) + 32;
-    }
-    
-    return converted;
-}
-
-/**
- *  Converts speed units from IN to MN or vice versa.
- *  For your convenience, consider setting the default speed unit or using a method that has a speed unit parameter
- *
- *  @param toUnit      The pressure unit to convert to
- *  @param fromUnit    The pressure unit to convert from
- *  @param temperature The value to convert
- *
- *  @return Converted pressure value in the unit to convert to
- */
-- (double) pressureIn:(YWAPressureUnit)toUnit
-                 from:(YWAPressureUnit)fromUnit
-                value:(double)pressure
-{
-    if (toUnit == fromUnit) {
-        return pressure;
-    }
-    
-    double converted;
-    if (toUnit == MB && fromUnit == IN) {
-        converted = pressure * 33.8638866667;
-    } else {
-        converted = pressure * 0.000295299830714;
-    }
-    
-    return converted;
-}
-
-/**
- *  Converts speed units from MI to KM or vice versa.
- *  For your convenience, consider setting the default speed unit or using a method that has a speed unit parameter
- *
- *  @param toUnit      The distance unit to convert to
- *  @param fromUnit    The distance unit to convert from
- *  @param temperature The value to convert
- *
- *  @return Converted distance value in the unit to convert to
- */
-- (double) distanceIn:(YWADistanceUnit)toUnit
-                 from:(YWADistanceUnit)fromUnit
-                value:(double)distance
-{
-    if (toUnit == fromUnit) {
-        return distance;
-    }
-    
-    double converted;
-    if (toUnit == KM && fromUnit == MI) {
-        converted = distance * 1.60934;
-    } else {
-        converted = distance * 0.621371;
-    }
-    
-    return converted;
-}
-
-- (NSString*) compassPointForDegree:(double) degree
-{
-    if (degree < 0.0) { degree = degree + 360.0; }
-    if (degree > 360.0) { degree = ((int) degree) % 360; }
-    NSAssert(degree >= 0.0 && degree <= 360.0, @"Degree out of range");
-    
-    double div = 11.25;
-    
-    if (degree >= 31 * div && degree < 1 * div) {
-        return kYWAWindDirectionNorth;
-    } else if (degree >= 1 * div && degree < 3 * div) {
-        return kYWAWindDirectionNorthNorthEast;
-    } else if (degree >= 3 * div && degree < 5 * div) {
-        return kYWAWindDirectionNorthEast;
-    } else if (degree >= 5 * div && degree < 7 * div) {
-        return kYWAWindDirectionEastNorthEast;
-    } else if (degree >= 7 * div && degree < 9 * div) {
-        return kYWAWindDirectionEast;
-    } else if (degree >= 9 * div && degree < 11 * div) {
-        return kYWAWindDirectionEastSouthEast;
-    } else if (degree >= 11 * div && degree < 13 * div) {
-        return kYWAWindDirectionSouthEast;
-    } else if (degree >= 13 * div && degree < 15 * div) {
-        return kYWAWindDirectionSouthSouthEast;
-    } else if (degree >= 15 * div && degree < 17 * div) {
-        return kYWAWindDirectionSouth;
-    } else if (degree >= 17 * div && degree < 19 * div) {
-        return kYWAWindDirectionSouthSouthWest;
-    } else if (degree >= 19 * div && degree < 21 * div) {
-        return kYWAWindDirectionSouthWest;
-    } else if (degree >= 21 * div && degree < 23 * div) {
-        return kYWAWindDirectionWestSouthWest;
-    } else if (degree >= 23 * div && degree < 25 * div) {
-        return kYWAWindDirectionWest;
-    } else if (degree >= 25 * div && degree < 27 * div) {
-        return kYWAWindDirectionWestNorthWest;
-    } else if (degree >= 27 * div && degree < 29 * div) {
-        return kYWAWindDirectionNorthWest;
-    } else {
-        return kYWAWindDirectionNorthNorthWest;
-    }
-}
-
-- (NSDateComponents*) dateComponentsForShortDate:(NSString*)shortDate
-{
-    NSDictionary* monthNameToNumber = [NSDictionary dictionaryWithObjects:@[@1,@2,@3,@4,@5,@6,@7,@8,@9,@10,@11,@12]
-                                                                  forKeys:@[@"jan",
-                                                                            @"feb",
-                                                                            @"mar",
-                                                                            @"apr",
-                                                                            @"may",
-                                                                            @"jun",
-                                                                            @"jul",
-                                                                            @"aug",
-                                                                            @"sep",
-                                                                            @"oct",
-                                                                            @"nov",
-                                                                            @"dec"]];
-    NSString *dayString, *monthString, *yearString;
-    NSError* regexError = nil;
-    
-    NSRegularExpression* regex = [[NSRegularExpression alloc] initWithPattern:@"(.+)\\s(.+)\\s(.+)"
-                                                                      options:NSRegularExpressionCaseInsensitive
-                                                                        error:&regexError];
-    NSArray* tokens = [regex matchesInString:shortDate options:0 range:NSMakeRange(0, [shortDate length])];
-    
-    for (NSTextCheckingResult* match in tokens) {
-        dayString = [shortDate substringWithRange:[match rangeAtIndex:1]];
-        monthString = [shortDate substringWithRange:[match rangeAtIndex:2]];
-        yearString = [shortDate substringWithRange:[match rangeAtIndex:3]];
-    }
-    
-    NSString* monthStringLowercase = [monthString lowercaseString];
-    
-    NSDateComponents* comps = [[NSDateComponents alloc] init];
-    comps.month = [[monthNameToNumber objectForKey:monthStringLowercase] integerValue];
-    comps.day = [dayString integerValue];
-    comps.year = [yearString integerValue];
-    
-    return comps;
-}
-
-- (NSDateComponents*) dateComponentsFor12HourTime:(NSString*)timeIn12Hour
-                                withShortTimeZone:(NSString*)timeZone
-{
-    NSString *hourString, *minuteString, *ampm;
-    NSInteger hour;
-    BOOL am;
-    NSError* regexError = nil; // unchecked currently
-    
-    NSRegularExpression* regex = [[NSRegularExpression alloc] initWithPattern:@"(.+)\\:(.+)\\s(.+)"
-                                                                      options:NSRegularExpressionCaseInsensitive
-                                                                        error:&regexError];
-    NSArray* timeTokens = [regex matchesInString:timeIn12Hour options:0 range:NSMakeRange(0, [timeIn12Hour length])];
-    
-    for (NSTextCheckingResult* match in timeTokens) {
-        hourString = [timeIn12Hour substringWithRange:[match rangeAtIndex:1]];
-        minuteString = [timeIn12Hour substringWithRange:[match rangeAtIndex:2]];
-        ampm = [timeIn12Hour substringWithRange:[match rangeAtIndex:3]];
-    }
-    
-    if ([ampm caseInsensitiveCompare:@"am"] == NSOrderedSame) {
-        am = YES;
-    } else {
-        am = NO;
-    }
-    
-    hour = [hourString integerValue];
-    
-    if (am && hour == 12) {
-        hour = 0;
-    } else if (!am && hour != 12) { // except 12 pm
-        hour += 12;
-    }
-    
-    NSDateComponents* comps = [[NSDateComponents alloc] init];
-    comps.hour = hour;
-    comps.minute = [minuteString integerValue];
-    comps.timeZone = [NSTimeZone timeZoneWithAbbreviation:timeZone];
-    
-    return comps;
-}
 
 #pragma mark - TODAY'S FORECAST by COORDINATE, LOCATION, WOEID
 
@@ -809,6 +316,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
      }
                       failure:failure];
 }
+
 
 #pragma mark - FIVE DAY FORECAST by COORDINATE, LOCATION, WOEID
 
@@ -931,6 +439,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
      }
                       failure:failure];
 }
+
 
 #pragma mark - TEMPERATURE by COORDINATE, LOCATION, WOEID
 
@@ -1179,6 +688,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
      ];
 }
 
+
 #pragma mark - PRESSURE TREND by COORDINATE, LOCATION, WOEID
 
 /**
@@ -1242,6 +752,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
                       failure:failure
      ];
 }
+
 
 #pragma mark - VISIBILITY by COORDINATE, LOCATION, WOEID (optional: YWADistanceUnit)
 
@@ -1556,6 +1067,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
                       failure:failure];
 }
 
+
 #pragma mark - SUNRISE by COORDINATE, LOCATION, WOEID
 
 /**
@@ -1818,6 +1330,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
      ];
 }
 
+
 #pragma mark - WIND DIRECTION by COORDINATE, LOCATION, WOEID
 
 /**
@@ -2012,6 +1525,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
      ];
 }
 
+
 #pragma mark - GRAND FUNCTION THAT MAKES EXTERNAL REQUESTS
 
 - (void) queryResultForWOEID:(NSString*)woeid
@@ -2051,5 +1565,505 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
     }];
     
 }
+
+
+#pragma mark - CACHE
+
+- (void) cacheResult:(id)result
+               WOEID:(NSString*)woeid
+{
+    dispatch_async(async_queue, ^{
+        NSMutableDictionary* cache = [[userDefaults dictionaryForKey:kYWACacheKey] mutableCopy];
+        if (!cache) { cache = [[NSMutableDictionary alloc] initWithCapacity:1]; }
+        NSDate* expiry = [[NSDate date] dateByAddingTimeInterval:_cacheExpiryInMinutes * 60];
+        
+        NSDictionary* newItem = [NSDictionary dictionaryWithObjects:@[expiry, result] forKeys:@[kYWACacheExpiryKey, kYWACacheResultKey]];
+        
+        id archivedNewItem = newItem ? [NSKeyedArchiver archivedDataWithRootObject:newItem] : nil;
+        [cache setObject:archivedNewItem forKey:woeid];
+        [userDefaults setObject:cache forKey:kYWACacheKey];
+        [userDefaults synchronize];
+    });
+    
+}
+
+/**
+ *  Flushes the cache, removing all cached results
+ *
+ *  @see -removeCachedResultsForWOEID:
+ */
+- (void) clearCache
+{
+    [userDefaults removeObjectForKey:kYWACacheKey];
+    [userDefaults synchronize];
+}
+
+- (BOOL) expired:(NSDate*) expiryDate
+{
+    return [[NSDate date] compare:expiryDate] == NSOrderedDescending;
+}
+
+/**
+ *  Removes cached results for a WOEID
+ *
+ *  @param woeid A WOEID
+ *  @see -clearCache
+ */
+- (void) removeCachedResultsForWOEID:(NSString*) woeid
+{
+    NSMutableDictionary* cache = [[userDefaults dictionaryForKey:kYWACacheKey] mutableCopy];
+    if (cache) {
+        [cache removeObjectForKey:woeid];
+        [userDefaults setObject:cache forKey:kYWACacheKey];
+        [userDefaults synchronize];
+    }
+}
+
+/**
+ *  Removes cached results for a location
+ *
+ *  @param location Natural-language string representing a geographical location
+ *  @warning Not as accurate as removing by WOEID – if WOEID is not known, consider clearing the entire cache
+ *  @see -clearCache
+ */
+- (void) removeCachedResultsForLocation: (NSString*) location
+{
+    [self woeidForLocation:location success:^(NSString *woeid) {
+        [self removeCachedResultsForWOEID:woeid];
+    } failure:^(id response, NSError *error) {
+        NSLog(@"Cache removal did not succeed: %@", error);
+    }];
+}
+
+- (void) cachedResultForWOEID:(NSString*) woeid
+                      success:(void (^)(id result))success
+                      failure:(void (^)(NSError* error))failure
+{
+    if (_cacheEnabled) {
+        dispatch_async(async_queue, ^{
+            BOOL cacheCanBeUsed = NO;
+            
+            @try {
+                
+                NSDictionary* cache = [userDefaults dictionaryForKey:kYWACacheKey];
+                if (cache) {
+                    NSData* archivedItem = [cache objectForKey:woeid];
+                    if (archivedItem) {
+                        NSDictionary* item = archivedItem ? [NSKeyedUnarchiver unarchiveObjectWithData:archivedItem] : nil;
+                        if (item) {
+                            NSDate* expiryDate = [cache objectForKey:kYWACacheExpiryKey];
+                            if (![self expired:expiryDate]) {
+                                // cache item can be used
+                                cacheCanBeUsed = YES;
+                                id result = [item objectForKey: kYWACacheResultKey];
+                                dispatch_sync(dispatch_get_main_queue(), ^{
+                                    success(result);
+                                });
+                            }
+                        }
+                    }
+                }
+                if (!cacheCanBeUsed) {
+                    dispatch_sync(dispatch_get_main_queue(), ^{
+                        NSError* error = [NSError errorWithDomain:kYWAErrorDomain code:kYWACacheCannotBeUsed userInfo:nil];
+                        failure(error);
+                    });
+                }
+            }
+            
+            @catch(NSException* exception) {
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    NSError* error = [NSError errorWithDomain:kYWAErrorDomain code:kYWACacheCannotBeUsed userInfo:nil];
+                    failure(error);
+                });
+            }
+        });
+    }
+    
+    else { // Cache failed
+        NSError* error = [NSError errorWithDomain:kYWAErrorDomain code:kYWACacheNotEnabled userInfo:nil];
+        failure(error);
+    }
+}
+
+
+#pragma mark - HELPERS
+
+/**
+ *  Returns a natural-language location string by reverse geocoding a coordinate
+ *
+ *  @param coordinate CLLocation object with valid latitude and longitude
+ *  @param success    Callback block that receives the location on successful reverse geocoding
+ *  @param failure    Callback block that receives nil and an NSError object on failure
+ */
+- (void) locationStringForCoordinate:(CLLocation*)coordinate
+                             success:(void (^)(NSString* locationString))success
+                             failure:(void (^)(id response, NSError* error))failure
+{
+    CLGeocoder* geocoder = [[CLGeocoder alloc] init];
+    [geocoder reverseGeocodeLocation:coordinate
+                   completionHandler:^(NSArray *placemarks, NSError *error)
+     {
+         if (error) {
+             failure(nil, error);
+             return;
+         }
+         
+         CLPlacemark *placemark = [placemarks objectAtIndex:0];
+         NSString* locationString = [[[NSArray arrayWithObjects:
+                                       placemark.subLocality ? placemark.subLocality : @"",
+                                       placemark.subAdministrativeArea ? placemark.subAdministrativeArea : @"",
+                                       placemark.administrativeArea ? placemark.administrativeArea : @"",
+                                       placemark.country ? placemark.country : @"",
+                                       nil] componentsJoinedByString:@" "] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+         
+         if ([locationString length] == 0) {
+             failure(nil, error);
+             return;
+         }
+         
+         success(locationString);
+     }];
+}
+
+- (NSString*) makePathForWOEID:(NSString*)woeid
+                      yqlQuery:(NSString*)yqlQuery
+{
+    return [[NSArray arrayWithObjects: @"yql?q=", yqlQuery, @" where woeid = ", woeid, @"&format=json", nil] componentsJoinedByString:@""];
+}
+
+/**
+ *  Returns the Yahoo WOEID for a natural-language location using Yahoo's GEO lookup
+ *
+ *  @param location Natural-language string representing a geographical location
+ *  @param success  Callback block that receives the WOEID on a successful lookup
+ *  @param failure  Callback block that receives the bad response and an NSError object on failure
+ */
+- (void) woeidForLocation:(NSString*)location
+                  success:(void (^)(NSString* woeid))success
+                  failure:(void (^)(id response, NSError *error))failure
+{
+    NSString* path = [[NSArray arrayWithObjects: @"yql?q=", @"select woeid from geo.places(1) where text", nil] componentsJoinedByString:@""];
+    NSMutableString* encodedPath = [[path stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] mutableCopy];
+    [encodedPath appendString:@"%3D'"];
+    NSString* path2 = [[NSArray arrayWithObjects: location, @"'&format=json", nil] componentsJoinedByString:@""];
+    [encodedPath appendString:[path2 stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    
+    [[YWeatherAPIHTTPClient sharedClient] GET:encodedPath
+                                   parameters:nil
+                                      success:^(NSURLSessionDataTask *task, id result)
+     {
+         // Geo check for null
+         if ([[result objectForKey:@"query"] objectForKey:@"results"] == [NSNull null]) {
+             failure((NSHTTPURLResponse*) task.response, [NSError errorWithDomain:kYWAErrorDomain code:kYWAEmptyResponse userInfo:nil]);
+         } else {
+             success([[[[result objectForKey:@"query"] objectForKey:@"results"] objectForKey:@"place"] objectForKey:@"woeid"]);
+         }
+     }
+                                      failure:^(NSURLSessionDataTask *task, NSError *error)
+     {
+         failure((NSHTTPURLResponse*) task.response, error);
+     }];
+}
+
+- (NSDictionary*) locationInfoFromResult:(id)result
+{
+    NSMutableDictionary* location = [[result objectForKey:@"location"] mutableCopy];
+    [location setObject:[[result objectForKey:@"item"] objectForKey:@"lat"] forKey:kYWALatitude];
+    [location setObject:[[result objectForKey:@"item"] objectForKey:@"long"] forKey:kYWALongtitude];
+    return [NSDictionary dictionaryWithDictionary:location];
+}
+
+- (NSString*) timeZoneFromYWTimeString:(NSString*)timeString
+{
+    NSError* regexError = nil;
+    NSString* timeZone;
+    
+    NSRegularExpression* regex = [[NSRegularExpression alloc] initWithPattern:@"\\s(\\w+)$"
+                                                                      options:NSRegularExpressionCaseInsensitive
+                                                                        error:&regexError];
+    NSArray* tokens = [regex matchesInString:timeString options:0 range:NSMakeRange(0, [timeString length])];
+    
+    for (NSTextCheckingResult* match in tokens) {
+        timeZone = [timeString substringWithRange:[match rangeAtIndex:1]];
+    }
+    
+    return [timeZone uppercaseString];
+}
+
+- (NSDictionary*) packagedYWForecastDayInfoFor:(NSDictionary*)forecastDayInfo
+                               temperatureUnit:(YWATemperatureUnit)temperatureUnit
+{
+    // Temperature
+    NSString* highTemperatureInF = [forecastDayInfo objectForKey:@"high"];
+    NSString* lowTemperatureInF = [forecastDayInfo objectForKey:@"low"];
+    NSString* highTemperatureInC = [NSString stringWithFormat:@"%f", [self temperatureIn:C from:F value:[highTemperatureInF doubleValue]]];
+    NSString* lowTemperatureInC = [NSString stringWithFormat:@"%f", [self temperatureIn:C from:F value:[highTemperatureInF doubleValue]]];
+    NSString *indexHighTemperature, *indexLowTemperature;
+    
+    if (temperatureUnit == F) {
+        indexHighTemperature = highTemperatureInF;
+        indexLowTemperature = lowTemperatureInF;
+    } else {
+        indexHighTemperature = highTemperatureInC;
+        indexLowTemperature = lowTemperatureInC;
+    }
+    
+    // Date
+    NSDateComponents* dateComps = [self dateComponentsForShortDate:[forecastDayInfo objectForKey:@"date"]];
+    
+    // Short text
+    NSString* shortDescription = [forecastDayInfo objectForKey:@"text"];
+    
+    // Pack into dictionary
+    NSDictionary* d = [NSMutableDictionary dictionaryWithObjects:@[indexHighTemperature,
+                                                                   indexLowTemperature,
+                                                                   dateComps,
+                                                                   shortDescription]
+                                                         forKeys:@[kYWAHighTemperatureForDay,
+                                                                   kYWALowTemperatureForDay,
+                                                                   kYWADate,
+                                                                   kYWAShortDescription]];
+    return d;
+}
+
+
+#pragma mark - UNIT CONVERSIONS
+
+/**
+ *  Converts speed units from MPH to KMPH or vice versa.
+ *  For your convenience, consider setting the default speed unit or using a method that has a speed unit parameter
+ *
+ *  @param toUnit   The speed unit to convert to
+ *  @param fromUnit The speed unit to convert from
+ *  @param speed    The value to convert
+ *
+ *  @return Converted speed value in the unit to convert to
+ */
+- (double) speedIn:(YWASpeedUnit)toUnit
+              from:(YWASpeedUnit)fromUnit
+             value:(double)speed
+{
+    if (toUnit == fromUnit) {
+        return speed;
+    }
+    
+    double converted;
+    if (toUnit == KMPH && fromUnit == MPH) {
+        converted = 1.60934 * speed;
+    } else {
+        converted = 0.621371 * speed;
+    }
+    
+    return converted;
+}
+
+/**
+ *  Converts speed units from F to C or vice versa.
+ *  For your convenience, consider setting the default speed unit or using a method that has a speed unit parameter
+ *
+ *  @param toUnit      The temperature unit to convert to
+ *  @param fromUnit    The temperature unit to convert from
+ *  @param temperature The value to convert
+ *
+ *  @return Converted temperature value in the unit to convert to
+ */
+- (double) temperatureIn:(YWATemperatureUnit)toUnit
+                    from:(YWATemperatureUnit)fromUnit
+                   value:(double)temperature
+{
+    if (toUnit == fromUnit) {
+        return temperature;
+    }
+    
+    double converted;
+    if (toUnit == C && fromUnit == F) {
+        converted = (temperature - 32) * 5/9;
+    } else {
+        converted = (temperature * 9/5) + 32;
+    }
+    
+    return converted;
+}
+
+/**
+ *  Converts speed units from IN to MN or vice versa.
+ *  For your convenience, consider setting the default speed unit or using a method that has a speed unit parameter
+ *
+ *  @param toUnit      The pressure unit to convert to
+ *  @param fromUnit    The pressure unit to convert from
+ *  @param temperature The value to convert
+ *
+ *  @return Converted pressure value in the unit to convert to
+ */
+- (double) pressureIn:(YWAPressureUnit)toUnit
+                 from:(YWAPressureUnit)fromUnit
+                value:(double)pressure
+{
+    if (toUnit == fromUnit) {
+        return pressure;
+    }
+    
+    double converted;
+    if (toUnit == MB && fromUnit == IN) {
+        converted = pressure * 33.8638866667;
+    } else {
+        converted = pressure * 0.000295299830714;
+    }
+    
+    return converted;
+}
+
+/**
+ *  Converts speed units from MI to KM or vice versa.
+ *  For your convenience, consider setting the default speed unit or using a method that has a speed unit parameter
+ *
+ *  @param toUnit      The distance unit to convert to
+ *  @param fromUnit    The distance unit to convert from
+ *  @param temperature The value to convert
+ *
+ *  @return Converted distance value in the unit to convert to
+ */
+- (double) distanceIn:(YWADistanceUnit)toUnit
+                 from:(YWADistanceUnit)fromUnit
+                value:(double)distance
+{
+    if (toUnit == fromUnit) {
+        return distance;
+    }
+    
+    double converted;
+    if (toUnit == KM && fromUnit == MI) {
+        converted = distance * 1.60934;
+    } else {
+        converted = distance * 0.621371;
+    }
+    
+    return converted;
+}
+
+- (NSString*) compassPointForDegree:(double) degree
+{
+    if (degree < 0.0) { degree = degree + 360.0; }
+    if (degree > 360.0) { degree = ((int) degree) % 360; }
+    NSAssert(degree >= 0.0 && degree <= 360.0, @"Degree out of range");
+    
+    double div = 11.25;
+    
+    if (degree >= 31 * div && degree < 1 * div) {
+        return kYWAWindDirectionNorth;
+    } else if (degree >= 1 * div && degree < 3 * div) {
+        return kYWAWindDirectionNorthNorthEast;
+    } else if (degree >= 3 * div && degree < 5 * div) {
+        return kYWAWindDirectionNorthEast;
+    } else if (degree >= 5 * div && degree < 7 * div) {
+        return kYWAWindDirectionEastNorthEast;
+    } else if (degree >= 7 * div && degree < 9 * div) {
+        return kYWAWindDirectionEast;
+    } else if (degree >= 9 * div && degree < 11 * div) {
+        return kYWAWindDirectionEastSouthEast;
+    } else if (degree >= 11 * div && degree < 13 * div) {
+        return kYWAWindDirectionSouthEast;
+    } else if (degree >= 13 * div && degree < 15 * div) {
+        return kYWAWindDirectionSouthSouthEast;
+    } else if (degree >= 15 * div && degree < 17 * div) {
+        return kYWAWindDirectionSouth;
+    } else if (degree >= 17 * div && degree < 19 * div) {
+        return kYWAWindDirectionSouthSouthWest;
+    } else if (degree >= 19 * div && degree < 21 * div) {
+        return kYWAWindDirectionSouthWest;
+    } else if (degree >= 21 * div && degree < 23 * div) {
+        return kYWAWindDirectionWestSouthWest;
+    } else if (degree >= 23 * div && degree < 25 * div) {
+        return kYWAWindDirectionWest;
+    } else if (degree >= 25 * div && degree < 27 * div) {
+        return kYWAWindDirectionWestNorthWest;
+    } else if (degree >= 27 * div && degree < 29 * div) {
+        return kYWAWindDirectionNorthWest;
+    } else {
+        return kYWAWindDirectionNorthNorthWest;
+    }
+}
+
+- (NSDateComponents*) dateComponentsForShortDate:(NSString*)shortDate
+{
+    NSDictionary* monthNameToNumber = [NSDictionary dictionaryWithObjects:@[@1,@2,@3,@4,@5,@6,@7,@8,@9,@10,@11,@12]
+                                                                  forKeys:@[@"jan",
+                                                                            @"feb",
+                                                                            @"mar",
+                                                                            @"apr",
+                                                                            @"may",
+                                                                            @"jun",
+                                                                            @"jul",
+                                                                            @"aug",
+                                                                            @"sep",
+                                                                            @"oct",
+                                                                            @"nov",
+                                                                            @"dec"]];
+    NSString *dayString, *monthString, *yearString;
+    NSError* regexError = nil;
+    
+    NSRegularExpression* regex = [[NSRegularExpression alloc] initWithPattern:@"(.+)\\s(.+)\\s(.+)"
+                                                                      options:NSRegularExpressionCaseInsensitive
+                                                                        error:&regexError];
+    NSArray* tokens = [regex matchesInString:shortDate options:0 range:NSMakeRange(0, [shortDate length])];
+    
+    for (NSTextCheckingResult* match in tokens) {
+        dayString = [shortDate substringWithRange:[match rangeAtIndex:1]];
+        monthString = [shortDate substringWithRange:[match rangeAtIndex:2]];
+        yearString = [shortDate substringWithRange:[match rangeAtIndex:3]];
+    }
+    
+    NSString* monthStringLowercase = [monthString lowercaseString];
+    
+    NSDateComponents* comps = [[NSDateComponents alloc] init];
+    comps.month = [[monthNameToNumber objectForKey:monthStringLowercase] integerValue];
+    comps.day = [dayString integerValue];
+    comps.year = [yearString integerValue];
+    
+    return comps;
+}
+
+- (NSDateComponents*) dateComponentsFor12HourTime:(NSString*)timeIn12Hour
+                                withShortTimeZone:(NSString*)timeZone
+{
+    NSString *hourString, *minuteString, *ampm;
+    NSInteger hour;
+    BOOL am;
+    NSError* regexError = nil; // unchecked currently
+    
+    NSRegularExpression* regex = [[NSRegularExpression alloc] initWithPattern:@"(.+)\\:(.+)\\s(.+)"
+                                                                      options:NSRegularExpressionCaseInsensitive
+                                                                        error:&regexError];
+    NSArray* timeTokens = [regex matchesInString:timeIn12Hour options:0 range:NSMakeRange(0, [timeIn12Hour length])];
+    
+    for (NSTextCheckingResult* match in timeTokens) {
+        hourString = [timeIn12Hour substringWithRange:[match rangeAtIndex:1]];
+        minuteString = [timeIn12Hour substringWithRange:[match rangeAtIndex:2]];
+        ampm = [timeIn12Hour substringWithRange:[match rangeAtIndex:3]];
+    }
+    
+    if ([ampm caseInsensitiveCompare:@"am"] == NSOrderedSame) {
+        am = YES;
+    } else {
+        am = NO;
+    }
+    
+    hour = [hourString integerValue];
+    
+    if (am && hour == 12) {
+        hour = 0;
+    } else if (!am && hour != 12) { // except 12 pm
+        hour += 12;
+    }
+    
+    NSDateComponents* comps = [[NSDateComponents alloc] init];
+    comps.hour = hour;
+    comps.minute = [minuteString integerValue];
+    comps.timeZone = [NSTimeZone timeZoneWithAbbreviation:timeZone];
+    
+    return comps;
+}
+
 
 @end
