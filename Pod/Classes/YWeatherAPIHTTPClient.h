@@ -1,8 +1,8 @@
 //
-//  YWeatherAPITests.m
-//  YWeatherAPITests
+//  YWeatherAPIClient.h
+//  Pods
 //
-//  Created by Nishanth Shanmugham on 3/29/2015.
+//  Created by Nishanth Shanmugham on 3/24/2015.
 //  The MIT License (MIT)
 //
 //  Copyright (c) 2015 Nishanth Shanmugham <nishanth.gerrard@gmail.com>
@@ -26,10 +26,12 @@
 //  THE SOFTWARE.
 //
 
+#import <Foundation/Foundation.h>
+#import <AFNetworking/AFHTTPSessionManager.h>
 
-SpecBegin(YWeatherAPI)
+@interface YWeatherAPIHTTPClient : AFHTTPSessionManager
 
++ (instancetype) sharedClient;
++ (NSString*) baseUrl;
 
-
-SpecEnd
-
+@end

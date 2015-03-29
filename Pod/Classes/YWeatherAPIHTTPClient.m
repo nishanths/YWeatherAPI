@@ -1,8 +1,8 @@
 //
-//  YWeatherAPITests.m
-//  YWeatherAPITests
+//  YWeatherAPIClient.m
+//  Pods
 //
-//  Created by Nishanth Shanmugham on 3/29/2015.
+//  Created by Nishanth Shanmugham on 3/24/2015.
 //  The MIT License (MIT)
 //
 //  Copyright (c) 2015 Nishanth Shanmugham <nishanth.gerrard@gmail.com>
@@ -27,9 +27,27 @@
 //
 
 
-SpecBegin(YWeatherAPI)
+#import "YWeatherAPIHTTPClient.h"
 
+static NSString* const YWeatherAPIHTTPBaseURL = @"https://query.yahooapis.com/v1/public/";
 
+@implementation YWeatherAPIHTTPClient
 
-SpecEnd
++ (instancetype) sharedClient
+{
+    static YWeatherAPIHTTPClient* sharedClient;
+    static dispatch_once_t once;
+    
+    dispatch_once(&once, ^{
+        sharedClient = [[YWeatherAPIHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:YWeatherAPIHTTPBaseURL]];
+    });
+    
+    return sharedClient;
+}
 
++ (NSString*) baseUrl
+{
+    return YWeatherAPIHTTPBaseURL;
+}
+
+@end

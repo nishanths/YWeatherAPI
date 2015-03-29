@@ -58,6 +58,8 @@
 		80895B1772D618D8A3EFD9DC /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB3DC15DB8E305995327703B /* XCTest.framework */; };
 		81718E69A7059B2890765EB6 /* EXPMatchers+raiseWithReason.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C08E59C61CA630922598FF9 /* EXPMatchers+raiseWithReason.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		857A7A82567C2C6ABAB9F597 /* EXPMatcherHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = DE81733BDA0DE46977CF61CE /* EXPMatcherHelpers.h */; };
+		85E13DAA1AC874330073AAE6 /* YWeatherAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 85E13DA91AC874330073AAE6 /* YWeatherAPI.m */; };
+		85E13DAD1AC875D20073AAE6 /* YWeatherAPIHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 85E13DAC1AC875D20073AAE6 /* YWeatherAPIHTTPClient.m */; };
 		8605B01617A4E32589D8FC36 /* NSValue+Expecta.m in Sources */ = {isa = PBXBuildFile; fileRef = C5F1369D9275B57F3FD2D836 /* NSValue+Expecta.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		8684E9E5613D23B91E8756F6 /* EXPMatchers+beGreaterThanOrEqualTo.m in Sources */ = {isa = PBXBuildFile; fileRef = 106EFEBF412BD55F2C176B16 /* EXPMatchers+beGreaterThanOrEqualTo.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		8901F53AC0E1692566FA90A0 /* EXPMatchers+beginWith.m in Sources */ = {isa = PBXBuildFile; fileRef = 068B6ACA53C8914483DEA0EC /* EXPMatchers+beginWith.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -199,6 +201,10 @@
 		7EF4354901AFF71BCC4C12ED /* Pods-YWeatherAPI-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-YWeatherAPI-acknowledgements.plist"; sourceTree = "<group>"; };
 		83A08090328E6FB39883FD59 /* EXPMatcher.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = EXPMatcher.h; path = Expecta/EXPMatcher.h; sourceTree = "<group>"; };
 		8473BF096D087A2B221C2FAE /* SPTCompiledExample.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SPTCompiledExample.m; path = Specta/Specta/SPTCompiledExample.m; sourceTree = "<group>"; };
+		85E13DA81AC874330073AAE6 /* YWeatherAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YWeatherAPI.h; path = Pod/Classes/YWeatherAPI.h; sourceTree = "<group>"; };
+		85E13DA91AC874330073AAE6 /* YWeatherAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YWeatherAPI.m; path = Pod/Classes/YWeatherAPI.m; sourceTree = "<group>"; };
+		85E13DAB1AC875D20073AAE6 /* YWeatherAPIHTTPClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YWeatherAPIHTTPClient.h; path = Pod/Classes/YWeatherAPIHTTPClient.h; sourceTree = "<group>"; };
+		85E13DAC1AC875D20073AAE6 /* YWeatherAPIHTTPClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = YWeatherAPIHTTPClient.m; path = Pod/Classes/YWeatherAPIHTTPClient.m; sourceTree = "<group>"; };
 		882FB9BCE3F1AF647AEFE66A /* libPods-YWeatherAPI-Expecta.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-YWeatherAPI-Expecta.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		89700FFAB1189606CE98941C /* SpectaTypes.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SpectaTypes.h; path = Specta/Specta/SpectaTypes.h; sourceTree = "<group>"; };
 		8C08E59C61CA630922598FF9 /* EXPMatchers+raiseWithReason.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "EXPMatchers+raiseWithReason.m"; path = "Expecta/Matchers/EXPMatchers+raiseWithReason.m"; sourceTree = "<group>"; };
@@ -372,6 +378,10 @@
 		57A09ADB561824F3F7161465 /* YWeatherAPI */ = {
 			isa = PBXGroup;
 			children = (
+				85E13DA81AC874330073AAE6 /* YWeatherAPI.h */,
+				85E13DA91AC874330073AAE6 /* YWeatherAPI.m */,
+				85E13DAB1AC875D20073AAE6 /* YWeatherAPIHTTPClient.h */,
+				85E13DAC1AC875D20073AAE6 /* YWeatherAPIHTTPClient.m */,
 			);
 			name = YWeatherAPI;
 			path = ../..;
@@ -768,6 +778,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				1579FE00A05DD89DCCA81EDA /* Pods-YWeatherAPI-dummy.m in Sources */,
+				85E13DAD1AC875D20073AAE6 /* YWeatherAPIHTTPClient.m in Sources */,
+				85E13DAA1AC874330073AAE6 /* YWeatherAPI.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
