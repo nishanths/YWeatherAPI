@@ -30,6 +30,7 @@
 		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		77A69A02F3C40B9F93DC279B /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		85E13DAE1AC894970073AAE6 /* YWeatherAPI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YWeatherAPI.h; sourceTree = "<group>"; };
 		8B2DF9C9A2EF0458CB3067D2 /* libPods-YWeatherAPI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-YWeatherAPI.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DE080B0E6FD5DB9D1BDB88C6 /* Pods-YWeatherAPI.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YWeatherAPI.release.xcconfig"; path = "Pods/Target Support Files/Pods-YWeatherAPI/Pods-YWeatherAPI.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -84,6 +85,7 @@
 		6003F5B5195388D20070C39A /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				85E13DAE1AC894970073AAE6 /* YWeatherAPI.h */,
 				6003F5BB195388D20070C39A /* Tests.m */,
 				6003F5B6195388D20070C39A /* Supporting Files */,
 			);

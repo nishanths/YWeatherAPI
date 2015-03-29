@@ -113,7 +113,7 @@ NSString* const kYWATemperatureInC = @"temperatureInC";
 // Forecast conditions daily
 NSString* const kYWAHighTemperatureForDay = @"highTemperatureForDay";
 NSString* const kYWALowTemperatureForDay = @"lowTemperatureForDay";
-NSString* const kYWADate = @"kYWADate"; // NSDateCompoent with month, day, year
+NSString* const kYWADateComponents = @"kYWADateComponents"; // NSDateCompoent with month, day, year
 // Five day forecasts array key
 NSString* const kYWAFiveDayForecasts = @"fiveDayForecasts"; // NSArray containing NSDictionary
 
@@ -1822,7 +1822,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
                                                                    shortDescription]
                                                          forKeys:@[kYWAHighTemperatureForDay,
                                                                    kYWALowTemperatureForDay,
-                                                                   kYWADate,
+                                                                   kYWADateComponents,
                                                                    kYWAShortDescription]];
     return d;
 }

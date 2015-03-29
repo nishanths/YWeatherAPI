@@ -26,9 +26,13 @@
 //  THE SOFTWARE.
 //
 
+@import Foundation;
 #import <Specta/Specta.h>
 #import <Expecta/Expecta.h>
-#import <YWeatherAPI/YWeatherAPI.h>
+#import "YWeatherAPI.h"
+//#import <YWeatherAPI/YWeatherAPI.h>
+
+@import CoreLocation;
 
 SpecBegin(YWeatherAPI)
 
@@ -41,6 +45,51 @@ describe(@"YWeatherAPI", ^{
         expect([YWeatherAPI sharedManager].defaultDistanceUnit).to.equal(MI);
         expect([YWeatherAPI sharedManager].cacheExpiryInMinutes).to.equal(15);
     });
+    
+    it(@"returns non nil values for humidity", ^{
+        NSString* location = @"Austin, TX";
+        
+        [[YWeatherAPI sharedManager] humidityForLocation:location success:^(NSDictionary *result) {
+            NSString* h = [result objectForKey:kYWAHumidity];
+            expect(h).toNot.beNil();
+        } failure:^(id response, NSError *error) {
+            expect(YES).to.beFalsy();
+        }];
+    });
+    
+    it(@"returns values in the right range", ^{
+        CLLocation* austinTexas = [[CLLocation alloc] initWithLatitude:30.25 longitude:97.75];
+        
+        [[YWeatherAPI sharedManager] temperatureForCoordinate:(CLLocation*)austinTexas
+                                              temperatureUnit:(YWATemperatureUnit)C
+                                                      success:^(NSDictionary* result) {
+                                                          NSString* temperatureAskedFor = [result objectForKey:kYWAIndex];
+                                                          expect([temperatureAskedFor length]).toNot.beGreaterThan(0);
+                                                          expect([temperatureAskedFor doubleValue]).to.beInTheRangeOf(@-30, @50);
+                                                      }
+                                                      failure:^(id response, NSError* error) {
+                                                          expect(YES).to.beFalsy();
+                                                      }];
+    });
+    
+    it(@"returns the correct today date for forecasts", ^{
+        NSDate* today = [NSDate date];
+        NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+        NSDateComponents *dateComponents = [gregorian components:(NSDayCalendarUnit) fromDate:today];
+        NSInteger day = [dateComponents day];
+        
+        [[YWeatherAPI sharedManager] fiveDayForecastForLocation:@"Redwood City CA" success:^(NSDictionary *result) {
+            NSDateComponents* comps = [[[result objectForKey:kYWAFiveDayForecasts] objectAtIndex:0] objectForKey:kYWADateComponents];
+            expect([comps day]).to.equal(day);
+        } failure:^(id response, NSError *error) {
+            expect(YES).to.beFalsy();
+        }];
+    });
+    
+    it(@"clears the cache without throwing a tantrum", ^{
+        [[YWeatherAPI sharedManager] clearCache];
+    });
+    
 });
 
 SpecEnd
