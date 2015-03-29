@@ -10,29 +10,26 @@
 Pod::Spec.new do |s|
   s.name             = "YWeatherAPI"
   s.version          = "0.1.0"
-  s.summary          = "A short description of YWeatherAPI."
+  s.summary          = "Powerful Yahoo Weather wrapper for iOS and Mac"
   s.description      = <<-DESC
-                       An optional longer description of YWeatherAPI
+                       Powerful Yahoo Weather wrapper for iOS and Mac with support for
 
-                       * Markdown format.
-                       * Don't worry about the indent, we strip it!
+                       * Caching
+                       * Forecast lookups by natural-language locations, coordinates, and Yahoo WOEIDs.
+                       * Setting default temperature, pressure, speed, and distance units
                        DESC
-  s.homepage         = "https://github.com/<GITHUB_USERNAME>/YWeatherAPI"
-  # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
+  s.homepage         = "https://github.com/nishanths/YWeatherAPI"
   s.license          = 'MIT'
   s.author           = { "Nishanth Shanmugham" => "nishanth.gerrard@gmail.com" }
-  s.source           = { :git => "https://github.com/<GITHUB_USERNAME>/YWeatherAPI.git", :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+  s.source           = { :git => "https://github.com/nishanths/YWeatherAPI.git", :tag => s.version.to_s }
+  s.social_media_url = 'https://twitter.com/nshanmugham'
 
   s.platform     = :ios, '7.0'
   s.requires_arc = true
 
   s.source_files = 'Pod/Classes/**/*'
-  s.resource_bundles = {
-    'YWeatherAPI' => ['Pod/Assets/*.png']
-  }
 
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.public_header_files = 'Pod/Classes/**/*.h'
+  s.frameworks = 'CLLocation'
+  s.dependency 'AFNetworking', '~> 2.5.2'
 end

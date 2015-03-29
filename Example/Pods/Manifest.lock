@@ -1,0 +1,20 @@
+PODS:
+  - Expecta (0.3.2)
+  - Specta (0.4.0)
+  - YWeatherAPI (0.1.0)
+
+DEPENDENCIES:
+  - Expecta
+  - Specta
+  - YWeatherAPI (from `../`)
+
+EXTERNAL SOURCES:
+  YWeatherAPI:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
+  Specta: a353759f073ffcc0a365b782fe4aaeac064c03c6
+  YWeatherAPI: 0a3f503e9143488d00d2f463b1880d99f95e4a88
+
+COCOAPODS: 0.36.1
