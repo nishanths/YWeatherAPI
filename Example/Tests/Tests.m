@@ -29,8 +29,7 @@
 @import Foundation;
 #import <Specta/Specta.h>
 #import <Expecta/Expecta.h>
-#import "YWeatherAPI.h"
-//#import <YWeatherAPI/YWeatherAPI.h>
+#import <YWeatherAPI/YWeatherAPI.h>
 
 @import CoreLocation;
 
