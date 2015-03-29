@@ -26,6 +26,9 @@
 //  THE SOFTWARE.
 //
 
+#import <Specta/Specta.h>
+#import <Expecta/Expecta.h>
+#import <YWeatherAPI/YWeatherAPI.h>
 
 SpecBegin(YWeatherAPI)
 
