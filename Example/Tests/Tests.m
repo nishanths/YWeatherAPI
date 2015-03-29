@@ -29,7 +29,16 @@
 
 SpecBegin(YWeatherAPI)
 
-
+describe(@"YWeatherAPI", ^{
+    it(@"returns the properly initialized singleton", ^{
+        expect([YWeatherAPI sharedManager]).toNot.beNil();
+        expect([YWeatherAPI sharedManager].defaultPressureUnit).to.equal(IN);
+        expect([YWeatherAPI sharedManager].defaultTemperatureUnit).to.equal(F);
+        expect([YWeatherAPI sharedManager].defaultSpeedUnit).to.equal(MPH);
+        expect([YWeatherAPI sharedManager].defaultDistanceUnit).to.equal(MI);
+        expect([YWeatherAPI sharedManager].cacheExpiryInMinutes).to.equal(15);
+    });
+});
 
 SpecEnd
 
