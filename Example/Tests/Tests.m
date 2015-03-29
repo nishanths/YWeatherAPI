@@ -63,7 +63,7 @@ describe(@"YWeatherAPI", ^{
                                               temperatureUnit:(YWATemperatureUnit)C
                                                       success:^(NSDictionary* result) {
                                                           NSString* temperatureAskedFor = [result objectForKey:kYWAIndex];
-                                                          expect([temperatureAskedFor length]).toNot.beGreaterThan(0);
+                                                          expect([temperatureAskedFor length]).to.beGreaterThan(@0);
                                                           expect([temperatureAskedFor doubleValue]).to.beInTheRangeOf(@-30, @50);
                                                       }
                                                       failure:^(id response, NSError* error) {
