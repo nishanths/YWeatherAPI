@@ -26,7 +26,7 @@ A powerful API wrapper for [Yahoo Weather](https://developer.yahoo.com/weather/)
 YWeatherAPI is available through [CocoaPods](http://cocoapods.org). To install it, simply add the following line to your Podfile:
 
 ```ruby
-pod 'YWeatherAPI', '~> 0.1'
+pod 'YWeatherAPI', '~> 1.0'
 ```
 
 And then from terminal, run:
@@ -76,7 +76,7 @@ Getting the current temperature is as simple as:
 ```
 
 ###### Success result 
-The result in the success callback in the example is the NSDictionary object:
+The result in the success callback in the example is this NSDictionary object:
 
 ```obj-c
 {
@@ -113,7 +113,7 @@ Customize the default weather units to be returned, enable caching of results, s
 
 ## Documentation
 
-The full documentation is at [CocoaDocs](http://cocoadocs.org/docsets/YWeatherAPI/0.1.3/Classes/YWeatherAPI.html).
+The full documentation is at [CocoaDocs](http://cocoadocs.org/docsets/YWeatherAPI/1.0.0/Classes/YWeatherAPI.html).
 
 ## FAQs
 
