@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
 
   s.source       = { :git => "https://github.com/nishanths/YWeatherAPI.git", :tag => "0.1.0" }
   s.source_files = 'Pod/Classes/**/*'
-  s.public_header_files = 'Pod/Classes/**/*.h'
+  s.public_header_files = 'Pod/Classes/YWeatherAPI.h'
 
   s.framework  = "CoreLocation"
   s.requires_arc = true
