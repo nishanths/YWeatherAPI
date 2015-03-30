@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "YWeatherAPI"
-  s.version      = "0.1.0"
+  s.version      = "0.1.1"
   s.summary      = "Powerful Yahoo Weather API wrapper for iOS and Mac."
 
   s.description  = <<-DESC
@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
   s.author             = { "Nishanth Shanmugham" => "nishanth.gerrard@gmail.com" }
   s.social_media_url   = "http://twitter.com/nshanmugham"
 
-  s.source       = { :git => "https://github.com/nishanths/YWeatherAPI.git", :tag => "0.1.0" }
+  s.source       = { :git => "https://github.com/nishanths/YWeatherAPI.git", :tag => s.version.to_s }
   s.source_files = 'Pod/Classes/**/*'
   s.public_header_files = 'Pod/Classes/YWeatherAPI.h'
 
