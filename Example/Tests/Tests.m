@@ -87,8 +87,26 @@ describe(@"YWeatherAPI", ^{
         }];
     });
     
+    
     it(@"clears the cache without throwing a tantrum", ^{
         [[YWeatherAPI sharedManager] clearCache];
+    });
+    
+    
+    it(@"returns a non-nil result when asking for all conditions", ^{
+        [[YWeatherAPI sharedManager] allCurrentConditionsForLocation:@"Chennai, India" success:^(NSDictionary *result) {
+            expect(result).toNot.beNil();
+        } failure:^(id response, NSError *error) {
+            expect(YES).to.beFalsy();
+        }];
+    });
+    
+    it (@"returns a non-nil string for current condition by code", ^{
+        [[YWeatherAPI sharedManager] allCurrentConditionsForLocation:@"Liverpool, England" success:^(NSDictionary *result) {
+            expect([result objectForKey:kYWACondition]).toNot.beNil();
+        } failure:^(id response, NSError *error) {
+            expect(YES).to.beFalsy();
+        }];
     });
 });
 

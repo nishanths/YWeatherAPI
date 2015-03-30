@@ -32,9 +32,9 @@
 #import <AFNetworking/AFNetworking.h>
 @import CoreLocation; // for reverse geocoding latitude and longitude
 
-#pragma mark - STRING CONSTANTS and ENUMS
+#pragma mark - DEFAULTS and MISCELLANEOUS
 
-/*  Defaults  */
+// Defaults
 YWAPressureUnit kYWADefaultPressureUnit = IN;
 YWASpeedUnit kYWADefaultSpeedUnit = MPH;
 YWADistanceUnit kYWADefaultDistanceUnit = MI;
@@ -42,19 +42,16 @@ YWATemperatureUnit kYWADefaultTemperatureUnit = F;
 BOOL kYWADefaultCacheEnabledValue = YES;
 uint kYWADefaultCacheExpiryInMinutes = 15;
 
-
-/*  Miscellaneous  */
+// Aysnc queue id
 char* const kYWAAsyncQueueIdentifier = "io.github.nishanths.yweatherapi.asyncQueue";
 
-/*
- *  YQL Query strings - only the "all" query is used currently to make the cache more usable.
- *  More query strings may be needed in the future if external queries will be specific.
- */
+// YQL Query strings - only the "all" query is used currently to make the cache more usable.
+// More query strings may be needed in the future if external queries will be specific.
 NSString* const kYWAYQLQueryAll = @"select * from weather.forecast";
 NSString* const kYWAYQLQueryWindSpeed = @"select wind.speed from weather.forecast";
 NSString* const kYWAYQLQueryWindDirection = @"select wind.direction from weather.forecast";
 
-/*  Errors  */
+// Errors
 NSString* const kYWAErrorDomain = @"io.nishanths.github.yweatherapi";
 NSString* const kYWAYahooWeatherErrorReturn = @"Yahoo! Weather Error";
 typedef enum {
@@ -63,21 +60,17 @@ typedef enum {
     kYWAEmptyResponse // Good response but Y! Weather did not return any usable details
 } kYWAErrorCode;
 
-/*  Cache  */
+// Cache
 NSString* const kYWACacheKey = @"YWACache";
 NSString* const kYWACacheExpiryKey = @"expiresAt";
 NSString* const kYWACacheResultKey = @"result";
 
 
-/*
- *  Result keys to access objects from the wrapper's results.
- *  All objects returned are NSString* except for those explicity marked below with comments.
- */
+# pragma mark - KEYS FOR SUCCESS OBJECT VALUES
+
 NSString* const kYWAIndex = @"index"; // The detail asked for
 // Pressure trend
 NSString* const kYWAPressureTrend = @"pressureTrend";
-NSString* const kYWAPressureTrendFalling = @"0";
-NSString* const kYWAPressureTrendRising = @"1";
 // Pressure
 NSString* const kYWAPressureInIN = @"pressureInIN";
 NSString* const kYWAPressureInMB = @"pressureInMB";
@@ -107,6 +100,9 @@ NSString* const kYWAVisibilityInKM = @"visibilityInMI";
 NSString* const kYWAShortDescription = @"shortDescription";
 // Long description
 NSString* const kYWALongDescription = @"longDescription"; // May contain HTML tags
+// Condition
+NSString* const kYWACondition = @"condition";
+NSString* const kYWAConditionNumber = @"conditionNumber";
 // Temperature
 NSString* const kYWATemperatureInF = @"temperatureInF";
 NSString* const kYWATemperatureInC = @"temperatureInC";
@@ -115,34 +111,41 @@ NSString* const kYWAHighTemperatureForDay = @"highTemperatureForDay";
 NSString* const kYWALowTemperatureForDay = @"lowTemperatureForDay";
 NSString* const kYWADateComponents = @"kYWADateComponents"; // NSDateCompoent with month, day, year
 // Five day forecasts array key
-NSString* const kYWAFiveDayForecasts = @"fiveDayForecasts"; // NSArray containing NSDictionary
+NSString* const kYWAFiveDayForecasts = @"fiveDayForecasts"; // NSArray containing NSDictionarys for each day
 
-/*
- *  Wind direction
- *  Use for comparisons
- */
+#pragma mark - COMPARISON STRINGS
+
+// Empty
+NSString* const kYWAEmptyValue = @"";
+// No data
+NSString* const kYWANoDataAvailable = @"NO DATA AVAILABLE";
+
+// Wind directions
 // Cardinals
-NSString* const kYWAWindDirectionNorth = @"N";
-NSString* const kYWAWindDirectionEast = @"E";
-NSString* const kYWAWindDirectionSouth = @"S";
-NSString* const kYWAWindDirectionWest = @"W";
+NSString* const kYWAWindDirectionN = @"N";
+NSString* const kYWAWindDirectionE = @"E";
+NSString* const kYWAWindDirectionS = @"S";
+NSString* const kYWAWindDirectionW = @"W";
 // Quadrant 1
-NSString* const kYWAWindDirectionNorthNorthEast = @"NNE";
-NSString* const kYWAWindDirectionNorthEast = @"NE";
-NSString* const kYWAWindDirectionEastNorthEast = @"ENE";
+NSString* const kYWAWindDirectionNNE = @"NNE";
+NSString* const kYWAWindDirectionNE = @"NE";
+NSString* const kYWAWindDirectionENE = @"ENE";
 // Quadrant 2
-NSString* const kYWAWindDirectionEastSouthEast = @"ESE";
-NSString* const kYWAWindDirectionSouthEast = @"SE";
-NSString* const kYWAWindDirectionSouthSouthEast = @"SSE";
+NSString* const kYWAWindDirectionESE = @"ESE";
+NSString* const kYWAWindDirectionSE = @"SE";
+NSString* const kYWAWindDirectionSSE = @"SSE";
 // Quadrant 3
-NSString* const kYWAWindDirectionSouthSouthWest = @"SSW";
-NSString* const kYWAWindDirectionSouthWest = @"SW";
-NSString* const kYWAWindDirectionWestSouthWest = @"WSW";
+NSString* const kYWAWindDirectionSSW = @"SSW";
+NSString* const kYWAWindDirectionSW = @"SW";
+NSString* const kYWAWindDirectionWSW = @"WSW";
 // Quadrant 4
-NSString* const kYWAWindDirectionWestNorthWest = @"WNW";
-NSString* const kYWAWindDirectionNorthWest = @"NW";
-NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
+NSString* const kYWAWindDirectionWNW = @"WNW";
+NSString* const kYWAWindDirectionNW = @"NW";
+NSString* const kYWAWindDirectionNNW = @"NNW";
 
+// Pressure trend
+NSString* const kYWAPressureTrendFalling = @"0";
+NSString* const kYWAPressureTrendRising = @"1";
 
 #pragma mark - INTERFACE
 
@@ -198,7 +201,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 
-#pragma mark - TODAY'S FORECAST by COORDINATE, LOCATION, WOEID
+#pragma mark - TODAY'S FORECAST by COORDINATE, LOCATION, WOEID (empty value for index key)
 
 /**
  *  Gets forecast information for the current day and includes low and high temperatures and a short description
@@ -310,7 +313,9 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
          
          NSDictionary* packedTodayForecast = [self packagedYWForecastDayInfoFor:today temperatureUnit:temperatureUnit];
          NSMutableDictionary* r = [NSMutableDictionary dictionaryWithDictionary:packedTodayForecast];
+         [r setObject:kYWAEmptyValue forKey:kYWAIndex]; // defensive
          [r addEntriesFromDictionary:[self locationInfoFromResult:result]];
+         
          
          success([NSDictionary dictionaryWithDictionary:r]);
      }
@@ -432,12 +437,369 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
              [fiveDayForecasts addObject:[self packagedYWForecastDayInfoFor:forecastDay temperatureUnit:temperatureUnit]];
          }
          
-         NSMutableDictionary* r = [NSMutableDictionary dictionaryWithObject:fiveDayForecasts forKey:kYWAFiveDayForecasts];
+         NSMutableDictionary* r = [NSMutableDictionary dictionaryWithObjects:@[fiveDayForecasts, fiveDayForecasts] forKeys:@[kYWAIndex, kYWAFiveDayForecasts]];
          [r addEntriesFromDictionary:[self locationInfoFromResult:result]];
          
          success([NSDictionary dictionaryWithDictionary:r]);
      }
                       failure:failure];
+}
+
+
+#pragma mark - ALL CURRENT CONDITIONS (empty value for index key)
+
+/**
+ *  Gets all the current weather conditions
+ *
+ *  @param woeid   Coordinate to get weatjer condition for
+ *  @param success Callback block that receives the result on success
+ *  @param failure Callback block that receives the bad response and error on failure
+ */
+- (void) allCurrentConditionForCoordinate:(CLLocation*)coordinate
+                                  success:(void (^)(NSDictionary* result))success
+                                  failure:(void (^)(id response, NSError* error))failure
+{
+    [self locationStringForCoordinate:coordinate success:^(NSString *locationString) {
+        [self allCurrentConditionsForLocation:locationString success:success failure:failure];
+    } failure:failure];
+}
+
+/**
+ *  Gets all the current weather conditions
+ *
+ *  @param woeid   Location to get weatjer condition for
+ *  @param success Callback block that receives the result on success
+ *  @param failure Callback block that receives the bad response and error on failure
+ */
+- (void) allCurrentConditionsForLocation:(NSString*)location
+                                 success:(void (^)(NSDictionary* result))success
+                                 failure:(void (^)(id response, NSError* error))failure
+{
+    [self woeidForLocation:location
+                   success:^(NSString *woeid)
+     {
+         [self allCurrentConditionsForWOEID:woeid success:success failure:failure];
+     }
+                   failure:failure];
+}
+
+/**
+ *  Gets all the current weather conditions
+ *
+ *  @param woeid   Yahoo WOEID to get weatjer condition for
+ *  @param success Callback block that receives the result on success
+ *  @param failure Callback block that receives the bad response and error on failure
+ */
+- (void) allCurrentConditionsForWOEID:(NSString*)woeid
+                              success:(void (^)(NSDictionary* result))success
+                              failure:(void (^)(id response, NSError* error))failure
+{
+    [self queryResultForWOEID:woeid
+                     yqlQuery:kYWAYQLQueryAll
+                    speedUnit:_defaultSpeedUnit
+              temperatureUnit:_defaultTemperatureUnit
+                 pressureUnit:_defaultPressureUnit
+                 distanceUnit:_defaultDistanceUnit
+                      success:^(id result)
+     {
+         // wind chill
+         NSString* windChillInF = [[result objectForKey:@"wind"] objectForKey:@"chill"];
+         NSString* windChillInC = [NSString stringWithFormat:@"%.2f", [self temperatureIn:C from:F value:[windChillInF doubleValue]]];
+         // direction
+         NSString* windDirectionInDegrees = [[result objectForKey:@"wind"] objectForKey:@"direction"];
+         NSString* windDirectionInCompassPoints = [self compassPointForDegree:[windDirectionInDegrees doubleValue]];
+         // speed
+         NSString* windSpeedInMPH = [[result objectForKey:@"wind"] objectForKey:@"speed"];
+         NSString* windSpeedInKMPH = [NSString stringWithFormat: @"%.2f" , [self speedIn:KMPH from:MPH value:[windSpeedInMPH doubleValue]]];
+         
+         // atmosphere pressure trend
+         NSString* pressureTrend = [[result objectForKey:@"atmosphere"] objectForKey:@"rising"];
+         // pressure
+         NSString* pressureInIN = [[result objectForKey:@"atmosphere"] objectForKey:@"pressure"];
+         NSString* pressureInMB = [NSString stringWithFormat:@"%.2f", [self pressureIn:MB from:IN value:[pressureInIN doubleValue]]];
+         // humidity
+         NSString* humidity = [[result objectForKey:@"atmosphere"] objectForKey:@"humidity"];
+         // visibility
+         NSString* visibilityInMI = [[result objectForKey:@"atmosphere"] objectForKey:@"visibility"];
+         NSString* visibilityInKM = [NSString stringWithFormat:@"%.2f", [self distanceIn:KM from:MI value:[visibilityInMI doubleValue]]];
+         
+         // astronomy sunrise
+         NSString* timeString = [[[result objectForKey:@"item"] objectForKey:@"condition"] objectForKey:@"date"];
+         NSString* timeZone = [self timeZoneFromYWTimeString:timeString];
+         NSString* srTimeIn12Hour = [[result objectForKey:@"astronomy"] objectForKey:@"sunrise"];
+         NSDateComponents* sunriseInLocalTime = [self dateComponentsFor12HourTime:srTimeIn12Hour withShortTimeZone:timeZone];
+         // sunset
+         NSString* ssTimeIn12Hour = [[result objectForKey:@"astronomy"] objectForKey:@"sunset"];
+         NSDateComponents* sunsetInLocalTime = [self dateComponentsFor12HourTime:ssTimeIn12Hour withShortTimeZone:timeZone];
+         
+         // condition temperature
+         NSString* temperatureInF = [[[result objectForKey:@"item"] objectForKey:@"condition"] objectForKey:@"temp"];
+         NSString* temperatureInC = [NSString stringWithFormat:@"%.2f", [self temperatureIn:C from:F value:[temperatureInF doubleValue]]];
+         // short description
+         NSString* shortDescription = [[[result objectForKey:@"item"] objectForKey:@"condition"] objectForKey:@"text"];
+         // long description
+         NSString* longDescription = [[result objectForKey:@"item"] objectForKey:@"description"];
+         // condition code
+         NSString* numberCode = [[[result objectForKey:@"item"] objectForKey:@"condition"] objectForKey:@"code"];
+         NSString* meaningfulConditionStringForCode = [self weatherConditionForCode:numberCode];
+         
+         NSMutableDictionary* r = [NSMutableDictionary dictionaryWithObjects:@[windChillInF,
+                                                                               windChillInC,
+                                                                               windDirectionInCompassPoints,
+                                                                               windDirectionInDegrees,
+                                                                               windSpeedInMPH,
+                                                                               windSpeedInKMPH,
+                                                                               
+                                                                               pressureTrend,
+                                                                               pressureInIN,
+                                                                               pressureInMB,
+                                                                               humidity,
+                                                                               visibilityInMI,
+                                                                               visibilityInKM,
+                                                                               
+                                                                               sunriseInLocalTime,
+                                                                               sunsetInLocalTime,
+                                                                               
+                                                                               temperatureInF,
+                                                                               temperatureInC,
+                                                                               shortDescription,
+                                                                               longDescription,
+                                                                               meaningfulConditionStringForCode,
+                                                                               numberCode]
+                                   
+                                                                     forKeys:@[kYWAWindChillInF,
+                                                                               kYWAWindChillInC,
+                                                                               kYWAWindDirectionInCompassPoints,
+                                                                               kYWAWindDirectionInDegrees,
+                                                                               kYWAWindSpeedInMPH,
+                                                                               kYWAWindSpeedInKMPH,
+                                                                               
+                                                                               kYWAPressureTrend,
+                                                                               kYWAPressureInIN,
+                                                                               kYWAPressureInMB,
+                                                                               kYWAHumidity,
+                                                                               kYWAVisibilityInMI,
+                                                                               kYWAVisibilityInKM,
+                                                                               
+                                                                               kYWASunriseInLocalTime,
+                                                                               kYWASunsetInLocalTime,
+                                                                               
+                                                                               kYWATemperatureInF,
+                                                                               kYWATemperatureInC,
+                                                                               kYWAShortDescription,
+                                                                               kYWALongDescription,
+                                                                               kYWACondition,
+                                                                               kYWAConditionNumber,]];
+         
+         [r setObject:kYWAEmptyValue forKey:kYWAIndex]; // defensive
+         [r addEntriesFromDictionary:[self locationInfoFromResult:result]];
+         success([NSDictionary dictionaryWithDictionary:r]);
+     }
+                      failure:failure];
+}
+
+
+#pragma mark - CODE CONDITIONS by COORDINATE, LOCATION, WOEID
+
+/**
+ *  Gets the weather condition string
+ *
+ *  @param location   Coordinate to get weather condition for
+ *  @param success    Callback block that receives the result on success
+ *  @param failure    Callback block that receives the bad response and error on failure
+ *  @see https://developer.yahoo.com/weather/documentation.html#codes
+ */
+- (void) conditionCodeForCoordinate:(CLLocation*)coordinate
+                            success:(void (^)(NSDictionary*))success
+                            failure:(void (^)(id response, NSError* error))failure
+{
+    [self locationStringForCoordinate:coordinate success:^(NSString *locationString) {
+        [self conditionCodeForLocation:locationString success:success failure:failure];
+    } failure:failure];
+}
+
+/**
+ *  Gets the weather condition string
+ *
+ *  @param location   Location to get weather condition for
+ *  @param success    Callback block that receives the result on success
+ *  @param failure    Callback block that receives the bad response and error on failure
+ *  @see https://developer.yahoo.com/weather/documentation.html#codes
+ */
+- (void) conditionCodeForLocation:(NSString*)location
+                          success:(void (^)(NSDictionary*))success
+                          failure:(void (^)(id response, NSError* error))failure
+{
+    [self woeidForLocation:location
+                   success:^(NSString *woeid)
+     {
+         [self conditionCodeForWOIED:woeid success:success failure:failure];
+     }
+                   failure:failure];
+}
+
+/**
+ *  Gets the weather condition string
+ *
+ *  @param woeid   Yahoo WOEID to get weather condition for
+ *  @param success Callback block that receives the result on success
+ *  @param failure Callback block that receives the bad response and error on failure
+ *  @see https://developer.yahoo.com/weather/documentation.html#codes
+ */
+- (void) conditionCodeForWOIED:(NSString*)woeid
+                       success:(void (^)(NSDictionary*))success
+                       failure:(void (^)(id response, NSError* error))failure
+{
+    [self queryResultForWOEID:woeid
+                     yqlQuery:kYWAYQLQueryAll
+                    speedUnit:_defaultSpeedUnit
+              temperatureUnit:_defaultTemperatureUnit
+                 pressureUnit:_defaultPressureUnit
+                 distanceUnit:_defaultDistanceUnit
+                      success:^(id result)
+     {
+         NSString* numberCode = [[[result objectForKey:@"item"] objectForKey:@"condition"] objectForKey:@"code"];
+         NSString* meaningfulConditionStringForCode = [self weatherConditionForCode:numberCode];
+         
+         NSMutableDictionary* r = [NSMutableDictionary dictionaryWithObjects:@[meaningfulConditionStringForCode,
+                                                                               meaningfulConditionStringForCode,
+                                                                               numberCode]
+                                                                     forKeys:@[kYWAIndex,
+                                                                               kYWACondition,
+                                                                               kYWAConditionNumber]];
+         [r addEntriesFromDictionary:[self locationInfoFromResult:result]];
+         success([NSDictionary dictionaryWithDictionary:r]);
+     }
+                      failure:failure];
+}
+
+
+#pragma mark - LONG DESCRIPTION by COORDINATE, LOCATION, WOEID
+
+/**
+ *  Returns a long description of the weather for the current day
+ *
+ *  @param coordinate Coordinate to get long description for
+ *  @param success    Callback block that receives the result on success
+ *  @param failure    Callback block that receives the bad response and error on failure
+ */
+- (void) longDescriptionForCoordinate:(CLLocation*)coordinate
+                              success:(void (^)(NSDictionary* result))success
+                              failure:(void (^)(id response, NSError* error))failure
+{
+    [self locationStringForCoordinate:coordinate
+                              success:^(NSString *locationString) {
+                                  [self longDescriptionForLocation:locationString success:success failure:failure];
+                              } failure:failure];
+}
+
+/**
+ *  Returns a long description of the weather for the current day
+ *
+ *  @param location Location to get long description for
+ *  @param success  Callback block that receives the result on success
+ *  @param failure  Callback block that receives the bad response and error on failure
+ */
+- (void) longDescriptionForLocation:(NSString*)location
+                            success:(void (^)(NSDictionary* result))success
+                            failure:(void (^)(id response, NSError* error))failure
+{
+    [self woeidForLocation:location
+                   success:^(NSString *woeid) {
+                       [self longDescriptionForWOEID:woeid success:success failure:failure];
+                   } failure:failure];
+}
+
+/**
+ *  Returns a long description of the weather for the current day
+ *
+ *  @param woeid   Yahoo WOEID to get long description for
+ *  @param success Callback block that receives the result on success
+ *  @param failure Callback block that receives the bad response and error on failure
+ */
+- (void) longDescriptionForWOEID:(NSString*)woeid
+                         success:(void (^)(NSDictionary* result))success
+                         failure:(void (^)(id response, NSError* error))failure
+{
+    [self queryResultForWOEID:woeid
+                     yqlQuery:kYWAYQLQueryAll
+                    speedUnit:_defaultSpeedUnit
+              temperatureUnit:_defaultTemperatureUnit
+                 pressureUnit:_defaultPressureUnit
+                 distanceUnit:_defaultDistanceUnit
+                      success:^(id result)
+     {
+         NSString* longDescription = [[result objectForKey:@"item"] objectForKey:@"description"];
+         NSMutableDictionary* r = [NSMutableDictionary dictionaryWithObjects:@[longDescription, longDescription] forKeys:@[kYWAIndex, kYWALongDescription]];
+         [r addEntriesFromDictionary:[self locationInfoFromResult:result]];
+         success([NSDictionary dictionaryWithDictionary:r]);
+     }
+                      failure:failure
+     ];
+}
+
+
+#pragma mark - SHORT DESCRIPTION by COORDINATE, LOCATION, WOEID
+
+/**
+ *  Returns a short description of the weather for the current day
+ *
+ *  @param coordinate Coordinate to get short description for
+ *  @param success    Callback block that receives the result on success
+ *  @param failure    Callback block that receives the bad response and error on failure
+ */
+- (void) shortDescriptionForCoordinate:(CLLocation*)coordinate
+                               success:(void (^)(NSDictionary* result))success
+                               failure:(void (^)(id response, NSError* error))failure
+{
+    [self locationStringForCoordinate:coordinate
+                              success:^(NSString *locationString) {
+                                  [self shortDescriptionForLocation:locationString success:success failure:failure];
+                              } failure:failure];
+}
+
+/**
+ *  Returns a short description of the weather for the current day
+ *
+ *  @param location Location to get short description for
+ *  @param success  Callback block that receives the result on success
+ *  @param failure  Callback block that receives the bad response and error on failure
+ */
+- (void) shortDescriptionForLocation:(NSString*)location
+                             success:(void (^)(NSDictionary* result))success
+                             failure:(void (^)(id response, NSError* error))failure
+{
+    [self woeidForLocation:location
+                   success:^(NSString *woeid) {
+                       [self shortDescriptionForWOEID:woeid success:success failure:failure];
+                   } failure:failure];
+}
+
+/**
+ *  Returns a short description of the weather for the current day
+ *
+ *  @param woeid   Yahoo WOEID to get short description for
+ *  @param success Callback block that receives the result on success
+ *  @param failure Callback block that receives the bad response and error on failure
+ */
+- (void) shortDescriptionForWOEID:(NSString*)woeid
+                          success:(void (^)(NSDictionary* result))success
+                          failure:(void (^)(id response, NSError* error))failure
+{
+    [self queryResultForWOEID:woeid
+                     yqlQuery:kYWAYQLQueryAll
+                    speedUnit:_defaultSpeedUnit
+              temperatureUnit:_defaultTemperatureUnit
+                 pressureUnit:_defaultPressureUnit
+                 distanceUnit:_defaultDistanceUnit
+                      success:^(id result)
+     {
+         NSString* shortDescription = [[[result objectForKey:@"item"] objectForKey:@"condition"] objectForKey:@"text"];
+         NSMutableDictionary* r = [NSMutableDictionary dictionaryWithObjects:@[shortDescription, shortDescription] forKeys:@[kYWAIndex, kYWAShortDescription]];
+         [r addEntriesFromDictionary:[self locationInfoFromResult:result]];
+         success([NSDictionary dictionaryWithDictionary:r]);
+     } failure:failure
+     ];
 }
 
 
@@ -545,7 +907,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
                       success:^(id result)
      {
          NSString* temperatureInF = [[[result objectForKey:@"item"] objectForKey:@"condition"] objectForKey:@"temp"];
-         NSString* temperatureInC = [NSString stringWithFormat:@"%f", [self temperatureIn:C from:F value:[temperatureInF doubleValue]]];
+         NSString* temperatureInC = [NSString stringWithFormat:@"%.2f", [self temperatureIn:C from:F value:[temperatureInF doubleValue]]];
          NSString* index = (temperatureUnit == F) ? temperatureInF : temperatureInC;
          
          NSMutableDictionary* r = [NSMutableDictionary dictionaryWithObjects:@[index,
@@ -558,134 +920,6 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
          success([NSDictionary dictionaryWithDictionary:r]);
      }
                       failure:failure];
-}
-
-
-#pragma mark - LONG DESCRIPTION by COORDINATE, LOCATION, WOEID
-
-/**
- *  Returns a long description of the weather for the current day
- *
- *  @param coordinate Coordinate to get long description for
- *  @param success    Callback block that receives the result on success
- *  @param failure    Callback block that receives the bad response and error on failure
- */
-- (void) longDescriptionForCoordinate:(CLLocation*)coordinate
-                              success:(void (^)(NSDictionary* result))success
-                              failure:(void (^)(id response, NSError* error))failure
-{
-    [self locationStringForCoordinate:coordinate
-                              success:^(NSString *locationString) {
-                                  [self longDescriptionForLocation:locationString success:success failure:failure];
-                              } failure:failure];
-}
-
-/**
- *  Returns a long description of the weather for the current day
- *
- *  @param location Location to get long description for
- *  @param success  Callback block that receives the result on success
- *  @param failure  Callback block that receives the bad response and error on failure
- */
-- (void) longDescriptionForLocation:(NSString*)location
-                            success:(void (^)(NSDictionary* result))success
-                            failure:(void (^)(id response, NSError* error))failure
-{
-    [self woeidForLocation:location
-                   success:^(NSString *woeid) {
-                       [self longDescriptionForWOEID:woeid success:success failure:failure];
-                   } failure:failure];
-}
-
-/**
- *  Returns a long description of the weather for the current day
- *
- *  @param woeid   Yahoo WOEID to get long description for
- *  @param success Callback block that receives the result on success
- *  @param failure Callback block that receives the bad response and error on failure
- */
-- (void) longDescriptionForWOEID:(NSString*)woeid
-                         success:(void (^)(NSDictionary* result))success
-                         failure:(void (^)(id response, NSError* error))failure
-{
-    [self queryResultForWOEID:woeid
-                     yqlQuery:kYWAYQLQueryAll
-                    speedUnit:_defaultSpeedUnit
-              temperatureUnit:_defaultTemperatureUnit
-                 pressureUnit:_defaultPressureUnit
-                 distanceUnit:_defaultDistanceUnit
-                      success:^(id result)
-     {
-         NSString* longDescription = [[result objectForKey:@"item"] objectForKey:@"description"];
-         NSMutableDictionary* r = [NSMutableDictionary dictionaryWithObjects:@[longDescription, longDescription] forKeys:@[kYWAIndex, kYWALongDescription]];
-         [r addEntriesFromDictionary:[self locationInfoFromResult:result]];
-         success([NSDictionary dictionaryWithDictionary:r]);
-     } failure:failure
-     ];
-}
-
-
-#pragma mark - SHORT DESCRIPTION by COORDINATE, LOCATION, WOEID
-
-/**
- *  Returns a short description of the weather for the current day
- *
- *  @param coordinate Coordinate to get short description for
- *  @param success    Callback block that receives the result on success
- *  @param failure    Callback block that receives the bad response and error on failure
- */
-- (void) shortDescriptionForCoordinate:(CLLocation*)coordinate
-                               success:(void (^)(NSDictionary* result))success
-                               failure:(void (^)(id response, NSError* error))failure
-{
-    [self locationStringForCoordinate:coordinate
-                              success:^(NSString *locationString) {
-                                  [self shortDescriptionForLocation:locationString success:success failure:failure];
-                              } failure:failure];
-}
-
-/**
- *  Returns a short description of the weather for the current day
- *
- *  @param location Location to get short description for
- *  @param success  Callback block that receives the result on success
- *  @param failure  Callback block that receives the bad response and error on failure
- */
-- (void) shortDescriptionForLocation:(NSString*)location
-                             success:(void (^)(NSDictionary* result))success
-                             failure:(void (^)(id response, NSError* error))failure
-{
-    [self woeidForLocation:location
-                   success:^(NSString *woeid) {
-                       [self shortDescriptionForWOEID:woeid success:success failure:failure];
-                   } failure:failure];
-}
-
-/**
- *  Returns a short description of the weather for the current day
- *
- *  @param woeid   Yahoo WOEID to get short description for
- *  @param success Callback block that receives the result on success
- *  @param failure Callback block that receives the bad response and error on failure
- */
-- (void) shortDescriptionForWOEID:(NSString*)woeid
-                          success:(void (^)(NSDictionary* result))success
-                          failure:(void (^)(id response, NSError* error))failure
-{
-    [self queryResultForWOEID:woeid
-                     yqlQuery:kYWAYQLQueryAll
-                    speedUnit:_defaultSpeedUnit
-              temperatureUnit:_defaultTemperatureUnit
-                 pressureUnit:_defaultPressureUnit
-                 distanceUnit:_defaultDistanceUnit
-                      success:^(id result)
-     {
-         NSString* shortDescription = [[[result objectForKey:@"item"] objectForKey:@"condition"] objectForKey:@"text"];
-         NSMutableDictionary* r = [NSMutableDictionary dictionaryWithObjects:@[shortDescription, shortDescription] forKeys:@[kYWAIndex, kYWAShortDescription]];
-         [r addEntriesFromDictionary:[self locationInfoFromResult:result]];
-         success([NSDictionary dictionaryWithDictionary:r]);
-     } failure:failure
-     ];
 }
 
 
@@ -860,7 +1094,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
                       success:^(id result)
      {
          NSString* pressureInIN = [[result objectForKey:@"atmosphere"] objectForKey:@"pressure"];
-         NSString* pressureInMB = [NSString stringWithFormat:@"%f", [self pressureIn:MB from:IN value:[pressureInIN doubleValue]]];
+         NSString* pressureInMB = [NSString stringWithFormat:@"%.2f", [self pressureIn:MB from:IN value:[pressureInIN doubleValue]]];
          NSString* index = (pressureUnit == IN) ? pressureInIN : pressureInMB;
          
          NSMutableDictionary* r = [NSMutableDictionary dictionaryWithObjects:@[index,
@@ -985,7 +1219,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
                       success:^(id result)
      {
          NSString* visibilityInMI = [[result objectForKey:@"atmosphere"] objectForKey:@"visibility"];
-         NSString* visibilityInKM = [NSString stringWithFormat:@"%f", [self distanceIn:KM from:MI value:[visibilityInMI doubleValue]]];
+         NSString* visibilityInKM = [NSString stringWithFormat:@"%.2f", [self distanceIn:KM from:MI value:[visibilityInMI doubleValue]]];
          NSString* index = (distanceUnit == MI) ? visibilityInMI : visibilityInKM;
          
          
@@ -1313,7 +1547,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
                       success:^(id result)
      {
          NSString* windChillInF = [[result objectForKey:@"wind"] objectForKey:@"chill"];
-         NSString* windChillInC = [NSString stringWithFormat:@"%f", [self temperatureIn:C from:F value:[windChillInF doubleValue]]];
+         NSString* windChillInC = [NSString stringWithFormat:@"%.2f", [self temperatureIn:C from:F value:[windChillInF doubleValue]]];
          NSString* index = temperatureUnit == MPH ? windChillInF : windChillInC;
          
          
@@ -1509,7 +1743,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
                       success:^(id result)
      {
          NSString* windSpeedInMPH = [[result objectForKey:@"wind"] objectForKey:@"speed"];
-         NSString* windSpeedInKMPH = [NSString stringWithFormat: @"%f" , [self speedIn:KMPH from:MPH value:[windSpeedInMPH doubleValue]]];
+         NSString* windSpeedInKMPH = [NSString stringWithFormat: @"%.2f" , [self speedIn:KMPH from:MPH value:[windSpeedInMPH doubleValue]]];
          NSString* index = speedUnit == MPH ? windSpeedInMPH : windSpeedInKMPH;
          
          NSMutableDictionary* r = [NSMutableDictionary dictionaryWithObjects:@[index,
@@ -1797,8 +2031,8 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
     // Temperature
     NSString* highTemperatureInF = [forecastDayInfo objectForKey:@"high"];
     NSString* lowTemperatureInF = [forecastDayInfo objectForKey:@"low"];
-    NSString* highTemperatureInC = [NSString stringWithFormat:@"%f", [self temperatureIn:C from:F value:[highTemperatureInF doubleValue]]];
-    NSString* lowTemperatureInC = [NSString stringWithFormat:@"%f", [self temperatureIn:C from:F value:[highTemperatureInF doubleValue]]];
+    NSString* highTemperatureInC = [NSString stringWithFormat:@"%.2f", [self temperatureIn:C from:F value:[highTemperatureInF doubleValue]]];
+    NSString* lowTemperatureInC = [NSString stringWithFormat:@"%.2f", [self temperatureIn:C from:F value:[highTemperatureInF doubleValue]]];
     NSString *indexHighTemperature, *indexLowTemperature;
     
     if (temperatureUnit == F) {
@@ -1942,6 +2176,77 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
     return roundf(converted * 100) / 100;
 }
 
+/**
+ *  Returns a meaningful weather condition for a Yahoo Condition Code
+ *
+ *  @param numberCode A numerical Yahoo condition code as a NSString. Valid numbers: [0 .. 47, 3200]
+ *
+ *  @return The weather condition string for the condition code
+ */
+- (NSString*) weatherConditionForCode:(NSString*)numberCode
+{
+    NSDictionary* const kYWAWeatherConditionCodes = @{@"0"  : 	@"Tornado",
+                                                      @"1"  : 	@"Tropical storm",
+                                                      @"2"  : 	@"Hurricane",
+                                                      @"3"  : 	@"Severe Thunderstorms",
+                                                      @"4"  : 	@"Thunderstorms",
+                                                      @"5"  : 	@"Mixed Rain and Snow",
+                                                      @"6"  : 	@"Mixed Rain and Sleet",
+                                                      @"7"  : 	@"Mixed Snow and Sleet",
+                                                      @"8"  : 	@"Freezing Drizzle",
+                                                      @"9"  : 	@"Drizzle",
+                                                      @"10" : 	@"Freezing Rain",
+                                                      @"11" : 	@"Showers",
+                                                      @"12" : 	@"Showers",
+                                                      @"13" : 	@"Snow Flurries",
+                                                      @"14" : 	@"Light Snow Showers",
+                                                      @"15" : 	@"Blowing Snow",
+                                                      @"16" : 	@"Snow",
+                                                      @"17" : 	@"Hail",
+                                                      @"18" : 	@"Sleet",
+                                                      @"19" : 	@"Dust",
+                                                      @"20" : 	@"Foggy",
+                                                      @"21" : 	@"Haze",
+                                                      @"22" : 	@"Smoky",
+                                                      @"23" : 	@"Blustery",
+                                                      @"24" : 	@"Windy",
+                                                      @"25" : 	@"Cold",
+                                                      @"26" : 	@"Cloudy",
+                                                      @"27" : 	@"Mostly Cloudy (night)",
+                                                      @"28" : 	@"Mostly Cloudy (day)",
+                                                      @"29" : 	@"Partly Cloudy (night)",
+                                                      @"30" : 	@"Partly Cloudy (day)",
+                                                      @"31" : 	@"Clear (night)",
+                                                      @"32" : 	@"Sunny",
+                                                      @"33" : 	@"Fair (night)",
+                                                      @"34" : 	@"Fair (day)",
+                                                      @"35" : 	@"Mixed Rain and Hail",
+                                                      @"36" : 	@"Hot",
+                                                      @"37" : 	@"Isolated Thunderstorms",
+                                                      @"38" : 	@"Scattered Thunderstorms",
+                                                      @"39" : 	@"Scattered Thunderstorms",
+                                                      @"40" : 	@"Scattered Showers",
+                                                      @"41" : 	@"Heavy Snow",
+                                                      @"42" : 	@"Scattered Snow Showers",
+                                                      @"43" : 	@"Heavy Snow",
+                                                      @"44" : 	@"Partly Cloudy",
+                                                      @"45" : 	@"Thundershowers",
+                                                      @"46" : 	@"Snow Showers",
+                                                      @"47" : 	@"Isolated Thundershowers",
+                                                      @"3200" : kYWANoDataAvailable
+                                                      };
+    
+    return [kYWAWeatherConditionCodes objectForKey:numberCode];
+    
+}
+
+/**
+ *  Returns a string reperesenting the approx. compass point direction for a degree
+ *
+ *  @param degree The degree to convert, should be in the range [0 .. 360] for proper behavior
+ *
+ *  @return The compass point string
+ */
 - (NSString*) compassPointForDegree:(double) degree
 {
     if (degree < 0.0) { degree = degree + 360.0; }
@@ -1951,37 +2256,37 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
     double div = 11.25;
     
     if (degree >= 31 * div && degree < 1 * div) {
-        return kYWAWindDirectionNorth;
+        return kYWAWindDirectionN;
     } else if (degree >= 1 * div && degree < 3 * div) {
-        return kYWAWindDirectionNorthNorthEast;
+        return kYWAWindDirectionNNE;
     } else if (degree >= 3 * div && degree < 5 * div) {
-        return kYWAWindDirectionNorthEast;
+        return kYWAWindDirectionNE;
     } else if (degree >= 5 * div && degree < 7 * div) {
-        return kYWAWindDirectionEastNorthEast;
+        return kYWAWindDirectionENE;
     } else if (degree >= 7 * div && degree < 9 * div) {
-        return kYWAWindDirectionEast;
+        return kYWAWindDirectionE;
     } else if (degree >= 9 * div && degree < 11 * div) {
-        return kYWAWindDirectionEastSouthEast;
+        return kYWAWindDirectionESE;
     } else if (degree >= 11 * div && degree < 13 * div) {
-        return kYWAWindDirectionSouthEast;
+        return kYWAWindDirectionS;
     } else if (degree >= 13 * div && degree < 15 * div) {
-        return kYWAWindDirectionSouthSouthEast;
+        return kYWAWindDirectionSSE;
     } else if (degree >= 15 * div && degree < 17 * div) {
-        return kYWAWindDirectionSouth;
+        return kYWAWindDirectionS;
     } else if (degree >= 17 * div && degree < 19 * div) {
-        return kYWAWindDirectionSouthSouthWest;
+        return kYWAWindDirectionSSW;
     } else if (degree >= 19 * div && degree < 21 * div) {
-        return kYWAWindDirectionSouthWest;
+        return kYWAWindDirectionSW;
     } else if (degree >= 21 * div && degree < 23 * div) {
-        return kYWAWindDirectionWestSouthWest;
+        return kYWAWindDirectionWSW;
     } else if (degree >= 23 * div && degree < 25 * div) {
-        return kYWAWindDirectionWest;
+        return kYWAWindDirectionW;
     } else if (degree >= 25 * div && degree < 27 * div) {
-        return kYWAWindDirectionWestNorthWest;
+        return kYWAWindDirectionWNW;
     } else if (degree >= 27 * div && degree < 29 * div) {
-        return kYWAWindDirectionNorthWest;
+        return kYWAWindDirectionNW;
     } else {
-        return kYWAWindDirectionNorthNorthWest;
+        return kYWAWindDirectionNNW;
     }
 }
 

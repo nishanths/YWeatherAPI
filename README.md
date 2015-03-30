@@ -82,7 +82,7 @@ The result in the success callback in the example is the NSDictionary object:
 {
     city = "Redwood City"; // access using kYWACity or @"city"
     country = "United States"; // kYWACountry
-    index = 72; // kYWAIndex
+    index = 72; // kYWAIndex (the detail you asked for)
     latitude = "37.5"; // kYWALatitude 
     longitude = "-122.23"; // kYWALongitude
     region = CA; // kYWARegion
@@ -119,7 +119,9 @@ The full documentation is at [CocoaDocs](http://cocoadocs.org/docsets/YWeatherAP
 
 ###### Do I need an API key?
 
-No. Yahoo Weather currently does not require an API key to access most of its content, so this API wrapper does not ask for one either. However, this may change in the future. If it does, semantic versioning will be respected.
+No, you do not. Yahoo Weather currently does not require an API key to access most of its content, so this API wrapper does not require one either. Please be respectful of this power. 
+
+The requirement for an API key may change in the future. If it does, care so that semantic versioning rules are respected with respect to backwards compatibility.
 
 
 ## Requirements

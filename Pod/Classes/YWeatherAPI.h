@@ -30,9 +30,7 @@
 @class CLLocation;
 
 
-#pragma mark - STRING CONSTANTS and ENUMS
-
-/* Enums for units */
+/*  Enumerated values for units */
 typedef enum {
     MI, KM
 } YWADistanceUnit;
@@ -49,15 +47,11 @@ typedef enum {
     MPH, KMPH
 } YWASpeedUnit;
 
-/*
- *  Result keys to access objects from the wrapper's results.
- *  All objects returned are NSString* except for those explicity marked below with comments.
- */
-NSString* const kYWAIndex; // The detail asked for
+
+/*  Keys to access objects success results */
+NSString* const kYWAIndex; // May be an empty string – check the function's warning
 // Pressure trend
 NSString* const kYWAPressureTrend;
-NSString* const kYWAPressureTrendFalling;
-NSString* const kYWAPressureTrendRising;
 // Pressure
 NSString* const kYWAPressureInIN;
 NSString* const kYWAPressureInMB;
@@ -87,6 +81,9 @@ NSString* const kYWAVisibilityInKM;
 NSString* const kYWAShortDescription;
 // Long description
 NSString* const kYWALongDescription; // May contain HTML tags
+// Condition
+NSString* const kYWACondition;
+NSString* const kYWAConditionNumber;
 // Temperature
 NSString* const kYWATemperatureInF;
 NSString* const kYWATemperatureInC;
@@ -97,31 +94,43 @@ NSString* const kYWADateComponents; // NSDateCompoent with month, day, year
 // Five day forecasts array key
 NSString* const kYWAFiveDayForecasts; // NSArray containing NSDictionary
 
-/*
- *  Wind direction
- *  Use for comparisons
- */
-// Cardinals
-NSString* const kYWAWindDirectionNorth;
-NSString* const kYWAWindDirectionEast;
-NSString* const kYWAWindDirectionSouth;
-NSString* const kYWAWindDirectionWest;
+
+/*  Comparison strings for empty index
+ *  Compare with object for key kYWAIndex
+ *  Currently, the today's forecast methods and the all current conditions methods return kYWAEmptyValue for the key kYWAIndex */
+NSString* const kYWAEmptyValue;
+
+/*  Returned by the condition methods when Yahoo weather has no condition string available 
+ *  See code 3200 at https://developer.yahoo.com/weather/documentation.html#codes */
+NSString* const kYWANoDataAvailable;
+
+/*  Comparison strings for wind direction
+ *  Compare with object for key kYWAWindDirectionInCompassPoints */
+NSString* const kYWAWindDirectionN;
+NSString* const kYWAWindDirectionE;
+NSString* const kYWAWindDirectionS;
+NSString* const kYWAWindDirectionW;
 // Quadrant 1
-NSString* const kYWAWindDirectionNorthNorthEast;
-NSString* const kYWAWindDirectionNorthEast;
-NSString* const kYWAWindDirectionEastNorthEast;
+NSString* const kYWAWindDirectionNNE;
+NSString* const kYWAWindDirectionNE;
+NSString* const kYWAWindDirectionENE;
 // Quadrant 2
-NSString* const kYWAWindDirectionEastSouthEast;
-NSString* const kYWAWindDirectionSouthEast;
-NSString* const kYWAWindDirectionSouthSouthEast;
+NSString* const kYWAWindDirectionESE;
+NSString* const kYWAWindDirectionSE;
+NSString* const kYWAWindDirectionSSE;
 // Quadrant 3
-NSString* const kYWAWindDirectionSouthSouthWest;
-NSString* const kYWAWindDirectionSouthWest;
-NSString* const kYWAWindDirectionWestSouthWest;
+NSString* const kYWAWindDirectionSSW;
+NSString* const kYWAWindDirectionSW;
+NSString* const kYWAWindDirectionWSW;
 // Quadrant 4
-NSString* const kYWAWindDirectionWestNorthWest;
-NSString* const kYWAWindDirectionNorthWest;
-NSString* const kYWAWindDirectionNorthNorthWest;
+NSString* const kYWAWindDirectionWNW;
+NSString* const kYWAWindDirectionNW;
+NSString* const kYWAWindDirectionNNW;
+
+/*  Comparison strings for pressure trends
+ *  Compare with object for key kYWAPressureTrend */
+NSString* const kYWAPressureTrendFalling;
+NSString* const kYWAPressureTrendRising;
 
 
 @interface YWeatherAPI : NSObject
@@ -223,7 +232,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                         failure:(void (^)(id response, NSError* error))failure;
 
 
-/** @name Forecast data for next five days */
+/** @name Forecast data for the next five days */
 
 /**
  *  Gets forecast information for the next five days starting today and includes low and high temperatures and a short description
@@ -296,6 +305,146 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                          success:(void (^)(NSDictionary* result))success
                          failure:(void (^)(id response, NSError* error))failure;
 
+/** @name Every single current weather condition */
+
+/**
+ *  Gets all the current weather conditions
+ *
+ *  @param woeid   Coordinate to get weatjer condition for
+ *  @param success Callback block that receives the result on success
+ *  @param failure Callback block that receives the bad response and error on failure
+ */
+- (void) allCurrentConditionForCoordinate:(CLLocation*)coordinate
+                                  success:(void (^)(NSDictionary* result))success
+                                  failure:(void (^)(id response, NSError* error))failure;
+
+/**
+ *  Gets all the current weather conditions
+ *
+ *  @param woeid   Location to get weatjer condition for
+ *  @param success Callback block that receives the result on success
+ *  @param failure Callback block that receives the bad response and error on failure
+ */
+- (void) allCurrentConditionsForLocation:(NSString*)location
+                                 success:(void (^)(NSDictionary* result))success
+                                 failure:(void (^)(id response, NSError* error))failure;
+
+/**
+ *  Gets all the current weather conditions
+ *
+ *  @param woeid   Yahoo WOEID to get weatjer condition for
+ *  @param success Callback block that receives the result on success
+ *  @param failure Callback block that receives the bad response and error on failure
+ */
+- (void) allCurrentConditionsForWOEID:(NSString*)woeid
+                              success:(void (^)(NSDictionary* result))success
+                              failure:(void (^)(id response, NSError* error))failure;
+
+/** @name Current weather descriptions */
+
+/**
+ *  Gets the weather condition string
+ *
+ *  @param location   Coordinate to get weather condition for
+ *  @param success    Callback block that receives the result on success
+ *  @param failure    Callback block that receives the bad response and error on failure
+ *  @see https://developer.yahoo.com/weather/documentation.html#codes
+ */
+- (void) conditionCodeForCoordinate:(CLLocation*)coordinate
+                            success:(void (^)(NSDictionary*))success
+                            failure:(void (^)(id response, NSError* error))failure;
+
+/**
+ *  Gets the weather condition string
+ *
+ *  @param location   Location to get weather condition for
+ *  @param success    Callback block that receives the result on success
+ *  @param failure    Callback block that receives the bad response and error on failure
+ *  @see https://developer.yahoo.com/weather/documentation.html#codes
+ */
+- (void) conditionCodeForLocation:(NSString*)location
+                          success:(void (^)(NSDictionary*))success
+                          failure:(void (^)(id response, NSError* error))failure;
+
+/**
+ *  Gets the weather condition string
+ *
+ *  @param woeid   Yahoo WOEID to get weather condition for
+ *  @param success Callback block that receives the result on success
+ *  @param failure Callback block that receives the bad response and error on failure
+ *  @see https://developer.yahoo.com/weather/documentation.html#codes
+ */
+- (void) conditionCodeForWOIED:(NSString*)woeid
+                       success:(void (^)(NSDictionary*))success
+                       failure:(void (^)(id response, NSError* error))failure;
+
+
+/**
+ *  Returns a long description of the weather for the current day
+ *
+ *  @param coordinate Coordinate to get long description for
+ *  @param success    Callback block that receives the result on success
+ *  @param failure    Callback block that receives the bad response and error on failure
+ */
+- (void) longDescriptionForCoordinate:(CLLocation*)coordinate
+                              success:(void (^)(NSDictionary* result))success
+                              failure:(void (^)(id response, NSError* error))failure;
+
+/**
+ *  Returns a long description of the weather for the current day
+ *
+ *  @param location Location to get long description for
+ *  @param success  Callback block that receives the result on success
+ *  @param failure  Callback block that receives the bad response and error on failure
+ */
+- (void) longDescriptionForLocation:(NSString*)location
+                            success:(void (^)(NSDictionary* result))success
+                            failure:(void (^)(id response, NSError* error))failure;
+
+/**
+ *  Returns a long description of the weather for the current day
+ *
+ *  @param woeid   Yahoo WOEID to get long description for
+ *  @param success Callback block that receives the result on success
+ *  @param failure Callback block that receives the bad response and error on failure
+ */
+- (void) longDescriptionForWOEID:(NSString*)woeid
+                         success:(void (^)(NSDictionary* result))success
+                         failure:(void (^)(id response, NSError* error))failure;
+
+
+/**
+ *  Returns a short description of the weather for the current day
+ *
+ *  @param coordinate Coordinate to get short description for
+ *  @param success    Callback block that receives the result on success
+ *  @param failure    Callback block that receives the bad response and error on failure
+ */
+- (void) shortDescriptionForCoordinate:(CLLocation*)coordinate
+                               success:(void (^)(NSDictionary* result))success
+                               failure:(void (^)(id response, NSError* error))failure;
+
+/**
+ *  Returns a short description of the weather for the current day
+ *
+ *  @param location Location to get short description for
+ *  @param success  Callback block that receives the result on success
+ *  @param failure  Callback block that receives the bad response and error on failure
+ */
+- (void) shortDescriptionForLocation:(NSString*)location
+                             success:(void (^)(NSDictionary* result))success
+                             failure:(void (^)(id response, NSError* error))failure;
+
+/**
+ *  Returns a short description of the weather for the current day
+ *
+ *  @param woeid   Yahoo WOEID to get short description for
+ *  @param success Callback block that receives the result on success
+ *  @param failure Callback block that receives the bad response and error on failure
+ */
+- (void) shortDescriptionForWOEID:(NSString*)woeid
+                          success:(void (^)(NSDictionary* result))success
+                          failure:(void (^)(id response, NSError* error))failure;
 
 
 /** @name Current temperature data */
@@ -371,76 +520,6 @@ NSString* const kYWAWindDirectionNorthNorthWest;
              temperatureUnit:(YWATemperatureUnit)temperatureUnit
                      success:(void (^)(NSDictionary* result))success
                      failure:(void (^)(id response, NSError* error))failure;
-
-
-/** @name Current weather descriptions */
-
-/**
- *  Returns a long description of the weather for the current day
- *
- *  @param coordinate Coordinate to get long description for
- *  @param success    Callback block that receives the result on success
- *  @param failure    Callback block that receives the bad response and error on failure
- */
-- (void) longDescriptionForCoordinate:(CLLocation*)coordinate
-                              success:(void (^)(NSDictionary* result))success
-                              failure:(void (^)(id response, NSError* error))failure;
-
-/**
- *  Returns a long description of the weather for the current day
- *
- *  @param location Location to get long description for
- *  @param success  Callback block that receives the result on success
- *  @param failure  Callback block that receives the bad response and error on failure
- */
-- (void) longDescriptionForLocation:(NSString*)location
-                            success:(void (^)(NSDictionary* result))success
-                            failure:(void (^)(id response, NSError* error))failure;
-
-/**
- *  Returns a long description of the weather for the current day
- *
- *  @param woeid   Yahoo WOEID to get long description for
- *  @param success Callback block that receives the result on success
- *  @param failure Callback block that receives the bad response and error on failure
- */
-- (void) longDescriptionForWOEID:(NSString*)woeid
-                         success:(void (^)(NSDictionary* result))success
-                         failure:(void (^)(id response, NSError* error))failure;
-
-
-/**
- *  Returns a short description of the weather for the current day
- *
- *  @param coordinate Coordinate to get short description for
- *  @param success    Callback block that receives the result on success
- *  @param failure    Callback block that receives the bad response and error on failure
- */
-- (void) shortDescriptionForCoordinate:(CLLocation*)coordinate
-                               success:(void (^)(NSDictionary* result))success
-                               failure:(void (^)(id response, NSError* error))failure;
-
-/**
- *  Returns a short description of the weather for the current day
- *
- *  @param location Location to get short description for
- *  @param success  Callback block that receives the result on success
- *  @param failure  Callback block that receives the bad response and error on failure
- */
-- (void) shortDescriptionForLocation:(NSString*)location
-                             success:(void (^)(NSDictionary* result))success
-                             failure:(void (^)(id response, NSError* error))failure;
-
-/**
- *  Returns a short description of the weather for the current day
- *
- *  @param woeid   Yahoo WOEID to get short description for
- *  @param success Callback block that receives the result on success
- *  @param failure Callback block that receives the bad response and error on failure
- */
-- (void) shortDescriptionForWOEID:(NSString*)woeid
-                          success:(void (^)(NSDictionary* result))success
-                          failure:(void (^)(id response, NSError* error))failure;
 
 
 /** @name Current pressure data */
@@ -943,7 +1022,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
 - (void) removeCachedResultsForLocation: (NSString*) location;
 
 
-/** @name Converting between geographical formats */
+/** @name Converting between geographical location formats */
 
 /**
  *  Returns a natural-language location string by reverse geocoding a coordinate
@@ -969,7 +1048,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
 
 
 
-/** @name Converting weather units */
+/** @name Converting between other units */
 
 /**
  *  Converts speed units from MPH to KMPH or vice versa.
@@ -1027,6 +1106,13 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                  from:(YWADistanceUnit)fromUnit
                 value:(double)distance;
 
-
+/**
+ *  Returns a string reperesenting the approx. compass point direction for a degree
+ *
+ *  @param degree The degree to convert, should be in the range [0 .. 360] for proper behavior
+ *
+ *  @return The compass point string
+ */
+- (NSString*) compassPointForDegree:(double) degree;
 
 @end

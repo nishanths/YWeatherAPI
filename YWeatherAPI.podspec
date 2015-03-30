@@ -1,15 +1,16 @@
 Pod::Spec.new do |s|
   s.name         = "YWeatherAPI"
-  s.version      = "0.1.3"
+  s.version      = "1.0.0"
   s.summary      = "Powerful Yahoo Weather API wrapper for iOS and Mac."
 
   s.description  = <<-DESC 
 
-  A powerful API wrapper for [Yahoo Weather](https://developer.yahoo.com/weather/) for iOS and Mac. Built on top of AFNetworking’s blocks-based architecture, it fetches responses asynchronously without any waiting on the main thread.
+  A powerful API wrapper for [Yahoo Weather](https://developer.yahoo.com/weather/) for iOS and Mac. Built on top of AFNetworking’s blocks-based architecture, it fetches responses asynchronously without any waiting on the main thread. It supports:
 
-  * Caching results with customizable expiry times
-  * Requesting forecasts by natural-language location strings, `CLLocation` coordinates, and Yahoo WOEIDs.
-  * Customizing default temperature, pressure, speed, and distance return units
+
+  * Caching results with customizable expiry times,
+  * Requesting forecasts by natural-language location strings, `CLLocation` coordinates, and Yahoo WOEIDs,
+  * Customizing default temperature, pressure, speed, and distance return units.
                    DESC
 
   s.homepage     = "https://github.com/nishanths/YWeatherAPI"
