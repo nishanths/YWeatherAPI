@@ -126,6 +126,10 @@ NSString* const kYWAWindDirectionNorthNorthWest;
 
 @interface YWeatherAPI : NSObject
 
+///---------------------
+/// @name Customizable properties
+///---------------------
+
 @property (nonatomic, assign) BOOL cacheEnabled; // Defaults to YES
 @property (nonatomic, assign) uint cacheExpiryInMinutes; // Defaults to 15 minutes
 @property (nonatomic, assign) YWAPressureUnit defaultPressureUnit; // Defaults to IN
@@ -135,9 +139,9 @@ NSString* const kYWAWindDirectionNorthNorthWest;
 
 
 
-////////////////////////////////////////////////////////////////////////////////
-/// @name Getting the shared singleton instance
-////////////////////////////////////////////////////////////////////////////////
+///---------------------
+/// @name Singleton instance
+///---------------------
 
 /**
  *  Returns the singleton shared manager object
@@ -148,9 +152,9 @@ NSString* const kYWAWindDirectionNorthNorthWest;
 
 
 
-////////////////////////////////////////////////////////////////////////////////
-/// @name Getting forecast information
-////////////////////////////////////////////////////////////////////////////////
+///---------------------
+/// @name Forecast data for the day
+///---------------------
 
 #pragma mark - TODAY'S FORECAST by COORDINATE, LOCATION, WOEID
 
@@ -227,6 +231,10 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                         failure:(void (^)(id response, NSError* error))failure;
 
 
+///---------------------
+/// @name Forecast data for next five days
+///---------------------
+
 #pragma mark - FIVE DAY FORECAST by COORDINATE, LOCATION, WOEID
 
 /**
@@ -302,9 +310,9 @@ NSString* const kYWAWindDirectionNorthNorthWest;
 
 
 
-////////////////////////////////////////////////////////////////////////////////
-/// @name Getting current weather conditions
-////////////////////////////////////////////////////////////////////////////////
+///---------------------
+/// @name Current temperature data
+///---------------------
 
 #pragma mark - TEMPERATURE by COORDINATE, LOCATION, WOEID
 
@@ -380,6 +388,9 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                      success:(void (^)(NSDictionary* result))success
                      failure:(void (^)(id response, NSError* error))failure;
 
+///---------------------
+/// @name Current weather descriptions
+///---------------------
 
 #pragma mark - LONG DESCRIPTION by COORDINATE, LOCATION, WOEID
 
@@ -453,6 +464,10 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                           failure:(void (^)(id response, NSError* error))failure;
 
 
+///---------------------
+/// @name Current pressure data
+///---------------------
+
 #pragma mark - PRESSURE TREND by COORDINATE, LOCATION, WOEID
 
 /**
@@ -488,6 +503,83 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                        success:(void (^)(NSDictionary* result))success
                        failure:(void (^)(id response, NSError* error))failure;
 
+
+#pragma mark - PRESSURE by COORDINATE, LOCATION, WOEID (optional: YWAPressureUnit)
+
+/**
+ *  Returns the current pressure
+ *
+ *  @param coordinate Coordinate to get pressure for
+ *  @param success    Callback block that receives the result on success
+ *  @param failure    Callback block that receives the bad response and error on failure
+ */
+- (void) pressureForCoordinate:(CLLocation*)coordinate
+                       success:(void (^)(NSDictionary* result))success
+                       failure:(void (^)(id response, NSError* error))failure;
+/**
+ *  Returns the current pressure
+ *
+ *  @param coordinate   Coordinate to get pressure for
+ *  @param pressureUnit Pressure unit for the response that overrides the default
+ *  @param success      Callback block that receives the result on success
+ *  @param failure      Callback block that receives the bad response and error on failure
+ */
+- (void) pressureForCoordinate:(CLLocation*)coordinate
+                  pressureUnit:(YWAPressureUnit)pressureUnit
+                       success:(void (^)(NSDictionary* result))success
+                       failure:(void (^)(id response, NSError* error))failure;
+
+/**
+ *  Returns the current pressure
+ *
+ *  @param location Location to get pressure for
+ *  @param success  Callback block that receives the result on success
+ *  @param failure  Callback block that receives the bad response and error on failure
+ */
+- (void) pressureForLocation:(NSString*)location
+                     success:(void (^)(NSDictionary* result))success
+                     failure:(void (^)(id response, NSError* error))failure;
+
+/**
+ *  Returns the current pressure
+ *
+ *  @param location     Location to get pressure for
+ *  @param pressureUnit Pressure unit for the response that overrides the default
+ *  @param success      Callback block that receives the result on success
+ *  @param failure      Callback block that receives the bad response and error on failure
+ */
+- (void) pressureForLocation:(NSString*)location
+                pressureUnit:(YWAPressureUnit)pressureUnit
+                     success:(void (^)(NSDictionary* result))success
+                     failure:(void (^)(id response, NSError* error))failure;
+
+/**
+ *  Returns the current pressure
+ *
+ *  @param woeid   Yahoo WOEID to get pressure for
+ *  @param success Callback block that receives the result on success
+ *  @param failure Callback block that receives the bad response and error on failure
+ */
+- (void) pressureForWOEID:(NSString*)woeid
+                  success:(void (^)(NSDictionary* result))success
+                  failure:(void (^)(id response, NSError* error))failure;
+
+/**
+ *  Returns the current pressure
+ *
+ *  @param woeid        Yahoo WOEID to get pressure for
+ *  @param pressureUnit Pressure unit for the response that overrides the default
+ *  @param success      Callback block that receives the result on success
+ *  @param failure      Callback block that receives the bad response and error on failure
+ */
+- (void) pressureForWOEID:(NSString*)woeid
+             pressureUnit:(YWAPressureUnit)pressureUnit
+                  success:(void (^)(NSDictionary* result))success
+                  failure:(void (^)(id response, NSError* error))failure;
+
+///---------------------
+/// @name Current visibility data
+///---------------------
 
 #pragma mark - VISIBILITY by COORDINATE, LOCATION, WOEID (optional: YWADistanceUnit)
 
@@ -564,79 +656,9 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                     failure:(void (^)(id response, NSError* error))failure;
 
 
-#pragma mark - PRESSURE by COORDINATE, LOCATION, WOEID (optional: YWAPressureUnit)
-
-/**
- *  Returns the current pressure
- *
- *  @param coordinate Coordinate to get pressure for
- *  @param success    Callback block that receives the result on success
- *  @param failure    Callback block that receives the bad response and error on failure
- */
-- (void) pressureForCoordinate:(CLLocation*)coordinate
-                       success:(void (^)(NSDictionary* result))success
-                       failure:(void (^)(id response, NSError* error))failure;
-/**
- *  Returns the current pressure
- *
- *  @param coordinate   Coordinate to get pressure for
- *  @param pressureUnit Pressure unit for the response that overrides the default
- *  @param success      Callback block that receives the result on success
- *  @param failure      Callback block that receives the bad response and error on failure
- */
-- (void) pressureForCoordinate:(CLLocation*)coordinate
-                  pressureUnit:(YWAPressureUnit)pressureUnit
-                       success:(void (^)(NSDictionary* result))success
-                       failure:(void (^)(id response, NSError* error))failure;
-
-/**
- *  Returns the current pressure
- *
- *  @param location Location to get pressure for
- *  @param success  Callback block that receives the result on success
- *  @param failure  Callback block that receives the bad response and error on failure
- */
-- (void) pressureForLocation:(NSString*)location
-                     success:(void (^)(NSDictionary* result))success
-                     failure:(void (^)(id response, NSError* error))failure;
-
-/**
- *  Returns the current pressure
- *
- *  @param location     Location to get pressure for
- *  @param pressureUnit Pressure unit for the response that overrides the default
- *  @param success      Callback block that receives the result on success
- *  @param failure      Callback block that receives the bad response and error on failure
- */
-- (void) pressureForLocation:(NSString*)location
-                pressureUnit:(YWAPressureUnit)pressureUnit
-                     success:(void (^)(NSDictionary* result))success
-                     failure:(void (^)(id response, NSError* error))failure;
-
-/**
- *  Returns the current pressure
- *
- *  @param woeid   Yahoo WOEID to get pressure for
- *  @param success Callback block that receives the result on success
- *  @param failure Callback block that receives the bad response and error on failure
- */
-- (void) pressureForWOEID:(NSString*)woeid
-                  success:(void (^)(NSDictionary* result))success
-                  failure:(void (^)(id response, NSError* error))failure;
-
-/**
- *  Returns the current pressure
- *
- *  @param woeid        Yahoo WOEID to get pressure for
- *  @param pressureUnit Pressure unit for the response that overrides the default
- *  @param success      Callback block that receives the result on success
- *  @param failure      Callback block that receives the bad response and error on failure
- */
-- (void) pressureForWOEID:(NSString*)woeid
-             pressureUnit:(YWAPressureUnit)pressureUnit
-                  success:(void (^)(NSDictionary* result))success
-                  failure:(void (^)(id response, NSError* error))failure;
-
+///---------------------
+/// @name Current humidity data
+///---------------------
 
 #pragma mark - HUMIDITY by COORDINATE, LOCATION, WOEID
 
@@ -673,6 +695,10 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                   success:(void (^)(NSDictionary* result))success
                   failure:(void (^)(id response, NSError* error))failure;
 
+
+///---------------------
+/// @name Sunrise and sunset data
+///---------------------
 
 #pragma mark - SUNRISE by COORDINATE, LOCATION, WOEID
 
@@ -744,6 +770,10 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                 success:(void (^)(NSDictionary* result))success
                 failure:(void (^)(id response, NSError* error))failure;
 
+
+///---------------------
+/// @name Current wind conditions
+///---------------------
 
 #pragma mark - WIND CHILL by COORDINATE, LOCATION, WOEID (optional: YWATemperatureUnit)
 
@@ -933,9 +963,9 @@ NSString* const kYWAWindDirectionNorthNorthWest;
 
 
 
-////////////////////////////////////////////////////////////////////////////////
+///---------------------
 /// @name Working with the cache
-////////////////////////////////////////////////////////////////////////////////
+///---------------------
 
 #pragma mark - CACHE
 
@@ -965,9 +995,9 @@ NSString* const kYWAWindDirectionNorthNorthWest;
 
 
 
-////////////////////////////////////////////////////////////////////////////////
-/// @name Converting geographical location formats
-////////////////////////////////////////////////////////////////////////////////
+///---------------------
+/// @name Converting between geographical formats
+///---------------------
 
 #pragma mark - HELPERS
 
@@ -994,10 +1024,9 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                   failure:(void (^)(id response, NSError *error))failure;
 
 
-
-////////////////////////////////////////////////////////////////////////////////
-/// @name Converting units returned
-////////////////////////////////////////////////////////////////////////////////
+///---------------------
+/// @name Converting weather units
+///---------------------
 
 #pragma mark - CONVERSIONS
 

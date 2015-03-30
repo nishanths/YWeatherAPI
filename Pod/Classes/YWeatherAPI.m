@@ -754,6 +754,129 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 
+#pragma mark - PRESSURE by COORDINATE, LOCATION, WOEID (optional: YWAPressureUnit)
+
+/**
+ *  Returns the current pressure
+ *
+ *  @param coordinate Coordinate to get pressure for
+ *  @param success    Callback block that receives the result on success
+ *  @param failure    Callback block that receives the bad response and error on failure
+ */
+- (void) pressureForCoordinate:(CLLocation*)coordinate
+                       success:(void (^)(NSDictionary* result))success
+                       failure:(void (^)(id response, NSError* error))failure
+{
+    [self pressureForCoordinate:coordinate pressureUnit:_defaultPressureUnit success:success failure:failure];
+}
+
+/**
+ *  Returns the current pressure
+ *
+ *  @param coordinate   Coordinate to get pressure for
+ *  @param pressureUnit Pressure unit for the response that overrides the default
+ *  @param success      Callback block that receives the result on success
+ *  @param failure      Callback block that receives the bad response and error on failure
+ */
+- (void) pressureForCoordinate:(CLLocation*)coordinate
+                  pressureUnit:(YWAPressureUnit)pressureUnit
+                       success:(void (^)(NSDictionary* result))success
+                       failure:(void (^)(id response, NSError* error))failure
+{
+    [self locationStringForCoordinate:coordinate
+                              success:^(NSString* locationString) {
+                                  [self pressureForLocation:locationString pressureUnit:pressureUnit success:success failure:failure];
+                              } failure:failure
+     ];
+}
+
+/**
+ *  Returns the current pressure
+ *
+ *  @param location Location to get pressure for
+ *  @param success  Callback block that receives the result on success
+ *  @param failure  Callback block that receives the bad response and error on failure
+ */
+- (void) pressureForLocation:(NSString*)location
+                     success:(void (^)(NSDictionary* result))success
+                     failure:(void (^)(id response, NSError* error))failure
+{
+    [self pressureForLocation:location pressureUnit:_defaultPressureUnit success:success failure:failure];
+}
+
+/**
+ *  Returns the current pressure
+ *
+ *  @param location     Location to get pressure for
+ *  @param pressureUnit Pressure unit for the response that overrides the default
+ *  @param success      Callback block that receives the result on success
+ *  @param failure      Callback block that receives the bad response and error on failure
+ */
+- (void) pressureForLocation:(NSString*)location
+                pressureUnit:(YWAPressureUnit)pressureUnit
+                     success:(void (^)(NSDictionary* result))success
+                     failure:(void (^)(id response, NSError* error))failure
+{
+    [self woeidForLocation:location
+                   success:^(NSString *woeid) {
+                       [self pressureForWOEID:woeid pressureUnit:pressureUnit success:success failure:failure];
+                   } failure:failure
+     ];
+}
+
+/**
+ *  Returns the current pressure
+ *
+ *  @param woeid   Yahoo WOEID to get pressure for
+ *  @param success Callback block that receives the result on success
+ *  @param failure Callback block that receives the bad response and error on failure
+ */
+- (void) pressureForWOEID:(NSString*)woeid
+                  success:(void (^)(NSDictionary* result))success
+                  failure:(void (^)(id response, NSError* error))failure
+{
+    [self pressureForWOEID:woeid pressureUnit:_defaultPressureUnit success:success failure:failure];
+}
+
+/**
+ *  Returns the current pressure
+ *
+ *  @param woeid        Yahoo WOEID to get pressure for
+ *  @param pressureUnit Pressure unit for the response that overrides the default
+ *  @param success      Callback block that receives the result on success
+ *  @param failure      Callback block that receives the bad response and error on failure
+ */
+- (void) pressureForWOEID:(NSString*)woeid
+             pressureUnit:(YWAPressureUnit)pressureUnit
+                  success:(void (^)(NSDictionary* result))success
+                  failure:(void (^)(id response, NSError* error))failure
+{
+    [self queryResultForWOEID:woeid
+                     yqlQuery:kYWAYQLQueryAll
+                    speedUnit:_defaultSpeedUnit
+              temperatureUnit:_defaultTemperatureUnit
+                 pressureUnit:pressureUnit
+                 distanceUnit:_defaultDistanceUnit
+                      success:^(id result)
+     {
+         NSString* pressureInIN = [[result objectForKey:@"atmosphere"] objectForKey:@"pressure"];
+         NSString* pressureInMB = [NSString stringWithFormat:@"%f", [self pressureIn:MB from:IN value:[pressureInIN doubleValue]]];
+         NSString* index = (pressureUnit == IN) ? pressureInIN : pressureInMB;
+         
+         NSMutableDictionary* r = [NSMutableDictionary dictionaryWithObjects:@[index,
+                                                                               pressureInIN,
+                                                                               pressureInMB]
+                                                                     forKeys:@[kYWAIndex,
+                                                                               kYWAPressureInIN,
+                                                                               kYWAPressureInMB]];
+         [r addEntriesFromDictionary:[self locationInfoFromResult:result]];
+         success([NSDictionary dictionaryWithDictionary:r]);
+     }
+                      failure:failure
+     ];
+}
+
+
 #pragma mark - VISIBILITY by COORDINATE, LOCATION, WOEID (optional: YWADistanceUnit)
 
 /**
@@ -872,129 +995,6 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
                                                                      forKeys:@[kYWAIndex,
                                                                                kYWAVisibilityInMI,
                                                                                kYWAVisibilityInKM]];
-         [r addEntriesFromDictionary:[self locationInfoFromResult:result]];
-         success([NSDictionary dictionaryWithDictionary:r]);
-     }
-                      failure:failure
-     ];
-}
-
-
-#pragma mark - PRESSURE by COORDINATE, LOCATION, WOEID (optional: YWAPressureUnit)
-
-/**
- *  Returns the current pressure
- *
- *  @param coordinate Coordinate to get pressure for
- *  @param success    Callback block that receives the result on success
- *  @param failure    Callback block that receives the bad response and error on failure
- */
-- (void) pressureForCoordinate:(CLLocation*)coordinate
-                       success:(void (^)(NSDictionary* result))success
-                       failure:(void (^)(id response, NSError* error))failure
-{
-    [self pressureForCoordinate:coordinate pressureUnit:_defaultPressureUnit success:success failure:failure];
-}
-
-/**
- *  Returns the current pressure
- *
- *  @param coordinate   Coordinate to get pressure for
- *  @param pressureUnit Pressure unit for the response that overrides the default
- *  @param success      Callback block that receives the result on success
- *  @param failure      Callback block that receives the bad response and error on failure
- */
-- (void) pressureForCoordinate:(CLLocation*)coordinate
-                  pressureUnit:(YWAPressureUnit)pressureUnit
-                       success:(void (^)(NSDictionary* result))success
-                       failure:(void (^)(id response, NSError* error))failure
-{
-    [self locationStringForCoordinate:coordinate
-                              success:^(NSString* locationString) {
-                                  [self pressureForLocation:locationString pressureUnit:pressureUnit success:success failure:failure];
-                              } failure:failure
-     ];
-}
-
-/**
- *  Returns the current pressure
- *
- *  @param location Location to get pressure for
- *  @param success  Callback block that receives the result on success
- *  @param failure  Callback block that receives the bad response and error on failure
- */
-- (void) pressureForLocation:(NSString*)location
-                     success:(void (^)(NSDictionary* result))success
-                     failure:(void (^)(id response, NSError* error))failure
-{
-    [self pressureForLocation:location pressureUnit:_defaultPressureUnit success:success failure:failure];
-}
-
-/**
- *  Returns the current pressure
- *
- *  @param location     Location to get pressure for
- *  @param pressureUnit Pressure unit for the response that overrides the default
- *  @param success      Callback block that receives the result on success
- *  @param failure      Callback block that receives the bad response and error on failure
- */
-- (void) pressureForLocation:(NSString*)location
-                pressureUnit:(YWAPressureUnit)pressureUnit
-                     success:(void (^)(NSDictionary* result))success
-                     failure:(void (^)(id response, NSError* error))failure
-{
-    [self woeidForLocation:location
-                   success:^(NSString *woeid) {
-                       [self pressureForWOEID:woeid pressureUnit:pressureUnit success:success failure:failure];
-                   } failure:failure
-     ];
-}
-
-/**
- *  Returns the current pressure
- *
- *  @param woeid   Yahoo WOEID to get pressure for
- *  @param success Callback block that receives the result on success
- *  @param failure Callback block that receives the bad response and error on failure
- */
-- (void) pressureForWOEID:(NSString*)woeid
-                  success:(void (^)(NSDictionary* result))success
-                  failure:(void (^)(id response, NSError* error))failure
-{
-    [self pressureForWOEID:woeid pressureUnit:_defaultPressureUnit success:success failure:failure];
-}
-
-/**
- *  Returns the current pressure
- *
- *  @param woeid        Yahoo WOEID to get pressure for
- *  @param pressureUnit Pressure unit for the response that overrides the default
- *  @param success      Callback block that receives the result on success
- *  @param failure      Callback block that receives the bad response and error on failure
- */
-- (void) pressureForWOEID:(NSString*)woeid
-             pressureUnit:(YWAPressureUnit)pressureUnit
-                  success:(void (^)(NSDictionary* result))success
-                  failure:(void (^)(id response, NSError* error))failure
-{
-    [self queryResultForWOEID:woeid
-                     yqlQuery:kYWAYQLQueryAll
-                    speedUnit:_defaultSpeedUnit
-              temperatureUnit:_defaultTemperatureUnit
-                 pressureUnit:pressureUnit
-                 distanceUnit:_defaultDistanceUnit
-                      success:^(id result)
-     {
-         NSString* pressureInIN = [[result objectForKey:@"atmosphere"] objectForKey:@"pressure"];
-         NSString* pressureInMB = [NSString stringWithFormat:@"%f", [self pressureIn:MB from:IN value:[pressureInIN doubleValue]]];
-         NSString* index = (pressureUnit == IN) ? pressureInIN : pressureInMB;
-         
-         NSMutableDictionary* r = [NSMutableDictionary dictionaryWithObjects:@[index,
-                                                                               pressureInIN,
-                                                                               pressureInMB]
-                                                                     forKeys:@[kYWAIndex,
-                                                                               kYWAPressureInIN,
-                                                                               kYWAPressureInMB]];
          [r addEntriesFromDictionary:[self locationInfoFromResult:result]];
          success([NSDictionary dictionaryWithDictionary:r]);
      }

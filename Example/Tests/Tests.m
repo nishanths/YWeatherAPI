@@ -61,14 +61,16 @@ describe(@"YWeatherAPI", ^{
         
         [[YWeatherAPI sharedManager] temperatureForCoordinate:(CLLocation*)austinTexas
                                               temperatureUnit:(YWATemperatureUnit)C
-                                                      success:^(NSDictionary* result) {
-                                                          NSString* temperatureAskedFor = [result objectForKey:kYWAIndex];
-                                                          expect([temperatureAskedFor length]).to.beGreaterThan(@0);
-                                                          expect([temperatureAskedFor doubleValue]).to.beInTheRangeOf(@-30, @50);
-                                                      }
-                                                      failure:^(id response, NSError* error) {
-                                                          expect(YES).to.beFalsy();
-                                                      }];
+                                                      success:^(NSDictionary* result)
+         {
+             NSString* temperatureAskedFor = [result objectForKey:kYWAIndex];
+             expect([temperatureAskedFor length]).to.beGreaterThan(@0);
+             expect([temperatureAskedFor doubleValue]).to.beInTheRangeOf(@-30, @50);
+         }
+                                                      failure:^(id response, NSError* error)
+         {
+             expect(YES).to.beFalsy();
+         }];
     });
     
     it(@"returns the correct today date for forecasts", ^{
