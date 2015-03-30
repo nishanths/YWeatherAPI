@@ -82,12 +82,12 @@ The result in the success callback in the example is the NSDictionary object:
 {
     city = "Redwood City"; // access using kYWACity or @"city"
     country = "United States"; // kYWACountry
-    index = "72"; // kYWAIndex
+    index = 72; // kYWAIndex
     latitude = "37.5"; // kYWALatitude 
     longitude = "-122.23"; // kYWALongitude
-    region = "CA"; // kYWARegion
+    region = CA; // kYWARegion
     temperatureInC = "22.22"; // kYWATemperatureInC
-    temperatureInF = "72"; // kYWATemperatureInF
+    temperatureInF = 72; // kYWATemperatureInF
 }
 ```
 
@@ -113,7 +113,7 @@ Customize the default weather units to be returned, enable caching of results, s
 
 ## Documentation
 
-The full documentation is at [CocoaDocs](http://cocoadocs.org/docsets/YWeatherAPI/0.1.2/Classes/YWeatherAPI.html).
+The full documentation is at [CocoaDocs](http://cocoadocs.org/docsets/YWeatherAPI/0.1.3/Classes/YWeatherAPI.html).
 
 ## FAQs
 
