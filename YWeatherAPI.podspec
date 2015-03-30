@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "YWeatherAPI"
-  s.version      = "0.1.1"
+  s.version      = "0.1.2"
   s.summary      = "Powerful Yahoo Weather API wrapper for iOS and Mac."
 
   s.description  = <<-DESC

@@ -126,9 +126,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
 
 @interface YWeatherAPI : NSObject
 
-///---------------------
-/// @name Customizable properties
-///---------------------
+/** @name Customizable properties */
 
 @property (nonatomic, assign) BOOL cacheEnabled; // Defaults to YES
 @property (nonatomic, assign) uint cacheExpiryInMinutes; // Defaults to 15 minutes
@@ -138,10 +136,8 @@ NSString* const kYWAWindDirectionNorthNorthWest;
 @property (nonatomic, assign) YWATemperatureUnit defaultTemperatureUnit; // Defaults to F
 
 
+/** @name Singleton instance */
 
-///---------------------
-/// @name Singleton instance
-///---------------------
 
 /**
  *  Returns the singleton shared manager object
@@ -151,12 +147,8 @@ NSString* const kYWAWindDirectionNorthNorthWest;
 + (instancetype)sharedManager;
 
 
+/** @name Forecast data for the day */
 
-///---------------------
-/// @name Forecast data for the day
-///---------------------
-
-#pragma mark - TODAY'S FORECAST by COORDINATE, LOCATION, WOEID
 
 /**
  *  Returns forecast information for the current day and includes low and high temperatures and a short description
@@ -231,11 +223,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                         failure:(void (^)(id response, NSError* error))failure;
 
 
-///---------------------
-/// @name Forecast data for next five days
-///---------------------
-
-#pragma mark - FIVE DAY FORECAST by COORDINATE, LOCATION, WOEID
+/** @name Forecast data for next five days */
 
 /**
  *  Returns forecast information for the next five days starting today and includes low and high temperatures and a short description
@@ -310,11 +298,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
 
 
 
-///---------------------
-/// @name Current temperature data
-///---------------------
-
-#pragma mark - TEMPERATURE by COORDINATE, LOCATION, WOEID
+/** @name Current temperature data */
 
 /**
  *  Returns the current temperature
@@ -388,11 +372,8 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                      success:(void (^)(NSDictionary* result))success
                      failure:(void (^)(id response, NSError* error))failure;
 
-///---------------------
-/// @name Current weather descriptions
-///---------------------
 
-#pragma mark - LONG DESCRIPTION by COORDINATE, LOCATION, WOEID
+/** @name Current weather descriptions */
 
 /**
  *  Returns a long description of the weather for the current day
@@ -428,8 +409,6 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                          failure:(void (^)(id response, NSError* error))failure;
 
 
-#pragma mark - SHORT DESCRIPTION by COORDINATE, LOCATION, WOEID
-
 /**
  *  Returns a short description of the weather for the current day
  *
@@ -464,11 +443,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                           failure:(void (^)(id response, NSError* error))failure;
 
 
-///---------------------
-/// @name Current pressure data
-///---------------------
-
-#pragma mark - PRESSURE TREND by COORDINATE, LOCATION, WOEID
+/** @name Current pressure data */
 
 /**
  *  Returns the current pressure trend
@@ -502,9 +477,6 @@ NSString* const kYWAWindDirectionNorthNorthWest;
 - (void) pressureTrendForWOEID:(NSString*)woeid
                        success:(void (^)(NSDictionary* result))success
                        failure:(void (^)(id response, NSError* error))failure;
-
-
-#pragma mark - PRESSURE by COORDINATE, LOCATION, WOEID (optional: YWAPressureUnit)
 
 /**
  *  Returns the current pressure
@@ -577,11 +549,8 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                   success:(void (^)(NSDictionary* result))success
                   failure:(void (^)(id response, NSError* error))failure;
 
-///---------------------
-/// @name Current visibility data
-///---------------------
 
-#pragma mark - VISIBILITY by COORDINATE, LOCATION, WOEID (optional: YWADistanceUnit)
+/** @name Current visibility data */
 
 /**
  *  Returns the current visibility distance
@@ -656,11 +625,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                     failure:(void (^)(id response, NSError* error))failure;
 
 
-///---------------------
-/// @name Current humidity data
-///---------------------
-
-#pragma mark - HUMIDITY by COORDINATE, LOCATION, WOEID
+/** @name Current humidity data */
 
 /**
  *  Returns the current humidity
@@ -696,11 +661,8 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                   failure:(void (^)(id response, NSError* error))failure;
 
 
-///---------------------
-/// @name Sunrise and sunset data
-///---------------------
 
-#pragma mark - SUNRISE by COORDINATE, LOCATION, WOEID
+/** @name Sunrise and sunset data */
 
 /**
  *  Returns the sunrise time for the current day
@@ -736,8 +698,6 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                  failure:(void (^)(id response, NSError* error))failure;
 
 
-#pragma mark - SUNSET by COORDINATE, LOCATION, WOEID
-
 /**
  *  Returns the sunset time for the current day
  *
@@ -771,11 +731,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                 failure:(void (^)(id response, NSError* error))failure;
 
 
-///---------------------
-/// @name Current wind conditions
-///---------------------
-
-#pragma mark - WIND CHILL by COORDINATE, LOCATION, WOEID (optional: YWATemperatureUnit)
+/** @name Current wind conditions */
 
 /**
  *  Returns the current wind chill temperature
@@ -851,8 +807,6 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                    failure:(void (^)(id response, NSError* error))failure;
 
 
-#pragma mark - WIND DIRECTION by COORDINATE, LOCATION, WOEID
-
 /**
  *  Returns the current wind direction
  *
@@ -886,8 +840,6 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                        success:(void (^)(NSDictionary* result))success
                        failure:(void (^)(id response, NSError* error))failure;
 
-
-#pragma mark - WIND SPEED by COORDINATE, LOCATION, WOEID (optional: YWASpeedUnit)
 
 /**
  *  Returns the current wind speed
@@ -963,11 +915,8 @@ NSString* const kYWAWindDirectionNorthNorthWest;
 
 
 
-///---------------------
-/// @name Working with the cache
-///---------------------
 
-#pragma mark - CACHE
+/** @name Working with the cache */
 
 /**
  *  Flushes the cache, removing all cached results
@@ -994,12 +943,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
 - (void) removeCachedResultsForLocation: (NSString*) location;
 
 
-
-///---------------------
-/// @name Converting between geographical formats
-///---------------------
-
-#pragma mark - HELPERS
+/** @name Converting between geographical formats */
 
 /**
  *  Returns a natural-language location string by reverse geocoding a coordinate
@@ -1024,11 +968,8 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                   failure:(void (^)(id response, NSError *error))failure;
 
 
-///---------------------
-/// @name Converting weather units
-///---------------------
 
-#pragma mark - CONVERSIONS
+/** @name Converting weather units */
 
 /**
  *  Converts speed units from MPH to KMPH or vice versa.
