@@ -6,6 +6,7 @@ language: objective-c
 cache: cocoapods
 podfile: Example/Podfile
 before_install:
+- gem install xcodeproj -v '~> 0.23.1'
 - gem install cocoapods # Since Travis is not always on latest version
 - pod install --project-directory=Example
 install:
