@@ -151,7 +151,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
 
 
 /**
- *  Returns forecast information for the current day and includes low and high temperatures and a short description
+ *  Gets forecast information for the current day and includes low and high temperatures and a short description
  *
  *  @param coordinate Coordinate to get today's forecast for
  *  @param success    Callback block that receives the result on success
@@ -162,7 +162,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                              failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns forecast information for the current day and includes low and high temperatures and a short description
+ *  Gets forecast information for the current day and includes low and high temperatures and a short description
  *
  *  @param coordinate      Coordinate to get today's forecast for
  *  @param temperatureUnit Temperature unit for the response that overrides the default
@@ -175,7 +175,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                              failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns forecast information for the current day and includes low and high temperatures and a short description
+ *  Gets forecast information for the current day and includes low and high temperatures and a short description
  *
  *  @param location Location to get today's forecast for
  *  @param success  Callback block that receives the result on success
@@ -186,7 +186,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                            failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns forecast information for the current day and includes low and high temperatures and a short description
+ *  Gets forecast information for the current day and includes low and high temperatures and a short description
  *
  *  @param location        Location to get today's forecast for
  *  @param temperatureUnit Temperature unit for the response that overrides the default
@@ -199,7 +199,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                            failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns forecast information for the current day and includes low and high temperatures and a short description
+ *  Gets forecast information for the current day and includes low and high temperatures and a short description
  *
  *  @param woeid   Yahoo WOEID to get today's forecast for
  *  @param success Callback block that receives the result on success
@@ -210,7 +210,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                         failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns forecast information for the current day and includes low and high temperatures and a short description
+ *  Gets forecast information for the current day and includes low and high temperatures and a short description
  *
  *  @param woeid           Yahoo WOEID to get today's forecast for
  *  @param temperatureUnit Temperature unit for the response that overrides the default
@@ -226,7 +226,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
 /** @name Forecast data for next five days */
 
 /**
- *  Returns forecast information for the next five days starting today and includes low and high temperatures and a short description
+ *  Gets forecast information for the next five days starting today and includes low and high temperatures and a short description
  *
  *  @param coordinate Coordinate to get five day forecast for
  *  @param success    Callback block that receives the result on success
@@ -237,7 +237,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                               failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns forecast information for the next five days starting today and includes low and high temperatures and a short description
+ *  Gets forecast information for the next five days starting today and includes low and high temperatures and a short description
  *
  *  @param coordinate      Coordinate to get five day forecast for
  *  @param temperatureUnit Temperature unit for the response that overrides the default
@@ -250,7 +250,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                               failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns forecast information for the next five days starting today and includes low and high temperatures and a short description
+ *  Gets forecast information for the next five days starting today and includes low and high temperatures and a short description
  *
  *  @param location Location to get five day forecast for
  *  @param success  Callback block that receives the result on success
@@ -260,7 +260,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                             success:(void (^)(NSDictionary* result))success
                             failure:(void (^)(id response, NSError* error))failure;
 /**
- *  Returns forecast information for the next five days starting today and includes low and high temperatures and a short description
+ *  Gets forecast information for the next five days starting today and includes low and high temperatures and a short description
  *
  *  @param location        Location to get five day forecast for
  *  @param temperatureUnit Temperature unit for the response that overrides the default
@@ -273,7 +273,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                             failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns forecast information for the next five days starting today and includes low and high temperatures and a short description
+ *  Gets forecast information for the next five days starting today and includes low and high temperatures and a short description
  *
  *  @param woeid   Yahoo WOEID to get five day forecast for
  *  @param success Callback block that receives the result on success
@@ -284,7 +284,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                          failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns forecast information for the next five days starting today and includes low and high temperatures and a short description
+ *  Gets forecast information for the next five days starting today and includes low and high temperatures and a short description
  *
  *  @param woeid           Yahoo WOEID to get five day forecast for
  *  @param temperatureUnit Temperature unit for the response that overrides the default
@@ -301,7 +301,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
 /** @name Current temperature data */
 
 /**
- *  Returns the current temperature
+ *  Gets the current temperature
  *
  *  @param coordinate Coordinate to get temperature for
  *  @param success    Callback block that receives the result on success
@@ -312,7 +312,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                           failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns the current temperature
+ *  Gets the current temperature
  *
  *  @param coordinate      Coordinate to get temperature for
  *  @param temperatureUnit Temperature unit for the response that overrides the default
@@ -325,7 +325,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                           failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns the current temperature
+ *  Gets the current temperature
  *
  *  @param location Location to get temperature for
  *  @param success  Callback block that receives the result on success
@@ -336,7 +336,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                         failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns the current temperature
+ *  Gets the current temperature
  *
  *  @param location        Location to get temperature for
  *  @param temperatureUnit Temperature unit for the response that overrides the default
@@ -349,7 +349,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                         failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns the current temperature
+ *  Gets the current temperature
  *
  *  @param woeid   Yahoo WOEID to get temperature for
  *  @param success Callback block that receives the result on success
@@ -360,7 +360,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                      failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns the current temperature
+ *  Gets the current temperature
  *
  *  @param woeid           Yahoo WOEID to get temperature for
  *  @param temperatureUnit Temperature unit for the response that overrides the default
@@ -446,7 +446,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
 /** @name Current pressure data */
 
 /**
- *  Returns the current pressure trend
+ *  Gets the current pressure trend
  *
  *  @param coordinate Coordinate to get pressure trend for
  *  @param success    Callback block that receives the result on success
@@ -457,7 +457,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                             failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns the current pressure trend
+ *  Gets the current pressure trend
  *
  *  @param location Location to get pressure trend for
  *  @param success  Callback block that receives the result on success
@@ -468,7 +468,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                           failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns the current pressure trend
+ *  Gets the current pressure trend
  *
  *  @param woeid   Yahoo WOEID to get pressure trend for
  *  @param success Callback block that receives the result on success
@@ -479,7 +479,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                        failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns the current pressure
+ *  Gets the current pressure
  *
  *  @param coordinate Coordinate to get pressure for
  *  @param success    Callback block that receives the result on success
@@ -489,7 +489,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                        success:(void (^)(NSDictionary* result))success
                        failure:(void (^)(id response, NSError* error))failure;
 /**
- *  Returns the current pressure
+ *  Gets the current pressure
  *
  *  @param coordinate   Coordinate to get pressure for
  *  @param pressureUnit Pressure unit for the response that overrides the default
@@ -502,7 +502,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                        failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns the current pressure
+ *  Gets the current pressure
  *
  *  @param location Location to get pressure for
  *  @param success  Callback block that receives the result on success
@@ -513,7 +513,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                      failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns the current pressure
+ *  Gets the current pressure
  *
  *  @param location     Location to get pressure for
  *  @param pressureUnit Pressure unit for the response that overrides the default
@@ -526,7 +526,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                      failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns the current pressure
+ *  Gets the current pressure
  *
  *  @param woeid   Yahoo WOEID to get pressure for
  *  @param success Callback block that receives the result on success
@@ -537,7 +537,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                   failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns the current pressure
+ *  Gets the current pressure
  *
  *  @param woeid        Yahoo WOEID to get pressure for
  *  @param pressureUnit Pressure unit for the response that overrides the default
@@ -553,7 +553,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
 /** @name Current visibility data */
 
 /**
- *  Returns the current visibility distance
+ *  Gets the current visibility distance
  *
  *  @param coordinate Coordinate to get visibility for
  *  @param success    Callback block that receives the result on success
@@ -564,7 +564,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                          failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns the current visibility distance
+ *  Gets the current visibility distance
  *
  *  @param coordinate   Coordinate to get visibility for
  *  @param distanceUnit Distance unit for the response that overrides the default
@@ -577,7 +577,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                          failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns the current visibility distance
+ *  Gets the current visibility distance
  *
  *  @param location Location to get visibility for
  *  @param success  Callback block that receives the result on success
@@ -588,7 +588,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                        failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns the current visibility distance
+ *  Gets the current visibility distance
  *
  *  @param location     Location to get visibility for
  *  @param distanceUnit Distance unit for the response that overrides the default
@@ -601,7 +601,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                        failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns the current visibility distance
+ *  Gets the current visibility distance
  *
  *  @param woeid   Yahoo WOEID to get visibility for
  *  @param success Callback block that receives the result on success
@@ -612,7 +612,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                     failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns the current visibility distance
+ *  Gets the current visibility distance
  *
  *  @param woeid        Yahoo WOEID to get visibility for
  *  @param distanceUnit Distance unit for the response that overrides the default
@@ -628,7 +628,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
 /** @name Current humidity data */
 
 /**
- *  Returns the current humidity
+ *  Gets the current humidity
  *
  *  @param coordinate Coordinate to get humidity for
  *  @param success    Callback block that receives the result on success
@@ -639,7 +639,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                        failure:(void (^)(id response, NSError *))failure;
 
 /**
- *  Returns the current humidity
+ *  Gets the current humidity
  *
  *  @param location Location to get humidity for
  *  @param success  Callback block that receives the result on success
@@ -650,7 +650,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                      failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns the current humidity
+ *  Gets the current humidity
  *
  *  @param woeid   Yahoo WOEID to get humidity for
  *  @param success Callback block that receives the result on success
@@ -665,7 +665,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
 /** @name Sunrise and sunset data */
 
 /**
- *  Returns the sunrise time for the current day
+ *  Gets the sunrise time for the current day
  *
  *  @param coordinate Coordinate to get sunrise time for
  *  @param success    Callback block that receives the result on success
@@ -676,7 +676,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                       failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns the sunrise time for the current day
+ *  Gets the sunrise time for the current day
  *
  *  @param location Location to get sunrise time for
  *  @param success  Callback block that receives the result on success
@@ -687,7 +687,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                     failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns the sunrise time for the current day
+ *  Gets the sunrise time for the current day
  *
  *  @param woeid   Yahoo WOEID to get sunrise time for
  *  @param success Callback block that receives the result on success
@@ -699,7 +699,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
 
 
 /**
- *  Returns the sunset time for the current day
+ *  Gets the sunset time for the current day
  *
  *  @param coordinate Coordinate to get sunset time for
  *  @param success    Callback block that receives the result on success
@@ -710,7 +710,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                      failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns the sunset time for the current day
+ *  Gets the sunset time for the current day
  *
  *  @param location Location to get sunset time for
  *  @param success  Callback block that receives the result on success
@@ -720,7 +720,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                    success:(void (^)(NSDictionary* result))success
                    failure:(void (^)(id response, NSError* error))failure;
 /**
- *  Returns the sunset time for the current day
+ *  Gets the sunset time for the current day
  *
  *  @param woeid   Yahoo WOEID to get sunset time for
  *  @param success Callback block that receives the result on success
@@ -734,7 +734,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
 /** @name Current wind conditions */
 
 /**
- *  Returns the current wind chill temperature
+ *  Gets the current wind chill temperature
  *
  *  @param coordinate Coordinate to get wind chill for
  *  @param success    Callback block that receives the result on success
@@ -745,7 +745,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                         failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns the current wind chill temperature
+ *  Gets the current wind chill temperature
  *
  *  @param coordinate      Coordinate to get wind chill for
  *  @param temperatureUnit Temperature unit for the response that overrides the default
@@ -758,7 +758,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                         failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns the current wind chill temperature
+ *  Gets the current wind chill temperature
  *
  *  @param location Location to get wind chill for
  *  @param success  Callback block that receives the result on success
@@ -769,7 +769,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                       failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns the current wind chill temperature
+ *  Gets the current wind chill temperature
  *
  *  @param location        Location to get wind chill for
  *  @param temperatureUnit Temperature unit for the response that overrides the default
@@ -783,7 +783,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
 
 
 /**
- *  Returns the current wind chill temperature
+ *  Gets the current wind chill temperature
  *
  *  @param woeid   Yahoo WOEID to get wind chill for
  *  @param success Callback block that receives the result on success
@@ -794,7 +794,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                    failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns the current wind chill temperature
+ *  Gets the current wind chill temperature
  *
  *  @param woeid           Yahoo WOEID to get wind chill for
  *  @param temperatureUnit Temperature unit for the response that overrides the default
@@ -808,7 +808,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
 
 
 /**
- *  Returns the current wind direction
+ *  Gets the current wind direction
  *
  *  @param coordinate Coordinate to get wind direction for
  *  @param success    Callback block that receives the result on success
@@ -819,7 +819,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                             failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns the current wind direction
+ *  Gets the current wind direction
  *
  *  @param location Location to get wind direction for
  *  @param success  Callback block that receives the result on success
@@ -830,7 +830,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                           failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns the current wind direction
+ *  Gets the current wind direction
  *
  *  @param woeid   Yahoo WOEID to get wind direction for
  *  @param success Callback block that receives the result on success
@@ -842,7 +842,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
 
 
 /**
- *  Returns the current wind speed
+ *  Gets the current wind speed
  *
  *  @param coordinate Coordinate to get wind speed for
  *  @param success    Callback block that receives the result on success
@@ -853,7 +853,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                         failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns the current wind speed
+ *  Gets the current wind speed
  *
  *  @param coordinate Coordinate to get wind speed for
  *  @param speedUnit  Speed unit for the response that overrides the default
@@ -866,7 +866,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                         failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns the current wind speed
+ *  Gets the current wind speed
  *
  *  @param location Location to get wind speed for
  *  @param success  Callback block that receives the result on success
@@ -877,7 +877,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                      failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns the current wind speed
+ *  Gets the current wind speed
  *
  *  @param location  Location to get wind speed for
  *  @param speedUnit Speed unit for the response that overrides the default
@@ -890,7 +890,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                      failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns the current wind speed
+ *  Gets the current wind speed
  *
  *  @param woeid   Yahoo WOEID to get wind speed for
  *  @param success Callback block that receives the result on success
@@ -901,7 +901,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                    failure:(void (^)(id response, NSError *error))failure;
 
 /**
- *  Returns the current wind speed
+ *  Gets the current wind speed
  *
  *  @param woeid     Yahoo WOEID to get wind speed for
  *  @param speedUnit Speed unit for the response that overrides the default
@@ -957,7 +957,7 @@ NSString* const kYWAWindDirectionNorthNorthWest;
                              failure:(void (^)(id response, NSError* error))failure;
 
 /**
- *  Returns the Yahoo WOEID for a natural-language location using Yahoo's GEO lookup
+ *  Gets the Yahoo WOEID for a natural-language location using Yahoo's GEO lookup
  *
  *  @param location Natural-language string representing a geographical location
  *  @param success  Callback block that receives the WOEID on a successful lookup

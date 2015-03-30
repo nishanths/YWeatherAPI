@@ -1,6 +1,6 @@
 # [YWeatherAPI](http://cocoadocs.org/docsets/YWeatherAPI/)
 
-A powerful API wrapper for [Yahoo Weather](https://developer.yahoo.com/weather/) for iOS and Mac.
+A powerful API wrapper for [Yahoo Weather](https://developer.yahoo.com/weather/) for iOS and Mac. Built on top of AFNetworking’s blocks-based architecture, it fetches responses asynchronously without any waiting on the main thread.
 
 [![CI Status](http://img.shields.io/travis/nishanths/YWeatherAPI.svg?style=flat)](https://travis-ci.org/Nishanth Shanmugham/YWeatherAPI)
 [![Version](https://img.shields.io/cocoapods/v/YWeatherAPI.svg?style=flat)](http://cocoapods.org/pods/YWeatherAPI)
@@ -21,7 +21,7 @@ A powerful API wrapper for [Yahoo Weather](https://developer.yahoo.com/weather/)
 
 ## Installation
 
-#### CocoaPods (Recommended)
+###### CocoaPods (Recommended)
 
 YWeatherAPI is available through [CocoaPods](http://cocoapods.org). To install it, simply add the following line to your Podfile:
 
@@ -35,38 +35,48 @@ And then from terminal, run:
 $ pod install
 ```
 
-#### Manual
+###### Manual
 
 Clone the repo and add all the files in the `Pod/Classes` directory to your Xcode target.
 
 
 ## Getting Started
 
-YWeatherAPI makes it easy to work with the Yahoo Weather API. 
+##### This section provides a quick overview to get started. For more, see [this article for plenty of examples](http://nishanths.svbtle.com/getting-started-with-yweather), or check out the [full documentation](https://github.com/nishanths/YWeatherAPI#documentation).
 
-After [installing](https://github.com/nishanths/YWeatherAPI#installation), `#import <YWeatherAPI/YWeatherAPI.h>` to get started:
+###### Include the header file
+
+```
+#import <YWeatherAPI/YWeatherAPI.h>
+``` 
+
+###### Shared Singleton
+
+Use the shared singleton to make requests:
 
 ```obj-c
-// Getting the current temperature in the default temperature unit 
-// by coordinate for Redwood City, CA
+[YWeatherAPI sharedManager];
+``` 
 
-CLLocation* coordinate = [[CLLocation alloc] initWithLatitude:37.48 longitude:122.23];
+###### Example request
 
-[[YWeatherAPI sharedManager] temperatureForCoordinate:(CLLocation*)coordinate
-                                              success:^(NSDictionary* result)
-         {
-             NSString* temperature = [result objectForKey:kYWAIndex]; 
-         }
-                                              failure:^(id response, NSError* error)
-         {
-             NSLog(@"%@", error);
-         }
+Getting the current temperature is as simple as:
+
+```obj-c
+[[YWeatherAPI sharedManager] temperatureForLocation:@"Redwood City California"
+                                            success:^(NSDictionary* result)
+    {
+        NSString* temperature = [result objectForKey:kYWAIndex]; 
+    }
+                                            failure:^(id response, NSError* error)
+    {
+        NSLog(@"%@", error);
+    }
 ];
 ```
 
-#### Success result
-
-The result in the success callback in the example above would be the following NSDictionary object:
+###### Success result 
+The result in the success callback in the example is the NSDictionary object:
 
 ```obj-c
 {
@@ -76,46 +86,38 @@ The result in the success callback in the example above would be the following N
     latitude = "37.5"; // kYWALatitude 
     longitude = "-122.23"; // kYWALongitude
     region = "CA"; // kYWARegion
-    temperatureInC = "22.222222"; // kYWATemperatureInC
+    temperatureInC = "22.22"; // kYWATemperatureInC
     temperatureInF = "72"; // kYWATemperatureInF
 }
 ```
 
-See `YWeatherAPI.h` for a complete list of keys and data types returned.
+See [`YWeatherAPI.h`](https://github.com/nishanths/YWeatherAPI/blob/master/Pod/Classes/YWeatherAPI.h) for a complete list of keys and data types.
 
 
-#### Shared Singleton
+###### Customizing Defaults
 
-Get the shared singleton by using:
-
-```obj-c
-[YWeatherAPI sharedManager];
-``` 
-#### Customizing Defaults
-
-You can customize the default weather units to be returned, enable caching of results, and set the cache expiry duration:
+Customize the default weather units to be returned, enable caching of results, set the cache expiry duration, and [more](http://nishanths.svbtle.com/getting-started-with-yweather):
 
 ```obj-c
 [YWeatherAPI sharedManager].defaultPressureUnit = MB;
 [YWeatherAPI sharedManager].cacheEnabled = YES;
 [YWeatherAPI sharedManager].cacheExpiryInMinutes = 10;
 ```
-Check out the [full documentation](https://github.com/nishanths/YWeatherAPI#documentation).
 
 ## Features
 
-* Caching results, with customizable cache expiry times
-* Looking up weather data by CLLocation, natural-language location strings, and [Yahoo WOEIDs](https://developer.yahoo.com/geo/geoplanet/guide/concepts.html)
-* Looking up weather data in customizable pressure, distance, speed, and temperature units
+* Caching results, with customizable cache expiry times.
+* Looking up weather data by CLLocation, natural-language location string, and [Yahoo WOEID](https://developer.yahoo.com/geo/geoplanet/guide/concepts.html).
+* Looking up weather data in customizable pressure, distance, speed, and temperature units.
 
 
 ## Documentation
 
-The full list of methods is at [CocoaPods Docs](http://cocoadocs.org/docsets/YWeatherAPI/).
+The full documentation is at [CocoaDocs](http://cocoadocs.org/docsets/YWeatherAPI/0.1.2/Classes/YWeatherAPI.html).
 
 ## FAQs
 
-#### Do I need an API key?
+###### Do I need an API key?
 
 No. Yahoo Weather currently does not require an API key to access most of its content, so this API wrapper does not ask for one either. However, this may change in the future. If it does, semantic versioning will be respected.
 

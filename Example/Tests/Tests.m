@@ -90,7 +90,6 @@ describe(@"YWeatherAPI", ^{
     it(@"clears the cache without throwing a tantrum", ^{
         [[YWeatherAPI sharedManager] clearCache];
     });
-    
 });
 
 SpecEnd

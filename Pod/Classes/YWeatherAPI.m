@@ -201,7 +201,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 #pragma mark - TODAY'S FORECAST by COORDINATE, LOCATION, WOEID
 
 /**
- *  Returns forecast information for the current day and includes low and high temperatures and a short description
+ *  Gets forecast information for the current day and includes low and high temperatures and a short description
  *
  *  @param coordinate Coordinate to get today's forecast for
  *  @param success    Callback block that receives the result on success
@@ -215,7 +215,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns forecast information for the current day and includes low and high temperatures and a short description
+ *  Gets forecast information for the current day and includes low and high temperatures and a short description
  *
  *  @param coordinate      Coordinate to get today's forecast for
  *  @param temperatureUnit Temperature unit for the response that overrides the default
@@ -236,7 +236,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns forecast information for the current day and includes low and high temperatures and a short description
+ *  Gets forecast information for the current day and includes low and high temperatures and a short description
  *
  *  @param location Location to get today's forecast for
  *  @param success  Callback block that receives the result on success
@@ -250,7 +250,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns forecast information for the current day and includes low and high temperatures and a short description
+ *  Gets forecast information for the current day and includes low and high temperatures and a short description
  *
  *  @param location        Location to get today's forecast for
  *  @param temperatureUnit Temperature unit for the response that overrides the default
@@ -271,7 +271,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns forecast information for the current day and includes low and high temperatures and a short description
+ *  Gets forecast information for the current day and includes low and high temperatures and a short description
  *
  *  @param woeid   Yahoo WOEID to get today's forecast for
  *  @param success Callback block that receives the result on success
@@ -285,7 +285,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns forecast information for the current day and includes low and high temperatures and a short description
+ *  Gets forecast information for the current day and includes low and high temperatures and a short description
  *
  *  @param woeid           Yahoo WOEID to get today's forecast for
  *  @param temperatureUnit Temperature unit for the response that overrides the default
@@ -321,7 +321,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 #pragma mark - FIVE DAY FORECAST by COORDINATE, LOCATION, WOEID
 
 /**
- *  Returns forecast information for the next five days starting today and includes low and high temperatures and a short description
+ *  Gets forecast information for the next five days starting today and includes low and high temperatures and a short description
  *
  *  @param coordinate Coordinate to get five day forecast for
  *  @param success    Callback block that receives the result on success
@@ -335,7 +335,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns forecast information for the next five days starting today and includes low and high temperatures and a short description
+ *  Gets forecast information for the next five days starting today and includes low and high temperatures and a short description
  *
  *  @param coordinate      Coordinate to get five day forecast for
  *  @param temperatureUnit Temperature unit for the response that overrides the default
@@ -356,7 +356,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns forecast information for the next five days starting today and includes low and high temperatures and a short description
+ *  Gets forecast information for the next five days starting today and includes low and high temperatures and a short description
  *
  *  @param location Location to get five day forecast for
  *  @param success  Callback block that receives the result on success
@@ -405,7 +405,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns forecast information for the next five days starting today and includes low and high temperatures and a short description
+ *  Gets forecast information for the next five days starting today and includes low and high temperatures and a short description
  *
  *  @param woeid           Yahoo WOEID to get five day forecast for
  *  @param temperatureUnit Temperature unit for the response that overrides the default
@@ -444,7 +444,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 #pragma mark - TEMPERATURE by COORDINATE, LOCATION, WOEID
 
 /**
- *  Returns the current temperature
+ *  Gets the current temperature
  *
  *  @param coordinate Coordinate to get temperature for
  *  @param success    Callback block that receives the result on success
@@ -458,7 +458,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns the current temperature
+ *  Gets the current temperature
  *
  *  @param coordinate      Coordinate to get temperature for
  *  @param temperatureUnit Temperature unit for the response that overrides the default
@@ -477,7 +477,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns the current temperature
+ *  Gets the current temperature
  *
  *  @param location Location to get temperature for
  *  @param success  Callback block that receives the result on success
@@ -491,7 +491,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns the current temperature
+ *  Gets the current temperature
  *
  *  @param location        Location to get temperature for
  *  @param temperatureUnit Temperature unit for the response that overrides the default
@@ -510,7 +510,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns the current temperature
+ *  Gets the current temperature
  *
  *  @param woeid   Yahoo WOEID to get temperature for
  *  @param success Callback block that receives the result on success
@@ -524,7 +524,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns the current temperature
+ *  Gets the current temperature
  *
  *  @param woeid           Yahoo WOEID to get temperature for
  *  @param temperatureUnit Temperature unit for the response that overrides the default
@@ -692,7 +692,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 #pragma mark - PRESSURE TREND by COORDINATE, LOCATION, WOEID
 
 /**
- *  Returns the current pressure trend
+ *  Gets the current pressure trend
  *
  *  @param coordinate Coordinate to get pressure trend for
  *  @param success    Callback block that receives the result on success
@@ -709,7 +709,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns the current pressure trend
+ *  Gets the current pressure trend
  *
  *  @param location Location to get pressure trend for
  *  @param success  Callback block that receives the result on success
@@ -726,7 +726,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns the current pressure trend
+ *  Gets the current pressure trend
  *
  *  @param woeid   Yahoo WOEID to get pressure trend for
  *  @param success Callback block that receives the result on success
@@ -757,7 +757,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 #pragma mark - PRESSURE by COORDINATE, LOCATION, WOEID (optional: YWAPressureUnit)
 
 /**
- *  Returns the current pressure
+ *  Gets the current pressure
  *
  *  @param coordinate Coordinate to get pressure for
  *  @param success    Callback block that receives the result on success
@@ -771,7 +771,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns the current pressure
+ *  Gets the current pressure
  *
  *  @param coordinate   Coordinate to get pressure for
  *  @param pressureUnit Pressure unit for the response that overrides the default
@@ -791,7 +791,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns the current pressure
+ *  Gets the current pressure
  *
  *  @param location Location to get pressure for
  *  @param success  Callback block that receives the result on success
@@ -805,7 +805,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns the current pressure
+ *  Gets the current pressure
  *
  *  @param location     Location to get pressure for
  *  @param pressureUnit Pressure unit for the response that overrides the default
@@ -825,7 +825,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns the current pressure
+ *  Gets the current pressure
  *
  *  @param woeid   Yahoo WOEID to get pressure for
  *  @param success Callback block that receives the result on success
@@ -839,7 +839,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns the current pressure
+ *  Gets the current pressure
  *
  *  @param woeid        Yahoo WOEID to get pressure for
  *  @param pressureUnit Pressure unit for the response that overrides the default
@@ -880,7 +880,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 #pragma mark - VISIBILITY by COORDINATE, LOCATION, WOEID (optional: YWADistanceUnit)
 
 /**
- *  Returns the current visibility distance
+ *  Gets the current visibility distance
  *
  *  @param coordinate Coordinate to get visibility for
  *  @param success    Callback block that receives the result on success
@@ -894,7 +894,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns the current visibility distance
+ *  Gets the current visibility distance
  *
  *  @param coordinate   Coordinate to get visibility for
  *  @param distanceUnit Distance unit for the response that overrides the default
@@ -915,7 +915,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns the current visibility distance
+ *  Gets the current visibility distance
  *
  *  @param location Location to get visibility for
  *  @param success  Callback block that receives the result on success
@@ -929,7 +929,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns the current visibility distance
+ *  Gets the current visibility distance
  *
  *  @param location     Location to get visibility for
  *  @param distanceUnit Distance unit for the response that overrides the default
@@ -950,7 +950,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns the current visibility distance
+ *  Gets the current visibility distance
  *
  *  @param woeid   Yahoo WOEID to get visibility for
  *  @param success Callback block that receives the result on success
@@ -964,7 +964,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns the current visibility distance
+ *  Gets the current visibility distance
  *
  *  @param woeid        Yahoo WOEID to get visibility for
  *  @param distanceUnit Distance unit for the response that overrides the default
@@ -1006,7 +1006,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 #pragma mark - HUMIDITY by COORDINATE, LOCATION, WOEID
 
 /**
- *  Returns the current humidity
+ *  Gets the current humidity
  *
  *  @param coordinate Coordinate to get humidity for
  *  @param success    Callback block that receives the result on success
@@ -1023,7 +1023,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns the current humidity
+ *  Gets the current humidity
  *
  *  @param location Location to get humidity for
  *  @param success  Callback block that receives the result on success
@@ -1041,7 +1041,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns the current humidity
+ *  Gets the current humidity
  *
  *  @param woeid   Yahoo WOEID to get humidity for
  *  @param success Callback block that receives the result on success
@@ -1071,7 +1071,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 #pragma mark - SUNRISE by COORDINATE, LOCATION, WOEID
 
 /**
- *  Returns the sunrise time for the current day
+ *  Gets the sunrise time for the current day
  *
  *  @param coordinate Coordinate to get sunrise time for
  *  @param success    Callback block that receives the result on success
@@ -1088,7 +1088,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns the sunrise time for the current day
+ *  Gets the sunrise time for the current day
  *
  *  @param location Location to get sunrise time for
  *  @param success  Callback block that receives the result on success
@@ -1106,7 +1106,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns the sunrise time for the current day
+ *  Gets the sunrise time for the current day
  *
  *  @param woeid   Yahoo WOEID to get sunrise time for
  *  @param success Callback block that receives the result on success
@@ -1141,7 +1141,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 #pragma mark - SUNSET by COORDINATE, LOCATION, WOEID
 
 /**
- *  Returns the sunset time for the current day
+ *  Gets the sunset time for the current day
  *
  *  @param coordinate Coordinate to get sunset time for
  *  @param success    Callback block that receives the result on success
@@ -1158,7 +1158,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns the sunset time for the current day
+ *  Gets the sunset time for the current day
  *
  *  @param location Location to get sunset time for
  *  @param success  Callback block that receives the result on success
@@ -1176,7 +1176,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns the sunset time for the current day
+ *  Gets the sunset time for the current day
  *
  *  @param woeid   Yahoo WOEID to get sunset time for
  *  @param success Callback block that receives the result on success
@@ -1211,7 +1211,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 #pragma mark - WIND CHILL by COORDINATE, LOCATION, WOEID (optional: YWATemperatureUnit)
 
 /**
- *  Returns the current wind chill temperature
+ *  Gets the current wind chill temperature
  *
  *  @param coordinate Coordinate to get wind chill for
  *  @param success    Callback block that receives the result on success
@@ -1225,7 +1225,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns the current wind chill temperature
+ *  Gets the current wind chill temperature
  *
  *  @param coordinate      Coordinate to get wind chill for
  *  @param temperatureUnit Temperature unit for the response that overrides the default
@@ -1244,7 +1244,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns the current wind chill temperature
+ *  Gets the current wind chill temperature
  *
  *  @param location Location to get wind chill for
  *  @param success  Callback block that receives the result on success
@@ -1258,7 +1258,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns the current wind chill temperature
+ *  Gets the current wind chill temperature
  *
  *  @param location        Location to get wind chill for
  *  @param temperatureUnit Temperature unit for the response that overrides the default
@@ -1278,7 +1278,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns the current wind chill temperature
+ *  Gets the current wind chill temperature
  *
  *  @param woeid   Yahoo WOEID to get wind chill for
  *  @param success Callback block that receives the result on success
@@ -1292,7 +1292,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns the current wind chill temperature
+ *  Gets the current wind chill temperature
  *
  *  @param woeid           Yahoo WOEID to get wind chill for
  *  @param temperatureUnit Temperature unit for the response that overrides the default
@@ -1334,7 +1334,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 #pragma mark - WIND DIRECTION by COORDINATE, LOCATION, WOEID
 
 /**
- *  Returns the current wind direction
+ *  Gets the current wind direction
  *
  *  @param coordinate Coordinate to get wind direction for
  *  @param success    Callback block that receives the result on success
@@ -1351,7 +1351,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns the current wind direction
+ *  Gets the current wind direction
  *
  *  @param location Location to get wind direction for
  *  @param success  Callback block that receives the result on success
@@ -1369,7 +1369,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns the current wind direction
+ *  Gets the current wind direction
  *
  *  @param woeid   Yahoo WOEID to get wind direction for
  *  @param success Callback block that receives the result on success
@@ -1407,7 +1407,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 #pragma mark - WIND SPEED by COORDINATE, LOCATION, WOEID (optional: YWASpeedUnit)
 
 /**
- *  Returns the current wind speed
+ *  Gets the current wind speed
  *
  *  @param coordinate Coordinate to get wind speed for
  *  @param success    Callback block that receives the result on success
@@ -1421,7 +1421,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns the current wind speed
+ *  Gets the current wind speed
  *
  *  @param coordinate Coordinate to get wind speed for
  *  @param speedUnit  Speed unit for the response that overrides the default
@@ -1440,7 +1440,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns the current wind speed
+ *  Gets the current wind speed
  *
  *  @param location Location to get wind speed for
  *  @param success  Callback block that receives the result on success
@@ -1454,7 +1454,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns the current wind speed
+ *  Gets the current wind speed
  *
  *  @param location  Location to get wind speed for
  *  @param speedUnit Speed unit for the response that overrides the default
@@ -1474,7 +1474,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns the current wind speed
+ *  Gets the current wind speed
  *
  *  @param woeid   Yahoo WOEID to get wind speed for
  *  @param success Callback block that receives the result on success
@@ -1488,7 +1488,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns the current wind speed
+ *  Gets the current wind speed
  *
  *  @param woeid     Yahoo WOEID to get wind speed for
  *  @param speedUnit Speed unit for the response that overrides the default
@@ -1733,7 +1733,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
 }
 
 /**
- *  Returns the Yahoo WOEID for a natural-language location using Yahoo's GEO lookup
+ *  Gets the Yahoo WOEID for a natural-language location using Yahoo's GEO lookup
  *
  *  @param location Natural-language string representing a geographical location
  *  @param success  Callback block that receives the WOEID on a successful lookup
@@ -1855,7 +1855,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
         converted = 0.621371 * speed;
     }
     
-    return converted;
+    return roundf(converted * 100) / 100;
 }
 
 /**
@@ -1883,7 +1883,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
         converted = (temperature * 9/5) + 32;
     }
     
-    return converted;
+    return roundf(converted * 100) / 100;
 }
 
 /**
@@ -1911,7 +1911,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
         converted = pressure * 0.000295299830714;
     }
     
-    return converted;
+    return roundf(converted * 100) / 100;
 }
 
 /**
@@ -1939,7 +1939,7 @@ NSString* const kYWAWindDirectionNorthNorthWest = @"NNW";
         converted = distance * 0.621371;
     }
     
-    return converted;
+    return roundf(converted * 100) / 100;
 }
 
 - (NSString*) compassPointForDegree:(double) degree
