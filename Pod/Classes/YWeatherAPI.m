@@ -66,87 +66,6 @@ NSString* const kYWACacheExpiryKey = @"expiresAt";
 NSString* const kYWACacheResultKey = @"result";
 
 
-# pragma mark - KEYS FOR SUCCESS OBJECT VALUES
-
-NSString* const kYWAIndex = @"index"; // The detail asked for
-// Pressure trend
-NSString* const kYWAPressureTrend = @"pressureTrend";
-// Pressure
-NSString* const kYWAPressureInIN = @"pressureInIN";
-NSString* const kYWAPressureInMB = @"pressureInMB";
-// Location
-NSString* const kYWALatitude = @"latitude";
-NSString* const kYWALongtitude = @"longitude";
-NSString* const kYWALocation = @"location";
-NSString* const kYWACity = @"city";
-NSString* const kYWARegion = @"region";
-NSString* const kYWACountry = @"country";
-// Wind
-NSString* const kYWAWindSpeedInMPH = @"windSpeedInMPH";
-NSString* const kYWAWindSpeedInKMPH = @"windSpeedInKMPH";
-NSString* const kYWAWindDirectionInDegrees = @"windDirectionInDegrees";
-NSString* const kYWAWindDirectionInCompassPoints = @"windDirectionInCompassPoints";
-NSString* const kYWAWindChillInF = @"windChillInF";
-NSString* const kYWAWindChillInC = @"windChillInC";
-// Sunrise and Sunset
-NSString* const kYWASunriseInLocalTime = @"sunriseInLocalTime"; // NSDateComponent with hour, minute, timeZone
-NSString* const kYWASunsetInLocalTime = @"sunsetInLocalTime"; // NSDateComponent with hour, minute, timeZone
-// Humdity
-NSString* const kYWAHumidity = @"humidity";
-// Visibility
-NSString* const kYWAVisibilityInMI = @"visibilityInMI";
-NSString* const kYWAVisibilityInKM = @"visibilityInMI";
-// Short description
-NSString* const kYWAShortDescription = @"shortDescription";
-// Long description
-NSString* const kYWALongDescription = @"longDescription"; // May contain HTML tags
-// Condition
-NSString* const kYWACondition = @"condition";
-NSString* const kYWAConditionNumber = @"conditionNumber";
-// Temperature
-NSString* const kYWATemperatureInF = @"temperatureInF";
-NSString* const kYWATemperatureInC = @"temperatureInC";
-// Forecast conditions daily
-NSString* const kYWAHighTemperatureForDay = @"highTemperatureForDay";
-NSString* const kYWALowTemperatureForDay = @"lowTemperatureForDay";
-NSString* const kYWADateComponents = @"kYWADateComponents"; // NSDateCompoent with month, day, year
-// Five day forecasts array key
-NSString* const kYWAFiveDayForecasts = @"fiveDayForecasts"; // NSArray containing NSDictionarys for each day
-
-#pragma mark - COMPARISON STRINGS
-
-// Empty
-NSString* const kYWAEmptyValue = @"";
-// No data
-NSString* const kYWANoDataAvailable = @"NO DATA AVAILABLE";
-
-// Wind directions
-// Cardinals
-NSString* const kYWAWindDirectionN = @"N";
-NSString* const kYWAWindDirectionE = @"E";
-NSString* const kYWAWindDirectionS = @"S";
-NSString* const kYWAWindDirectionW = @"W";
-// Quadrant 1
-NSString* const kYWAWindDirectionNNE = @"NNE";
-NSString* const kYWAWindDirectionNE = @"NE";
-NSString* const kYWAWindDirectionENE = @"ENE";
-// Quadrant 2
-NSString* const kYWAWindDirectionESE = @"ESE";
-NSString* const kYWAWindDirectionSE = @"SE";
-NSString* const kYWAWindDirectionSSE = @"SSE";
-// Quadrant 3
-NSString* const kYWAWindDirectionSSW = @"SSW";
-NSString* const kYWAWindDirectionSW = @"SW";
-NSString* const kYWAWindDirectionWSW = @"WSW";
-// Quadrant 4
-NSString* const kYWAWindDirectionWNW = @"WNW";
-NSString* const kYWAWindDirectionNW = @"NW";
-NSString* const kYWAWindDirectionNNW = @"NNW";
-
-// Pressure trend
-NSString* const kYWAPressureTrendFalling = @"0";
-NSString* const kYWAPressureTrendRising = @"1";
-
 #pragma mark - INTERFACE
 
 @interface YWeatherAPI()
@@ -165,9 +84,9 @@ NSString* const kYWAPressureTrendRising = @"1";
 #pragma mark - INIT and SHARED SINGLETON
 
 /**
- *  Returns the singleton shared manager object
+ *  Returns the shared singleton instance
  *
- *  @return the singleton object for the class
+ *  @return The singleton object for the class
  */
 + (instancetype)sharedManager
 {
@@ -589,7 +508,7 @@ NSString* const kYWAPressureTrendRising = @"1";
                                                                                kYWAShortDescription,
                                                                                kYWALongDescription,
                                                                                kYWACondition,
-                                                                               kYWAConditionNumber,]];
+                                                                               kYWAConditionNumber]];
          
          [r setObject:kYWAEmptyValue forKey:kYWAIndex]; // defensive
          [r addEntriesFromDictionary:[self locationInfoFromResult:result]];
@@ -602,12 +521,13 @@ NSString* const kYWAPressureTrendRising = @"1";
 #pragma mark - CODE CONDITIONS by COORDINATE, LOCATION, WOEID
 
 /**
- *  Gets the weather condition string
+ *  Gets the weather condition code
  *
  *  @param location   Coordinate to get weather condition for
  *  @param success    Callback block that receives the result on success
  *  @param failure    Callback block that receives the bad response and error on failure
  *  @see https://developer.yahoo.com/weather/documentation.html#codes
+ *  @see -weatherConditionForCode:
  */
 - (void) conditionCodeForCoordinate:(CLLocation*)coordinate
                             success:(void (^)(NSDictionary*))success
@@ -619,12 +539,13 @@ NSString* const kYWAPressureTrendRising = @"1";
 }
 
 /**
- *  Gets the weather condition string
+ *  Gets the weather condition code
  *
  *  @param location   Location to get weather condition for
  *  @param success    Callback block that receives the result on success
  *  @param failure    Callback block that receives the bad response and error on failure
  *  @see https://developer.yahoo.com/weather/documentation.html#codes
+ *  @see -weatherConditionForCode:
  */
 - (void) conditionCodeForLocation:(NSString*)location
                           success:(void (^)(NSDictionary*))success
@@ -639,12 +560,13 @@ NSString* const kYWAPressureTrendRising = @"1";
 }
 
 /**
- *  Gets the weather condition string
+ *  Gets the weather condition code
  *
  *  @param woeid   Yahoo WOEID to get weather condition for
  *  @param success Callback block that receives the result on success
  *  @param failure Callback block that receives the bad response and error on failure
  *  @see https://developer.yahoo.com/weather/documentation.html#codes
+ *  @see -weatherConditionForCode:
  */
 - (void) conditionCodeForWOIED:(NSString*)woeid
                        success:(void (^)(NSDictionary*))success
@@ -661,12 +583,12 @@ NSString* const kYWAPressureTrendRising = @"1";
          NSString* numberCode = [[[result objectForKey:@"item"] objectForKey:@"condition"] objectForKey:@"code"];
          NSString* meaningfulConditionStringForCode = [self weatherConditionForCode:numberCode];
          
-         NSMutableDictionary* r = [NSMutableDictionary dictionaryWithObjects:@[meaningfulConditionStringForCode,
-                                                                               meaningfulConditionStringForCode,
-                                                                               numberCode]
+         NSMutableDictionary* r = [NSMutableDictionary dictionaryWithObjects:@[numberCode,
+                                                                               numberCode,
+                                                                               meaningfulConditionStringForCode]
                                                                      forKeys:@[kYWAIndex,
-                                                                               kYWACondition,
-                                                                               kYWAConditionNumber]];
+                                                                               kYWAConditionNumber,
+                                                                               kYWACondition]];
          [r addEntriesFromDictionary:[self locationInfoFromResult:result]];
          success([NSDictionary dictionaryWithDictionary:r]);
      }
@@ -677,7 +599,7 @@ NSString* const kYWAPressureTrendRising = @"1";
 #pragma mark - LONG DESCRIPTION by COORDINATE, LOCATION, WOEID
 
 /**
- *  Returns a long description of the weather for the current day
+ *  Gets a long description of the weather for the current day
  *
  *  @param coordinate Coordinate to get long description for
  *  @param success    Callback block that receives the result on success
@@ -694,7 +616,7 @@ NSString* const kYWAPressureTrendRising = @"1";
 }
 
 /**
- *  Returns a long description of the weather for the current day
+ *  Gets a long description of the weather for the current day
  *
  *  @param location Location to get long description for
  *  @param success  Callback block that receives the result on success
@@ -711,7 +633,7 @@ NSString* const kYWAPressureTrendRising = @"1";
 }
 
 /**
- *  Returns a long description of the weather for the current day
+ *  Gets a long description of the weather for the current day
  *
  *  @param woeid   Yahoo WOEID to get long description for
  *  @param success Callback block that receives the result on success
@@ -742,7 +664,7 @@ NSString* const kYWAPressureTrendRising = @"1";
 #pragma mark - SHORT DESCRIPTION by COORDINATE, LOCATION, WOEID
 
 /**
- *  Returns a short description of the weather for the current day
+ *  Gets a short description of the weather for the current day
  *
  *  @param coordinate Coordinate to get short description for
  *  @param success    Callback block that receives the result on success
@@ -759,7 +681,7 @@ NSString* const kYWAPressureTrendRising = @"1";
 }
 
 /**
- *  Returns a short description of the weather for the current day
+ *  Gets a short description of the weather for the current day
  *
  *  @param location Location to get short description for
  *  @param success  Callback block that receives the result on success
@@ -776,7 +698,7 @@ NSString* const kYWAPressureTrendRising = @"1";
 }
 
 /**
- *  Returns a short description of the weather for the current day
+ *  Gets a short description of the weather for the current day
  *
  *  @param woeid   Yahoo WOEID to get short description for
  *  @param success Callback block that receives the result on success
@@ -2186,7 +2108,7 @@ NSString* const kYWAPressureTrendRising = @"1";
 - (NSString*) weatherConditionForCode:(NSString*)numberCode
 {
     NSDictionary* const kYWAWeatherConditionCodes = @{@"0"  : 	@"Tornado",
-                                                      @"1"  : 	@"Tropical storm",
+                                                      @"1"  : 	@"Tropical Storm",
                                                       @"2"  : 	@"Hurricane",
                                                       @"3"  : 	@"Severe Thunderstorms",
                                                       @"4"  : 	@"Thunderstorms",

@@ -2,6 +2,7 @@
 
 A powerful API wrapper for [Yahoo Weather](https://developer.yahoo.com/weather/) for iOS and Mac. Built on top of AFNetworking’s blocks-based architecture, it fetches responses asynchronously without any waiting on the main thread.
 
+
 [![CI Status](http://img.shields.io/travis/nishanths/YWeatherAPI.svg?style=flat)](https://travis-ci.org/Nishanth Shanmugham/YWeatherAPI)
 [![Version](https://img.shields.io/cocoapods/v/YWeatherAPI.svg?style=flat)](http://cocoapods.org/pods/YWeatherAPI)
 [![License](https://img.shields.io/cocoapods/l/YWeatherAPI.svg?style=flat)](http://cocoapods.org/pods/YWeatherAPI)
@@ -58,19 +59,19 @@ Use the shared singleton to make requests:
 [YWeatherAPI sharedManager];
 ``` 
 
-###### Example request
+###### Example
 
 Getting the current temperature is as simple as:
 
 ```obj-c
-[[YWeatherAPI sharedManager] temperatureForLocation:@"Redwood City California"
+[[YWeatherAPI sharedManager] temperatureForLocation:@"Redwood City, California"
                                             success:^(NSDictionary* result)
     {
         NSString* temperature = [result objectForKey:kYWAIndex]; 
     }
                                             failure:^(id response, NSError* error)
     {
-        NSLog(@"%@", error);
+        // Yikes, something went wrong
     }
 ];
 ```
@@ -80,14 +81,14 @@ The result in the success callback in the example is this NSDictionary object:
 
 ```obj-c
 {
-    city = "Redwood City"; // access using kYWACity or @"city"
-    country = "United States"; // kYWACountry
-    index = 72; // kYWAIndex (the detail you asked for)
-    latitude = "37.5"; // kYWALatitude 
-    longitude = "-122.23"; // kYWALongitude
-    region = CA; // kYWARegion
-    temperatureInC = "22.22"; // kYWATemperatureInC
-    temperatureInF = 72; // kYWATemperatureInF
+    city = "Redwood City"; 
+    country = "United States"; 
+    index = 72; // key @"index" (the detail you asked for)
+    latitude = "37.5"; 
+    longitude = "-122.23"; 
+    region = CA; 
+    temperatureInC = "22.22";
+    temperatureInF = 72;
 }
 ```
 
@@ -121,15 +122,18 @@ The full documentation is at [CocoaDocs](http://cocoadocs.org/docsets/YWeatherAP
 
 No, you do not. Yahoo Weather currently does not require an API key to access most of its content, so this API wrapper does not require one either. Please be respectful of this power. 
 
-The requirement for an API key may change in the future. If it does, care so that semantic versioning rules are respected with respect to backwards compatibility.
+The requirement for an API key may change in the future. If it does, care will be taken to respect semantic versioning rules and backwards compatibility.
 
+###### Do I need to know YQL (Yahoo Query Language) to use this?
+
+Nope.
 
 ## Requirements
 
 YWeatherAPI works on Mac OS X 10.8+ and iOS 6.0+. 
 
 * CoreLocation is required to reverse geocode coordinates. 
-* AFNetworking is a dependency and is automatically installed along with YWeatherAPI if it isn't already installed.
+* AFNetworking ~>2.0 is a dependency and is automatically installed along with YWeatherAPI if it isn't already.
 
 ## Contributing
 
