@@ -114,7 +114,7 @@ Customize the default weather units to be returned, enable caching of results, s
 
 ## Documentation
 
-The full documentation is at [CocoaDocs](http://cocoadocs.org/docsets/YWeatherAPI/1.0.0/Classes/YWeatherAPI.html).
+The full documentation is at [CocoaDocs](http://cocoadocs.org/docsets/YWeatherAPI/1.0.2/Classes/YWeatherAPI.html).
 
 ## FAQs
 
