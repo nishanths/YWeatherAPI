@@ -331,9 +331,9 @@ NSString* const kYWAPressureTrendRising;
  *  @param success Callback block that receives the result on success
  *  @param failure Callback block that receives the bad response and error on failure
  */
-- (void) allCurrentConditionForCoordinate:(CLLocation*)coordinate
-                                  success:(void (^)(NSDictionary* result))success
-                                  failure:(void (^)(id response, NSError* error))failure;
+- (void) allCurrentConditionsForCoordinate:(CLLocation*)coordinate
+                                   success:(void (^)(NSDictionary* result))success
+                                   failure:(void (^)(id response, NSError* error))failure;
 
 /**
  *  Gets all the current weather conditions for a location

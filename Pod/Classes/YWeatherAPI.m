@@ -475,9 +475,9 @@ NSString* const kYWAPressureTrendRising = @"1";
  *  @param success Callback block that receives the result on success
  *  @param failure Callback block that receives the bad response and error on failure
  */
-- (void) allCurrentConditionForCoordinate:(CLLocation*)coordinate
-                                  success:(void (^)(NSDictionary* result))success
-                                  failure:(void (^)(id response, NSError* error))failure
+- (void) allCurrentConditionsForCoordinate:(CLLocation*)coordinate
+                                   success:(void (^)(NSDictionary* result))success
+                                   failure:(void (^)(id response, NSError* error))failure
 {
     [self locationStringForCoordinate:coordinate success:^(NSString *locationString) {
         [self allCurrentConditionsForLocation:locationString success:success failure:failure];

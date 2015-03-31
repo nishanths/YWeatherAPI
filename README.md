@@ -1,7 +1,10 @@
 # [YWeatherAPI](http://cocoadocs.org/docsets/YWeatherAPI/)
 
-A powerful API wrapper for [Yahoo Weather](https://developer.yahoo.com/weather/) for iOS and Mac. Built on top of AFNetworking’s blocks-based architecture, it fetches responses asynchronously without any waiting on the main thread.
+A powerful API wrapper for [Yahoo Weather](https://developer.yahoo.com/weather/) for iOS and Mac. Built on top of AFNetworking’s blocks-based architecture, it fetches responses asynchronously without any waiting on the main thread. 
 
+This document provides a quick overview. Check out the **[full documentation](https://github.com/nishanths/YWeatherAPI#documentation)**.
+
+The Yahoo Weather API does not require an API key.
 
 [![CI Status](http://img.shields.io/travis/nishanths/YWeatherAPI.svg?style=flat)](https://travis-ci.org/Nishanth Shanmugham/YWeatherAPI)
 [![Version](https://img.shields.io/cocoapods/v/YWeatherAPI.svg?style=flat)](http://cocoapods.org/pods/YWeatherAPI)
@@ -43,7 +46,6 @@ Clone the repo and add all the files in the `Pod/Classes` directory to your Xcod
 
 ## Getting Started
 
-##### This section provides a quick overview to get started. For more, see [this article for plenty of examples](http://nishanths.svbtle.com/getting-started-with-yweather), or check out the [full documentation](https://github.com/nishanths/YWeatherAPI#documentation).
 
 ###### Include the header file
 
@@ -67,7 +69,8 @@ Getting the current temperature is as simple as:
 [[YWeatherAPI sharedManager] temperatureForLocation:@"Redwood City, California"
                                             success:^(NSDictionary* result)
     {
-        NSString* temperature = [result objectForKey:kYWAIndex]; 
+        NSString* temperature = [result objectForKey:kYWAIndex];
+        NSLog(@"The temperature is a pleasant %@ F", temperature);
     }
                                             failure:^(id response, NSError* error)
     {
@@ -114,7 +117,7 @@ Customize the default weather units to be returned, enable caching of results, s
 
 ## Documentation
 
-The full documentation is at [CocoaDocs](http://cocoadocs.org/docsets/YWeatherAPI/1.0.2/Classes/YWeatherAPI.html).
+The full documentation is at [CocoaDocs](http://cocoadocs.org/docsets/YWeatherAPI/1.0.3/Classes/YWeatherAPI.html).
 
 ## FAQs
 
@@ -122,7 +125,7 @@ The full documentation is at [CocoaDocs](http://cocoadocs.org/docsets/YWeatherAP
 
 No, you do not. Yahoo Weather currently does not require an API key to access most of its content, so this API wrapper does not require one either. Please be respectful of this power. 
 
-The requirement for an API key may change in the future. If it does, care will be taken to respect semantic versioning rules and backwards compatibility.
+The requirement for an API key may change in the future. If it does, care will be taken to follow semantic versioning rules for backwards compatibility.
 
 ###### Do I need to know YQL (Yahoo Query Language) to use this?
 
