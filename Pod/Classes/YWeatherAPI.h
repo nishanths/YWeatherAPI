@@ -65,88 +65,88 @@ typedef enum {
  *
  *
  *  See the comments for details            */
-NSString* const kYWAIndex = @"index"; // The detail asked for
+NSString* const kYWAIndex; // The detail asked for
 // Pressure trend
-NSString* const kYWAPressureTrend = @"pressureTrend";
+NSString* const kYWAPressureTrend;
 // Pressure
-NSString* const kYWAPressureInIN = @"pressureInIN";
-NSString* const kYWAPressureInMB = @"pressureInMB";
+NSString* const kYWAPressureInIN;
+NSString* const kYWAPressureInMB;
 // Location
-NSString* const kYWALatitude = @"latitude";
-NSString* const kYWALongtitude = @"longitude";
-NSString* const kYWALocation = @"location";
-NSString* const kYWACity = @"city";
-NSString* const kYWARegion = @"region";
-NSString* const kYWACountry = @"country";
+NSString* const kYWALatitude;
+NSString* const kYWALongtitude;
+NSString* const kYWALocation;
+NSString* const kYWACity;
+NSString* const kYWARegion;
+NSString* const kYWACountry;
 // Wind
-NSString* const kYWAWindSpeedInMPH = @"windSpeedInMPH";
-NSString* const kYWAWindSpeedInKMPH = @"windSpeedInKMPH";
-NSString* const kYWAWindDirectionInDegrees = @"windDirectionInDegrees";
-NSString* const kYWAWindDirectionInCompassPoints = @"windDirectionInCompassPoints";
-NSString* const kYWAWindChillInF = @"windChillInF";
-NSString* const kYWAWindChillInC = @"windChillInC";
+NSString* const kYWAWindSpeedInMPH;
+NSString* const kYWAWindSpeedInKMPH;
+NSString* const kYWAWindDirectionInDegrees;
+NSString* const kYWAWindDirectionInCompassPoints;
+NSString* const kYWAWindChillInF;
+NSString* const kYWAWindChillInC;
 // Sunrise and Sunset
-NSString* const kYWASunriseInLocalTime = @"sunriseInLocalTime"; // NSDateComponent with hour, minute, timeZone
-NSString* const kYWASunsetInLocalTime = @"sunsetInLocalTime"; // NSDateComponent with hour, minute, timeZone
+NSString* const kYWASunriseInLocalTime; // NSDateComponent with hour, minute, timeZone
+NSString* const kYWASunsetInLocalTime; // NSDateComponent with hour, minute, timeZone
 // Humdity
-NSString* const kYWAHumidity = @"humidity";
+NSString* const kYWAHumidity;
 // Visibility
-NSString* const kYWAVisibilityInMI = @"visibilityInMI";
-NSString* const kYWAVisibilityInKM = @"visibilityInMI";
+NSString* const kYWAVisibilityInMI;
+NSString* const kYWAVisibilityInKM;
 // Short description
-NSString* const kYWAShortDescription = @"shortDescription";
+NSString* const kYWAShortDescription;
 // Long description
-NSString* const kYWALongDescription = @"longDescription"; // May contain HTML tags
+NSString* const kYWALongDescription; // May contain HTML tags
 // Condition
-NSString* const kYWACondition = @"condition";
-NSString* const kYWAConditionNumber = @"conditionNumber";
+NSString* const kYWACondition;
+NSString* const kYWAConditionNumber;
 // Temperature
-NSString* const kYWATemperatureInF = @"temperatureInF";
-NSString* const kYWATemperatureInC = @"temperatureInC";
+NSString* const kYWATemperatureInF;
+NSString* const kYWATemperatureInC;
 // Forecast conditions daily
-NSString* const kYWAHighTemperatureForDay = @"highTemperatureForDay";
-NSString* const kYWALowTemperatureForDay = @"lowTemperatureForDay";
-NSString* const kYWADateComponents = @"kYWADateComponents"; // NSDateCompoent with month, day, year
+NSString* const kYWAHighTemperatureForDay;
+NSString* const kYWALowTemperatureForDay;
+NSString* const kYWADateComponents; // NSDateCompoent with month, day, year
 // Five day forecasts array key
-NSString* const kYWAFiveDayForecasts = @"fiveDayForecasts"; // NSArray containing NSDictionary objects for each day
+NSString* const kYWAFiveDayForecasts; // NSArray containing NSDictionary objects for each day
 
 
 /*  Comparison strings for empty index
  *  Compare with object for key kYWAIndex
  *  Currently, the today's forecast methods and the all current conditions methods return kYWAEmptyValue for the key kYWAIndex */
-NSString* const kYWAEmptyValue = @"";
+NSString* const kYWAEmptyValue;
 
-/*  Returned by the condition methods when Yahoo weather has no condition string available 
+/*  Returned by the condition methods when Yahoo weather has no condition string available
  *  See code 3200 at https://developer.yahoo.com/weather/documentation.html#codes */
-NSString* const kYWANoDataAvailable = @"Not Available";
+NSString* const kYWANoDataAvailable;
 
 /*  Comparison strings for wind direction
  *  Compare with object for key kYWAWindDirectionInCompassPoints */
-NSString* const kYWAWindDirectionN = @"N";
-NSString* const kYWAWindDirectionE = @"E";
-NSString* const kYWAWindDirectionS = @"S";
-NSString* const kYWAWindDirectionW = @"W";
+NSString* const kYWAWindDirectionN;
+NSString* const kYWAWindDirectionE;
+NSString* const kYWAWindDirectionS;
+NSString* const kYWAWindDirectionW;
 // Quadrant 1
-NSString* const kYWAWindDirectionNNE = @"NNE";
-NSString* const kYWAWindDirectionNE = @"NE";
-NSString* const kYWAWindDirectionENE = @"ENE";
+NSString* const kYWAWindDirectionNNE;
+NSString* const kYWAWindDirectionNE;
+NSString* const kYWAWindDirectionENE;
 // Quadrant 2
-NSString* const kYWAWindDirectionESE = @"ESE";
-NSString* const kYWAWindDirectionSE = @"SE";
-NSString* const kYWAWindDirectionSSE = @"SSE";
+NSString* const kYWAWindDirectionESE;
+NSString* const kYWAWindDirectionSE;
+NSString* const kYWAWindDirectionSSE;
 // Quadrant 3
-NSString* const kYWAWindDirectionSSW = @"SSW";
-NSString* const kYWAWindDirectionSW = @"SW";
-NSString* const kYWAWindDirectionWSW = @"WSW";
+NSString* const kYWAWindDirectionSSW;
+NSString* const kYWAWindDirectionSW;
+NSString* const kYWAWindDirectionWSW;
 // Quadrant 4
-NSString* const kYWAWindDirectionWNW = @"WNW";
-NSString* const kYWAWindDirectionNW = @"NW";
-NSString* const kYWAWindDirectionNNW = @"NNW";
+NSString* const kYWAWindDirectionWNW;
+NSString* const kYWAWindDirectionNW;
+NSString* const kYWAWindDirectionNNW;
 
 /*  Comparison strings for pressure trends
  *  Compare with object for key kYWAPressureTrend */
-NSString* const kYWAPressureTrendFalling = @"0";
-NSString* const kYWAPressureTrendRising = @"1";
+NSString* const kYWAPressureTrendFalling;
+NSString* const kYWAPressureTrendRising;
 
 
 @interface YWeatherAPI : NSObject

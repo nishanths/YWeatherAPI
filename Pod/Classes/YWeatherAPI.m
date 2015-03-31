@@ -66,6 +66,107 @@ NSString* const kYWACacheExpiryKey = @"expiresAt";
 NSString* const kYWACacheResultKey = @"result";
 
 
+/*  Keys to access objects success results
+ *
+ *  All values returned are NSString objects except for the objects accessed using these keys:
+ *
+ *  kYWASunriseInLocalTime
+ *  kYWASunsetInLocalTime
+ *  kYWADateComponents
+ *  kYWAFiveDayForecasts
+ *
+ *
+ *  The index key provides quick access to the detail you queried for. However, it maps to an empty in the methods under these sections:
+ *
+ *  Today's forecast
+ *  All Current Weather Conditions
+ *
+ *
+ *  See the comments for details            */
+NSString* const kYWAIndex = @"index"; // The detail asked for
+// Pressure trend
+NSString* const kYWAPressureTrend = @"pressureTrend";
+// Pressure
+NSString* const kYWAPressureInIN = @"pressureInIN";
+NSString* const kYWAPressureInMB = @"pressureInMB";
+// Location
+NSString* const kYWALatitude = @"latitude";
+NSString* const kYWALongtitude = @"longitude";
+NSString* const kYWALocation = @"location";
+NSString* const kYWACity = @"city";
+NSString* const kYWARegion = @"region";
+NSString* const kYWACountry = @"country";
+// Wind
+NSString* const kYWAWindSpeedInMPH = @"windSpeedInMPH";
+NSString* const kYWAWindSpeedInKMPH = @"windSpeedInKMPH";
+NSString* const kYWAWindDirectionInDegrees = @"windDirectionInDegrees";
+NSString* const kYWAWindDirectionInCompassPoints = @"windDirectionInCompassPoints";
+NSString* const kYWAWindChillInF = @"windChillInF";
+NSString* const kYWAWindChillInC = @"windChillInC";
+// Sunrise and Sunset
+NSString* const kYWASunriseInLocalTime = @"sunriseInLocalTime"; // NSDateComponent with hour, minute, timeZone
+NSString* const kYWASunsetInLocalTime = @"sunsetInLocalTime"; // NSDateComponent with hour, minute, timeZone
+// Humdity
+NSString* const kYWAHumidity = @"humidity";
+// Visibility
+NSString* const kYWAVisibilityInMI = @"visibilityInMI";
+NSString* const kYWAVisibilityInKM = @"visibilityInMI";
+// Short description
+NSString* const kYWAShortDescription = @"shortDescription";
+// Long description
+NSString* const kYWALongDescription = @"longDescription"; // May contain HTML tags
+// Condition
+NSString* const kYWACondition = @"condition";
+NSString* const kYWAConditionNumber = @"conditionNumber";
+// Temperature
+NSString* const kYWATemperatureInF = @"temperatureInF";
+NSString* const kYWATemperatureInC = @"temperatureInC";
+// Forecast conditions daily
+NSString* const kYWAHighTemperatureForDay = @"highTemperatureForDay";
+NSString* const kYWALowTemperatureForDay = @"lowTemperatureForDay";
+NSString* const kYWADateComponents = @"kYWADateComponents"; // NSDateCompoent with month, day, year
+// Five day forecasts array key
+NSString* const kYWAFiveDayForecasts = @"fiveDayForecasts"; // NSArray containing NSDictionary objects for each day
+
+
+/*  Comparison strings for empty index
+ *  Compare with object for key kYWAIndex
+ *  Currently, the today's forecast methods and the all current conditions methods return kYWAEmptyValue for the key kYWAIndex */
+NSString* const kYWAEmptyValue = @"";
+
+/*  Returned by the condition methods when Yahoo weather has no condition string available
+ *  See code 3200 at https://developer.yahoo.com/weather/documentation.html#codes */
+NSString* const kYWANoDataAvailable = @"Not Available";
+
+/*  Comparison strings for wind direction
+ *  Compare with object for key kYWAWindDirectionInCompassPoints */
+NSString* const kYWAWindDirectionN = @"N";
+NSString* const kYWAWindDirectionE = @"E";
+NSString* const kYWAWindDirectionS = @"S";
+NSString* const kYWAWindDirectionW = @"W";
+// Quadrant 1
+NSString* const kYWAWindDirectionNNE = @"NNE";
+NSString* const kYWAWindDirectionNE = @"NE";
+NSString* const kYWAWindDirectionENE = @"ENE";
+// Quadrant 2
+NSString* const kYWAWindDirectionESE = @"ESE";
+NSString* const kYWAWindDirectionSE = @"SE";
+NSString* const kYWAWindDirectionSSE = @"SSE";
+// Quadrant 3
+NSString* const kYWAWindDirectionSSW = @"SSW";
+NSString* const kYWAWindDirectionSW = @"SW";
+NSString* const kYWAWindDirectionWSW = @"WSW";
+// Quadrant 4
+NSString* const kYWAWindDirectionWNW = @"WNW";
+NSString* const kYWAWindDirectionNW = @"NW";
+NSString* const kYWAWindDirectionNNW = @"NNW";
+
+/*  Comparison strings for pressure trends
+ *  Compare with object for key kYWAPressureTrend */
+NSString* const kYWAPressureTrendFalling = @"0";
+NSString* const kYWAPressureTrendRising = @"1";
+
+
 #pragma mark - INTERFACE
 
 @interface YWeatherAPI()
