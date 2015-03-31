@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>YWeatherAPI by nishanths</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">YWeatherAPI</h1>
+      <h2 class="project-tagline">Yahoo Weather API on iOS and Mac</h2>
+      <a href="https://github.com/nishanths/YWeatherAPI" class="btn">View on GitHub</a>
+      <a href="https://github.com/nishanths/YWeatherAPI/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/nishanths/YWeatherAPI/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="yweatherapi" class="anchor" href="#yweatherapi" aria-hidden="true"><span class="octicon octicon-link"></span></a><a href="http://cocoadocs.org/docsets/YWeatherAPI/">YWeatherAPI</a>
+</h1>
+
+<p>A powerful API wrapper for <a href="https://developer.yahoo.com/weather/">Yahoo Weather</a> for iOS and Mac. Built on top of AFNetworking’s blocks-based architecture, it fetches responses asynchronously without any waiting on the main thread. </p>
+
+<p>This document provides a quick overview. Check out the <strong><a href="https://github.com/nishanths/YWeatherAPI#documentation">full documentation</a></strong>.</p>
+
+<p>The Yahoo Weather API does not require an API key.</p>
+
+<p><a href="https://travis-ci.org/Nishanth%20Shanmugham/YWeatherAPI"><img src="http://img.shields.io/travis/nishanths/YWeatherAPI.svg?style=flat" alt="CI Status"></a>
+<a href="http://cocoapods.org/pods/YWeatherAPI"><img src="https://img.shields.io/cocoapods/v/YWeatherAPI.svg?style=flat" alt="Version"></a>
+<a href="http://cocoapods.org/pods/YWeatherAPI"><img src="https://img.shields.io/cocoapods/l/YWeatherAPI.svg?style=flat" alt="License"></a>
+<a href="http://cocoapods.org/pods/YWeatherAPI"><img src="https://img.shields.io/cocoapods/p/YWeatherAPI.svg?style=flat" alt="Platform"></a></p>
+
+<h2>
+<a id="contents" class="anchor" href="#contents" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contents</h2>
+
+<ul>
+<li><a href="https://github.com/nishanths/YWeatherAPI#installation">Installation</a></li>
+<li><a href="https://github.com/nishanths/YWeatherAPI#getting-started">Getting Started</a></li>
+<li><a href="https://github.com/nishanths/YWeatherAPI#features">Features</a></li>
+<li><a href="https://github.com/nishanths/YWeatherAPI#documentation">Documentation</a></li>
+<li><a href="https://github.com/nishanths/YWeatherAPI#faqs">FAQs</a></li>
+<li><a href="https://github.com/nishanths/YWeatherAPI#requirements">Requirements</a></li>
+<li><a href="https://github.com/nishanths/YWeatherAPI#contributing">Contributing</a></li>
+<li><a href="https://github.com/nishanths/YWeatherAPI#license">License</a></li>
+</ul>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<h5>
+<a id="cocoapods-recommended" class="anchor" href="#cocoapods-recommended" aria-hidden="true"><span class="octicon octicon-link"></span></a>CocoaPods (Recommended)</h5>
+
+<p>YWeatherAPI is available through <a href="http://cocoapods.org">CocoaPods</a>. To install it, simply add the following line to your Podfile:</p>
+
+<div class="highlight highlight-ruby"><pre>pod <span class="pl-s"><span class="pl-pds">'</span>YWeatherAPI<span class="pl-pds">'</span></span>, <span class="pl-s"><span class="pl-pds">'</span>~&gt; 1.0<span class="pl-pds">'</span></span></pre></div>
+
+<p>And then from terminal, run:</p>
+
+<div class="highlight highlight-bash"><pre>$ pod install</pre></div>
+
+<h5>
+<a id="manual" class="anchor" href="#manual" aria-hidden="true"><span class="octicon octicon-link"></span></a>Manual</h5>
+
+<p>Clone the repo and add all the files in the <code>Pod/Classes</code> directory to your Xcode target.</p>
+
+<h2>
+<a id="getting-started" class="anchor" href="#getting-started" aria-hidden="true"><span class="octicon octicon-link"></span></a>Getting Started</h2>
+
+<h5>
+<a id="include-the-header-file" class="anchor" href="#include-the-header-file" aria-hidden="true"><span class="octicon octicon-link"></span></a>Include the header file</h5>
+
+<pre><code>#import &lt;YWeatherAPI/YWeatherAPI.h&gt;
+</code></pre>
+
+<h5>
+<a id="shared-singleton" class="anchor" href="#shared-singleton" aria-hidden="true"><span class="octicon octicon-link"></span></a>Shared Singleton</h5>
+
+<p>Use the shared singleton to make requests:</p>
+
+<div class="highlight highlight-obj-c"><pre>[YWeatherAPI <span class="pl-c1">sharedManager</span>];</pre></div>
+
+<h5>
+<a id="example" class="anchor" href="#example" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example</h5>
+
+<p>Getting the current temperature is as simple as:</p>
+
+<div class="highlight highlight-obj-c"><pre>[[YWeatherAPI <span class="pl-c1">sharedManager</span>] <span class="pl-c1">temperatureForLocation:</span><span class="pl-s"><span class="pl-pds">@"</span>Redwood City, California<span class="pl-pds">"</span></span>
+                                            <span class="pl-c1">success:</span>^(<span class="pl-c1">NSDictionary</span>* result)
+    {
+        <span class="pl-c1">NSString</span>* temperature = [result <span class="pl-c1">objectForKey:</span><span class="pl-c1">kYWAIndex</span>];
+        <span class="pl-c1">NSLog</span>(<span class="pl-s"><span class="pl-pds">@"</span>The temperature is a pleasant <span class="pl-c1">%@</span> F<span class="pl-pds">"</span></span>, temperature);
+    }
+                                            <span class="pl-c1">failure:</span>^(<span class="pl-k">id</span> response, <span class="pl-c1">NSError</span>* error)
+    {
+        <span class="pl-c">// Yikes, something went wrong</span>
+    }
+];</pre></div>
+
+<h5>
+<a id="success-result" class="anchor" href="#success-result" aria-hidden="true"><span class="octicon octicon-link"></span></a>Success result</h5>
+
+<p>The result in the success callback in the example is this NSDictionary object:</p>
+
+<div class="highlight highlight-obj-c"><pre>{
+    city = <span class="pl-s"><span class="pl-pds">"</span>Redwood City<span class="pl-pds">"</span></span>; 
+    country = <span class="pl-s"><span class="pl-pds">"</span>United States<span class="pl-pds">"</span></span>; 
+    <span class="pl-c1">index</span> = <span class="pl-c1">72</span>; <span class="pl-c">// key @"index" (the detail you asked for)</span>
+    latitude = <span class="pl-s"><span class="pl-pds">"</span>37.5<span class="pl-pds">"</span></span>; 
+    longitude = <span class="pl-s"><span class="pl-pds">"</span>-122.23<span class="pl-pds">"</span></span>; 
+    region = CA; 
+    temperatureInC = <span class="pl-s"><span class="pl-pds">"</span>22.22<span class="pl-pds">"</span></span>;
+    temperatureInF = <span class="pl-c1">72</span>;
+}</pre></div>
+
+<p>See <a href="https://github.com/nishanths/YWeatherAPI/blob/master/Pod/Classes/YWeatherAPI.h"><code>YWeatherAPI.h</code></a> for a complete list of keys and data types.</p>
+
+<h5>
+<a id="customizing-defaults" class="anchor" href="#customizing-defaults" aria-hidden="true"><span class="octicon octicon-link"></span></a>Customizing Defaults</h5>
+
+<p>Customize the default weather units to be returned, enable caching of results, set the cache expiry duration, and <a href="http://nishanths.svbtle.com/getting-started-with-yweather">more</a>:</p>
+
+<div class="highlight highlight-obj-c"><pre>[YWeatherAPI <span class="pl-c1">sharedManager</span>].defaultPressureUnit = MB;
+[YWeatherAPI <span class="pl-c1">sharedManager</span>].cacheEnabled = <span class="pl-c1">YES</span>;
+[YWeatherAPI <span class="pl-c1">sharedManager</span>].cacheExpiryInMinutes = <span class="pl-c1">10</span>;</pre></div>
+
+<h2>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h2>
+
+<ul>
+<li>Caching results, with customizable cache expiry times.</li>
+<li>Looking up weather data by CLLocation, natural-language location string, and <a href="https://developer.yahoo.com/geo/geoplanet/guide/concepts.html">Yahoo WOEID</a>.</li>
+<li>Looking up weather data in customizable pressure, distance, speed, and temperature units.</li>
+</ul>
+
+<h2>
+<a id="documentation" class="anchor" href="#documentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Documentation</h2>
+
+<p>The full documentation is at <a href="http://cocoadocs.org/docsets/YWeatherAPI/1.0.3/Classes/YWeatherAPI.html">CocoaDocs</a>.</p>
+
+<h2>
+<a id="faqs" class="anchor" href="#faqs" aria-hidden="true"><span class="octicon octicon-link"></span></a>FAQs</h2>
+
+<h5>
+<a id="do-i-need-an-api-key" class="anchor" href="#do-i-need-an-api-key" aria-hidden="true"><span class="octicon octicon-link"></span></a>Do I need an API key?</h5>
+
+<p>No, you do not. Yahoo Weather currently does not require an API key to access most of its content, so this API wrapper does not require one either. Please be respectful of this power. </p>
+
+<p>The requirement for an API key may change in the future. If it does, care will be taken to follow semantic versioning rules for backwards compatibility.</p>
+
+<h5>
+<a id="do-i-need-to-know-yql-yahoo-query-language-to-use-this" class="anchor" href="#do-i-need-to-know-yql-yahoo-query-language-to-use-this" aria-hidden="true"><span class="octicon octicon-link"></span></a>Do I need to know YQL (Yahoo Query Language) to use this?</h5>
+
+<p>Nope.</p>
+
+<h2>
+<a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Requirements</h2>
+
+<p>YWeatherAPI works on Mac OS X 10.8+ and iOS 6.0+. </p>
+
+<ul>
+<li>CoreLocation is required to reverse geocode coordinates. </li>
+<li>AFNetworking ~&gt;2.0 is a dependency and is automatically installed along with YWeatherAPI if it isn't already.</li>
+</ul>
+
+<h2>
+<a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contributing</h2>
+
+<ul>
+<li>New features, bug fixes, and additional documentation and <a href="https://github.com/nishanths/YWeatherAPI/tree/master/Example/Tests">tests</a> are welcome! Please fork the repository and request to be merged into the <code>master</code> branch.</li>
+<li>Alternatively, if you have a feature request or find a bug, please let me know <a href="https://github.com/nishanths/YWeatherAPI/issues">here</a>, on <a href="https://twitter.com/nshanmugham">Twitter</a>, or <a href="mailto:nishanth.gerrard@gmail.com">email</a>.</li>
+</ul>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>YWeatherAPI is available under the MIT license. See the <a href="https://github.com/nishanths/YWeatherAPI/blob/master/LICENSE">LICENSE</a> file for more info.</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/nishanths/YWeatherAPI">YWeatherAPI</a> is maintained by <a href="https://github.com/nishanths">nishanths</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+            <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-61427501-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
+
