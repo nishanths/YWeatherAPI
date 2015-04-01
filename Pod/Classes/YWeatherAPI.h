@@ -395,7 +395,7 @@ NSString* const kYWAPressureTrendRising;
  *  @see https://developer.yahoo.com/weather/documentation.html#codes
  *  @see -weatherConditionForCode:
  */
-- (void) conditionCodeForWOIED:(NSString*)woeid
+- (void) conditionCodeForWOEID:(NSString*)woeid
                        success:(void (^)(NSDictionary*))success
                        failure:(void (^)(id response, NSError* error))failure;
 
@@ -525,7 +525,7 @@ NSString* const kYWAPressureTrendRising;
  *  @param success Callback block that receives the result on success
  *  @param failure Callback block that receives the bad response and error on failure
  */
-- (void) temperatureForWOIED:(NSString*)woeid
+- (void) temperatureForWOEID:(NSString*)woeid
                      success:(void (^)(NSDictionary* result))success
                      failure:(void (^)(id response, NSError* error))failure;
 
@@ -537,7 +537,7 @@ NSString* const kYWAPressureTrendRising;
  *  @param success         Callback block that receives the result on success
  *  @param failure         Callback block that receives the bad response and error on failure
  */
-- (void) temperatureForWOIED:(NSString*)woeid
+- (void) temperatureForWOEID:(NSString*)woeid
              temperatureUnit:(YWATemperatureUnit)temperatureUnit
                      success:(void (^)(NSDictionary* result))success
                      failure:(void (^)(id response, NSError* error))failure;
@@ -1072,7 +1072,7 @@ NSString* const kYWAPressureTrendRising;
 
 /**
  *  Converts speed units from MPH to KMPH or vice versa.
- *  For your convenience, consider setting the default speed unit or using a method that has a speed unit parameter
+ *  For your convenience, consider setting the default distance unit or using a method that has a speed unit parameter instead.
  *
  *  @param toUnit   The speed unit to convert to
  *  @param fromUnit The speed unit to convert from
@@ -1086,7 +1086,7 @@ NSString* const kYWAPressureTrendRising;
 
 /**
  *  Converts speed units from F to C or vice versa.
- *  For your convenience, consider setting the default speed unit or using a method that has a speed unit parameter
+ *  For your convenience, consider setting the default temperature unit or using a method that has a temperature unit parameter instead.
  *
  *  @param toUnit      The temperature unit to convert to
  *  @param fromUnit    The temperature unit to convert from
@@ -1100,7 +1100,7 @@ NSString* const kYWAPressureTrendRising;
 
 /**
  *  Converts speed units from IN to MN or vice versa.
- *  For your convenience, consider setting the default speed unit or using a method that has a speed unit parameter
+ *  For your convenience, consider setting the default pressure unit or using a method that has a pressure unit parameter instead.
  *
  *  @param toUnit      The pressure unit to convert to
  *  @param fromUnit    The pressure unit to convert from
@@ -1114,7 +1114,7 @@ NSString* const kYWAPressureTrendRising;
 
 /**
  *  Converts speed units from MI to KM or vice versa.
- *  For your convenience, consider setting the default speed unit or using a method that has a speed unit parameter
+ *  For your convenience, consider setting the default distance unit or using a method that has a distance unit parameter instead.
  *
  *  @param toUnit      The distance unit to convert to
  *  @param fromUnit    The distance unit to convert from

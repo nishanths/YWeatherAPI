@@ -6,7 +6,7 @@ This document provides a quick overview. Check out the **[full documentation](ht
 
 The Yahoo Weather API does not require an API key.
 
-[![CI Status](http://img.shields.io/travis/nishanths/YWeatherAPI.svg?style=flat)](https://travis-ci.org/Nishanth Shanmugham/YWeatherAPI)
+[![CI Status](http://img.shields.io/travis/nishanths/YWeatherAPI.svg?style=flat)](https://travis-ci.org/nishanths/YWeatherAPI)
 [![Version](https://img.shields.io/cocoapods/v/YWeatherAPI.svg?style=flat)](http://cocoapods.org/pods/YWeatherAPI)
 [![License](https://img.shields.io/cocoapods/l/YWeatherAPI.svg?style=flat)](http://cocoapods.org/pods/YWeatherAPI)
 [![Platform](https://img.shields.io/cocoapods/p/YWeatherAPI.svg?style=flat)](http://cocoapods.org/pods/YWeatherAPI)
@@ -100,7 +100,7 @@ See [`YWeatherAPI.h`](https://github.com/nishanths/YWeatherAPI/blob/master/Pod/C
 
 ###### Customizing Defaults
 
-Customize the default weather units to be returned, enable caching of results, set the cache expiry duration, and [more](http://nishanths.svbtle.com/getting-started-with-yweather):
+Customize the default weather units to be returned, enable caching of results, set the cache expiry duration, and more.
 
 ```obj-c
 [YWeatherAPI sharedManager].defaultPressureUnit = MB;
@@ -117,7 +117,7 @@ Customize the default weather units to be returned, enable caching of results, s
 
 ## Documentation
 
-The full documentation is at [CocoaDocs](http://cocoadocs.org/docsets/YWeatherAPI/1.0.3/Classes/YWeatherAPI.html).
+The full documentation is at [CocoaDocs](http://cocoadocs.org/docsets/YWeatherAPI/1.0.4/Classes/YWeatherAPI.html).
 
 ## FAQs
 
@@ -140,7 +140,7 @@ YWeatherAPI works on Mac OS X 10.8+ and iOS 6.0+.
 
 ## Contributing
 
-* New features, bug fixes, and additional documentation and [tests](https://github.com/nishanths/YWeatherAPI/tree/master/Example/Tests) are welcome! Please fork the repository and request to be merged into the `master` branch.
+* New features, bug fixes, and additional documentation and [tests](https://github.com/nishanths/YWeatherAPI/tree/master/Example/Tests) are welcome! Please fork the repository and request to be merged into the `master` branch. *Yes, I too like to live dangerously.*
 * Alternatively, if you have a feature request or find a bug, please let me know [here](https://github.com/nishanths/YWeatherAPI/issues), on [Twitter](https://twitter.com/nshanmugham), or [email](mailto:nishanth.gerrard@gmail.com).
 
 ## License
