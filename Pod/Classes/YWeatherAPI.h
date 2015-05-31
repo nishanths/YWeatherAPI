@@ -65,88 +65,88 @@ typedef enum {
  *
  *
  *  See the comments for details            */
-NSString* const kYWAIndex; // The detail asked for
+extern NSString* const kYWAIndex; // The detail asked for
 // Pressure trend
-NSString* const kYWAPressureTrend;
+extern NSString* const kYWAPressureTrend;
 // Pressure
-NSString* const kYWAPressureInIN;
-NSString* const kYWAPressureInMB;
+extern NSString* const kYWAPressureInIN;
+extern NSString* const kYWAPressureInMB;
 // Location
-NSString* const kYWALatitude;
-NSString* const kYWALongtitude;
-NSString* const kYWALocation;
-NSString* const kYWACity;
-NSString* const kYWARegion;
-NSString* const kYWACountry;
+extern NSString* const kYWALatitude;
+extern NSString* const kYWALongtitude;
+extern NSString* const kYWALocation;
+extern NSString* const kYWACity;
+extern NSString* const kYWARegion;
+extern NSString* const kYWACountry;
 // Wind
-NSString* const kYWAWindSpeedInMPH;
-NSString* const kYWAWindSpeedInKMPH;
-NSString* const kYWAWindDirectionInDegrees;
-NSString* const kYWAWindDirectionInCompassPoints;
-NSString* const kYWAWindChillInF;
-NSString* const kYWAWindChillInC;
+extern NSString* const kYWAWindSpeedInMPH;
+extern NSString* const kYWAWindSpeedInKMPH;
+extern NSString* const kYWAWindDirectionInDegrees;
+extern NSString* const kYWAWindDirectionInCompassPoints;
+extern NSString* const kYWAWindChillInF;
+extern NSString* const kYWAWindChillInC;
 // Sunrise and Sunset
-NSString* const kYWASunriseInLocalTime; // NSDateComponent with hour, minute, timeZone
-NSString* const kYWASunsetInLocalTime; // NSDateComponent with hour, minute, timeZone
+extern NSString* const kYWASunriseInLocalTime; // NSDateComponent with hour, minute, timeZone
+extern NSString* const kYWASunsetInLocalTime; // NSDateComponent with hour, minute, timeZone
 // Humdity
-NSString* const kYWAHumidity;
+extern NSString* const kYWAHumidity;
 // Visibility
-NSString* const kYWAVisibilityInMI;
-NSString* const kYWAVisibilityInKM;
+extern NSString* const kYWAVisibilityInMI;
+extern NSString* const kYWAVisibilityInKM;
 // Short description
-NSString* const kYWAShortDescription;
+extern NSString* const kYWAShortDescription;
 // Long description
-NSString* const kYWALongDescription; // May contain HTML tags
+extern NSString* const kYWALongDescription; // May contain HTML tags
 // Condition
-NSString* const kYWACondition;
-NSString* const kYWAConditionNumber;
+extern NSString* const kYWACondition;
+extern NSString* const kYWAConditionNumber;
 // Temperature
-NSString* const kYWATemperatureInF;
-NSString* const kYWATemperatureInC;
+extern NSString* const kYWATemperatureInF;
+extern NSString* const kYWATemperatureInC;
 // Forecast conditions daily
-NSString* const kYWAHighTemperatureForDay;
-NSString* const kYWALowTemperatureForDay;
-NSString* const kYWADateComponents; // NSDateCompoent with month, day, year
+extern NSString* const kYWAHighTemperatureForDay;
+extern NSString* const kYWALowTemperatureForDay;
+extern NSString* const kYWADateComponents; // NSDateCompoent with month, day, year
 // Five day forecasts array key
-NSString* const kYWAFiveDayForecasts; // NSArray containing NSDictionary objects for each day
+extern NSString* const kYWAFiveDayForecasts; // NSArray containing NSDictionary objects for each day
 
 
 /*  Comparison strings for empty index
  *  Compare with object for key kYWAIndex
  *  Currently, the today's forecast methods and the all current conditions methods return kYWAEmptyValue for the key kYWAIndex */
-NSString* const kYWAEmptyValue;
+extern NSString* const kYWAEmptyValue;
 
 /*  Returned by the condition methods when Yahoo weather has no condition string available
  *  See code 3200 at https://developer.yahoo.com/weather/documentation.html#codes */
-NSString* const kYWANoDataAvailable;
+extern NSString* const kYWANoDataAvailable;
 
 /*  Comparison strings for wind direction
  *  Compare with object for key kYWAWindDirectionInCompassPoints */
-NSString* const kYWAWindDirectionN;
-NSString* const kYWAWindDirectionE;
-NSString* const kYWAWindDirectionS;
-NSString* const kYWAWindDirectionW;
+extern NSString* const kYWAWindDirectionN;
+extern NSString* const kYWAWindDirectionE;
+extern NSString* const kYWAWindDirectionS;
+extern NSString* const kYWAWindDirectionW;
 // Quadrant 1
-NSString* const kYWAWindDirectionNNE;
-NSString* const kYWAWindDirectionNE;
-NSString* const kYWAWindDirectionENE;
+extern NSString* const kYWAWindDirectionNNE;
+extern NSString* const kYWAWindDirectionNE;
+extern NSString* const kYWAWindDirectionENE;
 // Quadrant 2
-NSString* const kYWAWindDirectionESE;
-NSString* const kYWAWindDirectionSE;
-NSString* const kYWAWindDirectionSSE;
+extern NSString* const kYWAWindDirectionESE;
+extern NSString* const kYWAWindDirectionSE;
+extern NSString* const kYWAWindDirectionSSE;
 // Quadrant 3
-NSString* const kYWAWindDirectionSSW;
-NSString* const kYWAWindDirectionSW;
-NSString* const kYWAWindDirectionWSW;
+extern NSString* const kYWAWindDirectionSSW;
+extern NSString* const kYWAWindDirectionSW;
+extern NSString* const kYWAWindDirectionWSW;
 // Quadrant 4
-NSString* const kYWAWindDirectionWNW;
-NSString* const kYWAWindDirectionNW;
-NSString* const kYWAWindDirectionNNW;
+extern NSString* const kYWAWindDirectionWNW;
+extern NSString* const kYWAWindDirectionNW;
+extern NSString* const kYWAWindDirectionNNW;
 
 /*  Comparison strings for pressure trends
  *  Compare with object for key kYWAPressureTrend */
-NSString* const kYWAPressureTrendFalling;
-NSString* const kYWAPressureTrendRising;
+extern NSString* const kYWAPressureTrendFalling;
+extern NSString* const kYWAPressureTrendRising;
 
 
 @interface YWeatherAPI : NSObject
