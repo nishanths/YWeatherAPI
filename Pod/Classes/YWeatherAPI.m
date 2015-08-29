@@ -2057,7 +2057,7 @@ NSString* const kYWAPressureTrendRising = @"1";
     NSString* highTemperatureInF = [forecastDayInfo objectForKey:@"high"];
     NSString* lowTemperatureInF = [forecastDayInfo objectForKey:@"low"];
     NSString* highTemperatureInC = [NSString stringWithFormat:@"%.2f", [self temperatureIn:C from:F value:[highTemperatureInF doubleValue]]];
-    NSString* lowTemperatureInC = [NSString stringWithFormat:@"%.2f", [self temperatureIn:C from:F value:[highTemperatureInF doubleValue]]];
+    NSString* lowTemperatureInC = [NSString stringWithFormat:@"%.2f", [self temperatureIn:C from:F value:[lowTemperatureInF doubleValue]]];
     NSString *indexHighTemperature, *indexLowTemperature;
     
     if (temperatureUnit == F) {
