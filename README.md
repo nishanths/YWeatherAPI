@@ -30,7 +30,7 @@ The Yahoo Weather API does not require an API key.
 YWeatherAPI is available through [CocoaPods](http://cocoapods.org). To install it, simply add the following line to your Podfile:
 
 ```ruby
-pod 'YWeatherAPI', '~> 1.0'
+pod 'YWeatherAPI'
 ```
 
 And then from terminal, run:
