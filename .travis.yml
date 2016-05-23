@@ -7,6 +7,7 @@ podfile: Example/Podfile
 before_install:
 - gem install xcodeproj -v '~> 0.23.1' --no-ri --no-rdoc
 - gem install cocoapods --no-ri --no-rdoc # Since Travis is not always on latest version
+- pod repo update
 - pod install --project-directory=Example
 install:
 - gem install xcpretty --no-rdoc --no-ri --no-document --quiet
