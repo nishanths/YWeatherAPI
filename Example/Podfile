@@ -1,9 +1,9 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
 
-target 'YWeatherAPI', :exclusive => true do
+target 'YWeatherAPI' do
   pod "YWeatherAPI", :path => "../"
 
-  pod 'Specta'
-  pod 'Expecta'
+  pod 'Specta', '~> 1.0.5'
+  pod 'Expecta', '~> 1.0.5'
 end

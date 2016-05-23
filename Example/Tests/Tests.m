@@ -36,6 +36,10 @@
 SpecBegin(YWeatherAPI)
 
 describe(@"YWeatherAPI", ^{
+    beforeAll(^{
+        [Expecta setAsynchronousTestTimeout:10];
+    });
+    
     it(@"returns the properly initialized singleton", ^{
         expect([YWeatherAPI sharedManager]).toNot.beNil();
         expect([YWeatherAPI sharedManager].defaultPressureUnit).to.equal(IN);
@@ -48,43 +52,56 @@ describe(@"YWeatherAPI", ^{
     it(@"returns non nil values for humidity", ^{
         NSString* location = @"Austin, TX";
         
-        [[YWeatherAPI sharedManager] humidityForLocation:location success:^(NSDictionary *result) {
-            NSString* h = [result objectForKey:kYWAHumidity];
-            expect(h).toNot.beNil();
-        } failure:^(id response, NSError *error) {
-            expect(YES).to.beFalsy();
-        }];
+        waitUntil(^(DoneCallback done) {
+            [[YWeatherAPI sharedManager] humidityForLocation:location success:^(NSDictionary *result) {
+                NSString* h = [result objectForKey:kYWAHumidity];
+                expect(h).willNot.beNil();
+                done();
+            } failure:^(id response, NSError *error) {
+                failure(@"fail");
+                done();
+            }];
+        });
     });
     
     it(@"returns values in the right range", ^{
         CLLocation* austinTexas = [[CLLocation alloc] initWithLatitude:30.25 longitude:97.75];
         
-        [[YWeatherAPI sharedManager] temperatureForCoordinate:(CLLocation*)austinTexas
-                                              temperatureUnit:(YWATemperatureUnit)C
-                                                      success:^(NSDictionary* result)
-         {
-             NSString* temperatureAskedFor = [result objectForKey:kYWAIndex];
-             expect([temperatureAskedFor length]).to.beGreaterThan(@0);
-             expect([temperatureAskedFor doubleValue]).to.beInTheRangeOf(@-30, @50);
-         }
-                                                      failure:^(id response, NSError* error)
-         {
-             expect(YES).to.beFalsy();
-         }];
+        waitUntil(^(DoneCallback done) {
+            [[YWeatherAPI sharedManager] temperatureForCoordinate:(CLLocation*)austinTexas
+                                                  temperatureUnit:(YWATemperatureUnit)C
+                                                          success:^(NSDictionary* result)
+             {
+                 NSString* temperatureAskedFor = [result objectForKey:kYWAIndex];
+                 expect([temperatureAskedFor length]).will.beGreaterThan(@0);
+                 expect([temperatureAskedFor doubleValue]).will.beInTheRangeOf(@-30, @50);
+                 done();
+             }
+                                                          failure:^(id response, NSError* error)
+             {
+                 failure(@"fail");
+                 done();
+             }];
+        });
     });
     
     it(@"returns the correct today date for forecasts", ^{
         NSDate* today = [NSDate date];
-        NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-        NSDateComponents *dateComponents = [gregorian components:(NSDayCalendarUnit) fromDate:today];
-        NSInteger day = [dateComponents day];
+        NSDateComponents *dateComponents = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear fromDate:today];
+        NSInteger month = [dateComponents month];
+        NSInteger year = [dateComponents year];
         
-        [[YWeatherAPI sharedManager] fiveDayForecastForLocation:@"Redwood City CA" success:^(NSDictionary *result) {
-            NSDateComponents* comps = [[[result objectForKey:kYWAFiveDayForecasts] objectAtIndex:0] objectForKey:kYWADateComponents];
-            expect([comps day]).to.equal(day);
-        } failure:^(id response, NSError *error) {
-            expect(YES).to.beFalsy();
-        }];
+        waitUntil(^(DoneCallback done) {
+            [[YWeatherAPI sharedManager] fiveDayForecastForLocation:@"Redwood City CA" success:^(NSDictionary *result) {
+                NSDateComponents* comps = [[[result objectForKey:kYWAFiveDayForecasts] objectAtIndex:0] objectForKey:kYWADateComponents];
+                expect([comps month]).will.equal(month);
+                expect([comps year]).will.equal(year);
+                done();
+            } failure:^(id response, NSError *error) {
+                failure(@"fail");
+                done();
+            }];
+        });
     });
     
     
@@ -94,19 +111,44 @@ describe(@"YWeatherAPI", ^{
     
     
     it(@"returns a non-nil result when asking for all conditions", ^{
-        [[YWeatherAPI sharedManager] allCurrentConditionsForLocation:@"Chennai, India" success:^(NSDictionary *result) {
-            expect(result).toNot.beNil();
-        } failure:^(id response, NSError *error) {
-            expect(YES).to.beFalsy();
-        }];
+        waitUntil(^(DoneCallback done) {
+            [[YWeatherAPI sharedManager] allCurrentConditionsForLocation:@"Chennai, India" success:^(NSDictionary *result) {
+                expect(result).willNot.beNil();
+                done();
+            } failure:^(id response, NSError *error) {
+                failure(@"fail");
+                done();
+            }];
+        });
     });
     
     it (@"returns a non-nil string for current condition by code", ^{
-        [[YWeatherAPI sharedManager] allCurrentConditionsForLocation:@"Liverpool, England" success:^(NSDictionary *result) {
-            expect([result objectForKey:kYWACondition]).toNot.beNil();
-        } failure:^(id response, NSError *error) {
-            expect(YES).to.beFalsy();
-        }];
+        waitUntil(^(DoneCallback done) {
+            [[YWeatherAPI sharedManager] allCurrentConditionsForLocation:@"Liverpool, England" success:^(NSDictionary *result) {
+                expect([result objectForKey:kYWACondition]).willNot.beNil();
+                done();
+            } failure:^(id response, NSError *error) {
+                failure(@"fail");
+                done();
+            }];
+        });
+    });
+    
+    it(@"encodes location correctly in the query string", ^{
+        waitUntil(^(DoneCallback done) {
+            [[YWeatherAPI sharedManager] temperatureForLocation:@"Prince George's MD United States" success:^(NSDictionary *result) {
+                expect([result objectForKey:kYWAIndex]).willNot.beNil();
+                done();
+            } failure:^(id response, NSError *error) {
+                NSLog(@"%@", error);
+                failure(@"fail");
+                done();
+            }];
+        });
+    });
+    
+    it(@"clears the cache without throwing a tantrum", ^{
+        [[YWeatherAPI sharedManager] clearCache];
     });
 });
 
