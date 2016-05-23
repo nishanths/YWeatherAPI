@@ -2002,10 +2002,11 @@ NSString* const kYWAPressureTrendRising = @"1";
                   success:(void (^)(NSString* woeid))success
                   failure:(void (^)(id response, NSError *error))failure
 {
+    // XXX: refactor encoding logic
     NSString* path = [[NSArray arrayWithObjects: @"yql?q=", @"select woeid from geo.places(1) where text", nil] componentsJoinedByString:@""];
     NSMutableString* encodedPath = [[path stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] mutableCopy];
     [encodedPath appendString:@"%3D'"];
-    NSString* path2 = [[NSArray arrayWithObjects: location, @"'&format=json", nil] componentsJoinedByString:@""];
+    NSString* path2 = [[NSArray arrayWithObjects: [YWeatherAPI urlencode:location], @"'&format=json", nil] componentsJoinedByString:@""];
     [encodedPath appendString:[path2 stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     
     [[YWeatherAPIHTTPClient sharedClient] GET:encodedPath
@@ -2393,6 +2394,27 @@ NSString* const kYWAPressureTrendRising = @"1";
     comps.timeZone = [NSTimeZone timeZoneWithAbbreviation:timeZone];
     
     return comps;
+}
+
+// http://stackoverflow.com/questions/8088473/how-do-i-url-encode-a-string
++ (NSString *)urlencode:(NSString*) s {
+    NSMutableString *output = [NSMutableString string];
+    const unsigned char *source = (const unsigned char *)[s UTF8String];
+    int sourceLen = strlen((const char *)source);
+    for (int i = 0; i < sourceLen; ++i) {
+        const unsigned char thisChar = source[i];
+        if (thisChar == ' '){
+            [output appendString:@"+"];
+        } else if (thisChar == '.' || thisChar == '-' || thisChar == '_' || thisChar == '~' ||
+                   (thisChar >= 'a' && thisChar <= 'z') ||
+                   (thisChar >= 'A' && thisChar <= 'Z') ||
+                   (thisChar >= '0' && thisChar <= '9')) {
+            [output appendFormat:@"%c", thisChar];
+        } else {
+            [output appendFormat:@"%%%02X", thisChar];
+        }
+    }
+    return output;
 }
 
 
